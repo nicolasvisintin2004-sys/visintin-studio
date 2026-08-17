@@ -1,5 +1,13 @@
 import { ImageResponse } from "next/og";
 import { esIdioma, idiomas } from "@/lib/i18n";
+import { sitio } from "@/lib/sitio";
+
+/**
+ * El dominio sale de la dirección real del sitio, no escrito a mano.
+ * Hoy es el de Netlify; el día que compres el dominio propio, cambia solo
+ * en la primera compilación y no hay que acordarse de tocar esta imagen.
+ */
+const dominio = sitio.url.replace(/^https?:\/\//, "").replace(/^www\./, "");
 
 /** Se prerenderiza una por idioma en vez de generarse a demanda. */
 export function generateStaticParams() {
@@ -113,7 +121,7 @@ export default async function Imagen({
           }}
         >
           <span>{pie[lang]}</span>
-          <span style={{ color: "#FFFFFF" }}>VISINTIN.COM.AR</span>
+          <span style={{ color: "#FFFFFF" }}>{dominio.toUpperCase()}</span>
         </div>
       </div>
     ),
