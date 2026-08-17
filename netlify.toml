@@ -17,17 +17,18 @@
 
 # ─────────────────────────────────────────────────────────────
 # IDIOMA
-# Quien entra a la raíz cae en su idioma según el navegador.
-# 302 y no 301: la elección depende de quién entra, así que no
-# se puede cachear como permanente.
+# Todos caen en español, sin mirar el idioma del navegador.
+#
+# Se probó detectar con Accept-Language y se descartó: buena parte
+# del público —dueños de PyME argentinos— tiene Windows en inglés y
+# lee en español. Mandarlos a /en es peor error que el inverso,
+# porque el inglés acá es la demostración y no la versión principal.
+# El que la quiera la tiene a un clic en la barra.
+#
+# 302 y no 301: si algún día vuelve la detección, un 301 quedaría
+# cacheado en el navegador de cada visitante y sería un dolor de
+# cabeza para revertir.
 # ─────────────────────────────────────────────────────────────
-[[redirects]]
-  from = "/"
-  to = "/en"
-  status = 302
-  force = true
-  conditions = { Language = ["en"] }
-
 [[redirects]]
   from = "/"
   to = "/es"
