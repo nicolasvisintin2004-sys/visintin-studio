@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════════
+   CAPA 1 · PRIMITIVAS
+   Nadie usa estos colores directo en un componente. Están acá para
+   que la capa 2 los referencie.
+   ══════════════════════════════════════════════════════════════════ */
+@theme {
+  --color-ink: #0a0a0c;
+  --color-graphite: #17171a;
+  --color-steel: #3e3e44;
+  --color-ash: #8a8a92;
+  --color-ash-strong: #70707a;
+  --color-fog: #dedee2;
+  --color-paper: #fafafa;
+  --color-white: #ffffff;
+
+  /* ── Tipografía ── */
+  --font-display: var(--font-display-src), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans-src), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-src), ui-monospace, monospace;
+
+  --text-display-xl: clamp(3rem, 8vw, 6rem);
+  --text-display-xl--line-height: 0.94;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-xl--font-weight: 700;
+
+  --text-display-l: clamp(2.25rem, 5vw, 3.5rem);
+  --text-display-l--line-height: 1.02;
+  --text-display-l--letter-spacing: -0.02em;
+  --text-display-l--font-weight: 700;
+
+  --text-display-m: clamp(1.75rem, 3.5vw, 2.5rem);
+  --text-display-m--line-height: 1.08;
+  --text-display-m--letter-spacing: -0.02em;
+  --text-display-m--font-weight: 700;
+
+  --text-heading: 1.5rem;
+  --text-heading--line-height: 1.25;
+  --text-heading--letter-spacing: -0.01em;
+  --text-heading--font-weight: 600;
+
+  --text-body-l: 1.125rem;
+  --text-body-l--line-height: 1.6;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.12em;
+  --text-label--font-weight: 500;
+
+  /* ── Espaciado ──
+     OJO: la unidad base pasa de 4px (default de Tailwind) a 8px.
+     p-1 = 8px · p-2 = 16px · p-6 = 48px · p-0.5 = 4px (escape).
+     Es a propósito: hace imposible salirse de la grilla de 8. */
+  --spacing: 0.5rem;
+
+  /* ── Radios: 4px es el techo ── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* ── Layout ── */
+  --container-content: 1200px;
+
+  /* ── Movimiento ── */
+  --ease-out: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --duration-reveal: 500ms;
+  --duration-link: 200ms;
+  --duration-page: 250ms;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CAPA 2 · SEMÁNTICA
+   Lo único que tocan los componentes. Invertir una sección es poner
+   data-surface="dark" en el <section>: todo lo de adentro se da
+   vuelta solo, sin variantes dark: ni clases duplicadas.
+   ══════════════════════════════════════════════════════════════════ */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-focus: var(--focus);
+}
+
+:root,
+[data-surface="light"] {
+  --surface: #fafafa;
+  --raised: #ffffff;
+  --line: #dedee2;
+  --line-strong: #3e3e44;
+  --fg: #0a0a0c;
+  --fg-muted: #70707a; /* ash-strong: 4.69:1 sobre paper. ash puro da 3.28:1 y no pasa */
+  --focus: #0a0a0c;
+}
+
+[data-surface="dark"] {
+  --surface: #0a0a0c;
+  --raised: #17171a;
+  --line: #3e3e44;
+  --line-strong: #8a8a92;
+  --fg: #ffffff;
+  --fg-muted: #8a8a92; /* 5.78:1 sobre ink */
+  --focus: #fafafa;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BASE
+   ══════════════════════════════════════════════════════════════════ */
+body {
+  background-color: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--fg);
+  color: var(--surface);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   UTILIDADES
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Contenedor de 12 columnas. La grilla existe aunque no se vea. */
+@utility contenedor {
+  width: 100%;
+  max-width: var(--container-content);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (width >= 48rem) {
+  .contenedor {
+    padding-inline: 3rem;
+  }
+}
+
+@utility grilla {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 1.5rem;
+}
+
+/* Etiqueta monoespaciada: eyebrows, plazos, metadatos, precios */
+@utility etiqueta {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* Archivo lleva ancho condensado solo en los tamaños grandes */
+@utility condensada {
+  font-variation-settings: "wdth" 88;
+}
+
+/* Texto corrido: nunca más de 68 caracteres */
+@utility medida {
+  max-width: 68ch;
+}
+
+/* Relleno que barre de izquierda a derecha en el botón secundario.
+   Va como fondo y no como pseudo-elemento para que el texto no necesite
+   z-index ni capa propia. */
+@utility barrido {
+  background-image: linear-gradient(var(--fg), var(--fg));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition:
+    background-size var(--duration-link) var(--ease-out),
+    color var(--duration-link) var(--ease-out),
+    border-color var(--duration-link) var(--ease-out);
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 100%;
+    color: var(--surface);
+    border-color: var(--fg);
+  }
+}
+
+/* Tarjeta que reacciona: el borde se afirma y sube 4px. Sin sombra:
+   en un sistema sin sombras difusas, la sombra sería el ruido. */
+@utility tarjeta-viva {
+  transition:
+    transform var(--duration-link) var(--ease-out),
+    border-color var(--duration-link) var(--ease-out);
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+  }
+}
+
+/* Subrayado que se dibuja de izquierda a derecha */
+@utility subrayado {
+  position: relative;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.15em;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-link) var(--ease-out);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SIMULADOR DE GOOGLE — única excepción del sistema
+   Tipografía y color propios, encerrados en este recuadro. Se tiene
+   que leer como una captura pegada sobre la página, no como parte del
+   diseño. Arial es fuente del sistema: no agrega un solo kilobyte.
+   ══════════════════════════════════════════════════════════════════ */
+.google {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  letter-spacing: normal;
+
+  --g-fondo: #ffffff;
+  --g-texto: #202124;
+  --g-enlace: #1a0dab;
+  --g-url: #006621;
+  --g-desc: #4d5156;
+  --g-tenue: #70757a;
+  /* Gris de la competencia: 6,05:1 sobre blanco. */
+  --g-gris: #5f6368;
+  --g-borde: #dfe1e5;
+  --g-estrella: #e7711b;
+
+  background: var(--g-fondo);
+  color: var(--g-texto);
+}
+
+/* Los dos estados comparten celda de grilla: el alto lo fija el más
+   alto de los dos y cambiar de pestaña no mueve nada de la página. */
+.google-capas {
+  display: grid;
+}
+
+.google-capa {
+  grid-area: 1 / 1;
+  transition: opacity 300ms var(--ease-out);
+}
+
+.google-capa[data-activa="false"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.google-capa[data-activa="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .google-capa {
+    transition: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TRANSICIÓN DE PÁGINA
+   El brief pide un fundido, pero una animación de opacidad desde 0
+   retrasa el LCP 250ms: hasta que no es visible, el navegador no la
+   cuenta como pintada. Se resuelve con un desplazamiento de 10px, que
+   se lee igual de transición y deja el contenido visible desde el
+   primer cuadro.
+   ══════════════════════════════════════════════════════════════════ */
+@keyframes entrada-pagina {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.entrada-pagina {
+  animation: entrada-pagina var(--duration-page) var(--ease-out) both;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BARRA DE PROGRESO DE LECTURA
+   Un pelo de 1px al pie de la barra de navegación. Es el elemento más
+   "instrumento" del sitio: mide, no decora.
+   ══════════════════════════════════════════════════════════════════ */
+.progreso {
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   REVELADO AL SCROLL
+   Regla de oro: el estado por defecto es VISIBLE. El JS recién
+   esconde después de confirmar que hay IntersectionObserver y que
+   no hay reduced-motion. Si el JS no corre, si el observer nunca
+   dispara o si es un crawler, el contenido se ve igual.
+   ══════════════════════════════════════════════════════════════════ */
+[data-reveal="oculto"] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .entrada-pagina {
+    animation: none !important;
+  }
+
+  .tarjeta-viva:hover {
+    transform: none !important;
+  }
+}

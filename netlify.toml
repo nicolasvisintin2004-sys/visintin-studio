@@ -1,0 +1,106 @@
+# Configuración de Netlify.
+#
+# El sitio se compila como estático puro (`output: "export"` en
+# next.config.ts): las 16 páginas quedan como archivos HTML servidos desde
+# el CDN, sin ningún proceso corriendo. Es lo más rápido posible y no
+# depende de la versión del plugin de Next que tenga Netlify.
+#
+# Lo que antes hacía proxy.ts (mandar a /es o /en) ahora lo hacen las
+# reglas de abajo, en el borde de la red y no en un servidor.
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# ─────────────────────────────────────────────────────────────
+# IDIOMA
+# Quien entra a la raíz cae en su idioma según el navegador.
+# 302 y no 301: la elección depende de quién entra, así que no
+# se puede cachear como permanente.
+# ─────────────────────────────────────────────────────────────
+[[redirects]]
+  from = "/"
+  to = "/en"
+  status = 302
+  force = true
+  conditions = { Language = ["en"] }
+
+[[redirects]]
+  from = "/"
+  to = "/es"
+  status = 302
+  force = true
+
+# Direcciones sin prefijo de idioma → español.
+# 301 porque acá sí es permanente: esa URL ya no existe.
+[[redirects]]
+  from = "/trabajo/*"
+  to = "/es/trabajo/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/notas/*"
+  to = "/es/notas/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/planes"
+  to = "/es/planes"
+  status = 301
+
+[[redirects]]
+  from = "/estudio"
+  to = "/es/estudio"
+  status = 301
+
+[[redirects]]
+  from = "/contacto"
+  to = "/es/contacto"
+  status = 301
+
+[[redirects]]
+  from = "/trabajo"
+  to = "/es/trabajo"
+  status = 301
+
+[[redirects]]
+  from = "/notas"
+  to = "/es/notas"
+  status = 301
+
+# ─────────────────────────────────────────────────────────────
+# IMAGEN DE OPEN GRAPH
+# Next la exporta sin extensión (/es/opengraph-image). Sin esta
+# regla se sirve con el tipo equivocado y WhatsApp no muestra la
+# miniatura al compartir el enlace.
+# ─────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/es/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/en/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Los archivos con huella digital en el nombre no cambian nunca.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ─────────────────────────────────────────────────────────────
+# SEGURIDAD
+# ─────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
