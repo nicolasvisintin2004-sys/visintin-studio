@@ -28,6 +28,13 @@ export const sitio = {
    * Verificar el link una vez antes de publicar: si el 9 sobra, sacarlo acá.
    */
   whatsapp: "5492920304938",
+  /**
+   * Verificación de propiedad para Google Search Console.
+   * Es un token público: va en el HTML de todas las páginas y no da
+   * acceso a nada. Corresponde a la propiedad del dominio de Netlify;
+   * si más adelante se registra el dominio propio, Google entrega otro.
+   */
+  verificacionGoogle: "byjy1nX8alSqxtKqDPgMa1zFKUxlv_OIJHdRbG9DsAk",
 } as const;
 
 /**

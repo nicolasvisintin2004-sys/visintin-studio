@@ -32,6 +32,7 @@ export async function generateMetadata({
     },
     description: textos.home.metaDescripcion[idioma],
     authors: [{ name: sitio.autor }],
+    verification: { google: sitio.verificacionGoogle },
     openGraph: {
       type: "website",
       locale: idioma === "es" ? "es_AR" : "en_US",
