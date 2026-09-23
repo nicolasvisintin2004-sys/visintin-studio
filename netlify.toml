@@ -1,12 +1,9 @@
 # Configuración de Netlify.
 #
-# El sitio se compila como estático puro (`output: "export"` en
-# next.config.ts): las 16 páginas quedan como archivos HTML servidos desde
-# el CDN, sin ningún proceso corriendo. Es lo más rápido posible y no
-# depende de la versión del plugin de Next que tenga Netlify.
-#
-# Lo que antes hacía proxy.ts (mandar a /es o /en) ahora lo hacen las
-# reglas de abajo, en el borde de la red y no en un servidor.
+# El sitio se compila como estático puro (`output: "export"` en next.config.ts):
+# cada ruta queda como un archivo HTML servido desde el CDN, sin ningún proceso
+# corriendo. Es lo más rápido posible y no depende de la versión del plugin de
+# Next que tenga Netlify.
 
 [build]
   command = "npm run build"
@@ -16,79 +13,181 @@
   NODE_VERSION = "22"
 
 # ─────────────────────────────────────────────────────────────
-# IDIOMA
-# Todos caen en español, sin mirar el idioma del navegador.
+# FUNCIONES
 #
-# Se probó detectar con Accept-Language y se descartó: buena parte
-# del público —dueños de PyME argentinos— tiene Windows en inglés y
-# lee en español. Mandarlos a /en es peor error que el inverso,
-# porque el inglés acá es la demostración y no la versión principal.
-# El que la quiera la tiene a un clic en la barra.
+# El sitio es estático, pero el formulario necesita algo que corra del otro
+# lado para guardar la consulta. Con `output: "export"` Next no admite rutas
+# que lean el cuerpo de una petición, así que el endpoint vive acá.
 #
-# 302 y no 301: si algún día vuelve la detección, un 301 quedaría
-# cacheado en el navegador de cada visitante y sería un dolor de
-# cabeza para revertir.
+# Son funciones de la versión 2: cada archivo declara su propia dirección con
+# `export const config = { path: "..." }`, y por eso no hay ningún
+# redireccionamiento de /api/* más abajo.
+#
+#   netlify/functions/leads.mts         → POST /api/leads
+#   netlify/functions/leads-export.mts  → GET  /api/leads/export
+#
+# Las variables de entorno que necesitan están listadas en `.env.example`.
+# Sin ellas las funciones responden un error claro y el resto del sitio
+# funciona igual.
 # ─────────────────────────────────────────────────────────────
-[[redirects]]
-  from = "/"
-  to = "/es"
-  status = 302
-  force = true
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
-# Direcciones sin prefijo de idioma → español.
-# 301 porque acá sí es permanente: esa URL ya no existe.
+# ─────────────────────────────────────────────────────────────
+# DIRECCIONES DEL SITIO ANTERIOR
+#
+# La versión anterior era bilingüe y colgaba todo de un prefijo de idioma:
+# /es/planes, /en/trabajo, /es/notas, etc. Esta es sólo en español y sin
+# prefijo, así que cada dirección vieja se manda a su equivalente nuevo:
+# /es/planes a /planes, /es/trabajo a /proyectos, y así.
+#
+# 301 y no 302: la mudanza es definitiva y lo que interesa es que Google
+# traslade a la página nueva lo poco que haya alcanzado a indexar, en vez de
+# quedarse con una lista de 404.
+#
+# El orden importa: Netlify aplica la primera regla que coincide, así que
+# las rutas específicas van antes que los comodines. Y un comodín `/x/*` no
+# cubre `/x` a secas, por eso las dos van por separado.
+# ─────────────────────────────────────────────────────────────
+
+# El único proyecto que existía en el sitio anterior, con su nombre viejo.
 [[redirects]]
-  from = "/trabajo/*"
-  to = "/es/trabajo/:splat"
+  from = "/es/trabajo/garcia-ferrari-motorhomes"
+  to = "/proyectos/garcia-ferrari"
   status = 301
 
 [[redirects]]
-  from = "/notas/*"
-  to = "/es/notas/:splat"
+  from = "/en/trabajo/garcia-ferrari-motorhomes"
+  to = "/proyectos/garcia-ferrari"
+  status = 301
+
+# Sin esta, el comodín de `/trabajo/*` de más abajo la mandaría a
+# /proyectos/garcia-ferrari-motorhomes, que no existe: el slug cambió.
+[[redirects]]
+  from = "/trabajo/garcia-ferrari-motorhomes"
+  to = "/proyectos/garcia-ferrari"
+  status = 301
+
+# "Trabajo" pasó a llamarse "Proyectos". Incluye el atajo sin prefijo de
+# idioma, que el sitio anterior también redirigía.
+[[redirects]]
+  from = "/es/trabajo"
+  to = "/proyectos"
   status = 301
 
 [[redirects]]
-  from = "/planes"
-  to = "/es/planes"
+  from = "/es/trabajo/*"
+  to = "/proyectos"
   status = 301
 
 [[redirects]]
-  from = "/estudio"
-  to = "/es/estudio"
+  from = "/en/trabajo"
+  to = "/proyectos"
   status = 301
 
 [[redirects]]
-  from = "/contacto"
-  to = "/es/contacto"
+  from = "/en/trabajo/*"
+  to = "/proyectos"
   status = 301
 
 [[redirects]]
   from = "/trabajo"
-  to = "/es/trabajo"
+  to = "/proyectos"
   status = 301
 
 [[redirects]]
-  from = "/notas"
-  to = "/es/notas"
+  from = "/trabajo/*"
+  to = "/proyectos/:splat"
+  status = 301
+
+# Las secciones que conservan el nombre, sin el prefijo de idioma.
+[[redirects]]
+  from = "/es/planes"
+  to = "/planes"
+  status = 301
+
+[[redirects]]
+  from = "/en/planes"
+  to = "/planes"
+  status = 301
+
+[[redirects]]
+  from = "/es/estudio"
+  to = "/estudio"
+  status = 301
+
+[[redirects]]
+  from = "/en/estudio"
+  to = "/estudio"
+  status = 301
+
+[[redirects]]
+  from = "/es/contacto"
+  to = "/contacto"
+  status = 301
+
+[[redirects]]
+  from = "/en/contacto"
+  to = "/contacto"
+  status = 301
+
+# Las notas del sitio anterior ya tienen a dónde ir: la sección existe otra
+# vez. Las direcciones individuales van al listado y no a una nota concreta,
+# porque los textos viejos todavía no se recuperaron.
+[[redirects]]
+  from = "/es/notas"
+  to = "/notas"
+  status = 301
+
+[[redirects]]
+  from = "/es/notas/*"
+  to = "/notas"
+  status = 301
+
+[[redirects]]
+  from = "/en/notas"
+  to = "/notas"
+  status = 301
+
+[[redirects]]
+  from = "/en/notas/*"
+  to = "/notas"
+  status = 301
+
+# Cualquier otra cosa que colgara de un prefijo de idioma, incluidos /es y
+# /en a secas, que eran las portadas.
+[[redirects]]
+  from = "/es"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/es/*"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/en"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/en/*"
+  to = "/"
   status = 301
 
 # ─────────────────────────────────────────────────────────────
-# IMAGEN DE OPEN GRAPH
-# Next la exporta sin extensión (/es/opengraph-image). Sin esta
-# regla se sirve con el tipo equivocado y WhatsApp no muestra la
-# miniatura al compartir el enlace.
+# CACHÉ
 # ─────────────────────────────────────────────────────────────
-[[headers]]
-  for = "/es/opengraph-image"
-  [headers.values]
-    Content-Type = "image/png"
-    Cache-Control = "public, max-age=31536000, immutable"
 
-[[headers]]
-  for = "/en/opengraph-image"
-  [headers.values]
-    Content-Type = "image/png"
-    Cache-Control = "public, max-age=31536000, immutable"
+# Las imágenes de Open Graph no se declaran acá.
+#
+# Next las exporta sin extensión, y ahora hay una por página importante y una
+# por proyecto. Sus encabezados los genera `herramientas/encabezados-og.mjs`
+# en `out/_headers` después de cada compilación, recorriendo lo que realmente
+# quedó en la carpeta. Escritas a mano, un proyecto nuevo se publicaría sin
+# miniatura y nadie se enteraría hasta que alguien comparte el enlace.
 
 # Los archivos con huella digital en el nombre no cambian nunca.
 [[headers]]
@@ -96,12 +195,27 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Las capturas del portfolio se reemplazan a mano y con otro nombre.
+[[headers]]
+  for = "/imagenes/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
 # ─────────────────────────────────────────────────────────────
 # SEGURIDAD
 # ─────────────────────────────────────────────────────────────
+
+# Las dos funciones quedan fuera de los buscadores. La de descarga devuelve
+# una lista de contactos y la de envío no tiene nada que indexar.
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 [[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"

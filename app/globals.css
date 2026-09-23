@@ -1,365 +1,562 @@
 @import "tailwindcss";
 
-/* ══════════════════════════════════════════════════════════════════
-   CAPA 1 · PRIMITIVAS
-   Nadie usa estos colores directo en un componente. Están acá para
-   que la capa 2 los referencie.
-   ══════════════════════════════════════════════════════════════════ */
+/* El generador de Instagram vive en el mismo repo pero es otro proyecto:
+   sus clases no tienen que terminar en el CSS del sitio. */
+@source not "../instagram";
+
+/* ───────────────────────────────────────────────────────────────
+   TOKENS
+   Un solo lugar para el color, la tipografía y el ritmo vertical.
+   El acento se usa con avaricia: si aparece en todos lados, pierde.
+   ─────────────────────────────────────────────────────────────── */
 @theme {
-  --color-ink: #0a0a0c;
-  --color-graphite: #17171a;
-  --color-steel: #3e3e44;
-  --color-ash: #8a8a92;
-  --color-ash-strong: #70707a;
-  --color-fog: #dedee2;
-  --color-paper: #fafafa;
-  --color-white: #ffffff;
+  --color-fondo: #0b0c0e;
+  --color-superficie: #141619;
+  --color-borde: #1e2226;
+  --color-texto: #f4f4f1;
+  --color-suave: #8a9099;
+  --color-acento: #c08a4e;
 
-  /* ── Tipografía ── */
-  --font-display: var(--font-display-src), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-sans-src), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-src), ui-monospace, monospace;
+  --font-display: var(--fuente-display), Arial, Helvetica, sans-serif;
+  --font-cuerpo: var(--fuente-cuerpo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: var(--fuente-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --text-display-xl: clamp(3rem, 8vw, 6rem);
-  --text-display-xl--line-height: 0.94;
-  --text-display-xl--letter-spacing: -0.03em;
-  --text-display-xl--font-weight: 700;
+  /* Aire entre secciones. Más del que parece necesario, a propósito. */
+  --espacio-seccion: clamp(7rem, 14vw, 14rem);
 
-  --text-display-l: clamp(2.25rem, 5vw, 3.5rem);
-  --text-display-l--line-height: 1.02;
-  --text-display-l--letter-spacing: -0.02em;
-  --text-display-l--font-weight: 700;
-
-  --text-display-m: clamp(1.75rem, 3.5vw, 2.5rem);
-  --text-display-m--line-height: 1.08;
-  --text-display-m--letter-spacing: -0.02em;
-  --text-display-m--font-weight: 700;
-
-  --text-heading: 1.5rem;
-  --text-heading--line-height: 1.25;
-  --text-heading--letter-spacing: -0.01em;
-  --text-heading--font-weight: 600;
-
-  --text-body-l: 1.125rem;
-  --text-body-l--line-height: 1.6;
-
-  --text-body: 1rem;
-  --text-body--line-height: 1.6;
-
-  --text-small: 0.875rem;
-  --text-small--line-height: 1.5;
-
-  --text-label: 0.75rem;
-  --text-label--line-height: 1.2;
-  --text-label--letter-spacing: 0.12em;
-  --text-label--font-weight: 500;
-
-  /* ── Espaciado ──
-     OJO: la unidad base pasa de 4px (default de Tailwind) a 8px.
-     p-1 = 8px · p-2 = 16px · p-6 = 48px · p-0.5 = 4px (escape).
-     Es a propósito: hace imposible salirse de la grilla de 8. */
-  --spacing: 0.5rem;
-
-  /* ── Radios: 4px es el techo ── */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-
-  /* ── Layout ── */
-  --container-content: 1200px;
-
-  /* ── Movimiento ── */
-  --ease-out: cubic-bezier(0.16, 0.84, 0.44, 1);
-  --duration-reveal: 500ms;
-  --duration-link: 200ms;
-  --duration-page: 250ms;
+  /* La curva de todo lo que se mueve: sale rápido y frena largo. */
+  --curva: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   CAPA 2 · SEMÁNTICA
-   Lo único que tocan los componentes. Invertir una sección es poner
-   data-surface="dark" en el <section>: todo lo de adentro se da
-   vuelta solo, sin variantes dark: ni clases duplicadas.
-   ══════════════════════════════════════════════════════════════════ */
-@theme inline {
-  --color-surface: var(--surface);
-  --color-raised: var(--raised);
-  --color-line: var(--line);
-  --color-line-strong: var(--line-strong);
-  --color-fg: var(--fg);
-  --color-fg-muted: var(--fg-muted);
-  --color-focus: var(--focus);
-}
+/* Contraste sobre #0b0c0e, medido y no estimado:
+   texto 17.9:1 · suave 6.1:1 · acento 6.8:1. Los tres pasan AA. */
 
-:root,
-[data-surface="light"] {
-  --surface: #fafafa;
-  --raised: #ffffff;
-  --line: #dedee2;
-  --line-strong: #3e3e44;
-  --fg: #0a0a0c;
-  --fg-muted: #70707a; /* ash-strong: 4.69:1 sobre paper. ash puro da 3.28:1 y no pasa */
-  --focus: #0a0a0c;
-}
-
-[data-surface="dark"] {
-  --surface: #0a0a0c;
-  --raised: #17171a;
-  --line: #3e3e44;
-  --line-strong: #8a8a92;
-  --fg: #ffffff;
-  --fg-muted: #8a8a92; /* 5.78:1 sobre ink */
-  --focus: #fafafa;
-}
-
-/* ══════════════════════════════════════════════════════════════════
+/* ───────────────────────────────────────────────────────────────
    BASE
-   ══════════════════════════════════════════════════════════════════ */
-body {
-  background-color: var(--surface);
-  color: var(--fg);
-  font-family: var(--font-sans);
-  font-size: var(--text-body);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+   ─────────────────────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /*
+   * El color de fondo lo pinta <html> y no <body>, a propósito.
+   *
+   * El resplandor que sigue al cursor vive en `z-index: -1`, que lo pone
+   * detrás del contenido de <body> pero delante del fondo de <html>. Si el
+   * color estuviera en <body>, ese plano quedaría tapado y la luz no se vería.
+   */
+  html {
+    background-color: var(--color-fondo);
+    scroll-behavior: smooth;
+    /* La barra fija de arriba no tiene que tapar el título al saltar a un ancla. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--color-texto);
+    font-family: var(--font-cuerpo);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /*
+   * `pretty` evita el huérfano: la palabra sola colgando en el último
+   * renglón de un párrafo. El navegador rehace los dos o tres renglones
+   * finales para que nunca quede una sola palabra abajo.
+   *
+   * Va en `p` y `li` y no en los encabezados, que ya usan `balance` —que
+   * reparte todos los renglones parejos— salvo el del hero, que tiene los
+   * cortes puestos a mano.
+   */
+  p,
+  li,
+  figcaption,
+  blockquote {
+    text-wrap: pretty;
+  }
+
+  /*
+   * La barra de desplazamiento, en la paleta del sitio.
+   *
+   * Una barra blanca de sistema al costado de un sitio negro es lo primero
+   * que delata que nadie miró el detalle. Son dos propiedades estándar, sin
+   * los pseudo-elementos de WebKit, que además rompen el comportamiento
+   * nativo en algunos navegadores.
+   */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-borde) transparent;
+  }
+
+  /* Firefox usa ::-moz-selection y no hereda de ::selection. */
+  ::-moz-selection {
+    background: var(--color-acento);
+    color: var(--color-fondo);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+  }
+
+  /* Foco visible en todo lo que se navega por teclado. Nunca `outline: none`
+     a secas: el anillo se dibuja con el acento y separado del elemento. */
+  :focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-acento);
+    color: var(--color-fondo);
+  }
+
+  img,
+  picture,
+  video {
+    display: block;
+    max-width: 100%;
+  }
 }
 
-::selection {
-  background-color: var(--fg);
-  color: var(--surface);
-}
+/* ───────────────────────────────────────────────────────────────
+   ESCALA TIPOGRÁFICA
+   ─────────────────────────────────────────────────────────────── */
+@layer components {
+  /*
+   * El título del hero.
+   *
+   * `text-wrap: wrap` pisa a propósito el `balance` que traen todos los
+   * encabezados en la base: acá las líneas están cortadas a mano —una por
+   * `.linea-mascara`, porque cada una entra con su propia máscara— y `balance`
+   * las volvía a partir en dos, duplicando el alto del título.
+   *
+   * El tamaño está calculado, no elegido de ojo: la línea más larga mide
+   * 8.425em en Clash Display 600 con este tracking, y el ancho útil del
+   * contenedor es el 82% del viewport en pantallas grandes y el 90% en
+   * chicas. De ahí salen el 10.4vw y el techo de 8.5rem, que es lo máximo
+   * que entra en una sola línea sin tocar los bordes.
+   */
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.3rem, 10.4vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    text-wrap: wrap;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
-  border-radius: 1px;
-}
+  .t-titulo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+  }
 
-/* ══════════════════════════════════════════════════════════════════
-   UTILIDADES
-   ══════════════════════════════════════════════════════════════════ */
+  .t-subtitulo {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
 
-/* Contenedor de 12 columnas. La grilla existe aunque no se vea. */
-@utility contenedor {
-  width: 100%;
-  max-width: var(--container-content);
-  margin-inline: auto;
-  padding-inline: 1.5rem;
-}
+  .t-bajada {
+    font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--color-suave);
+    max-width: 34ch;
+  }
 
-@media (width >= 48rem) {
+  /* El cuerpo entre 60 y 70 caracteres por línea. */
+  /*
+   * El objetivo es entre 60 y 70 caracteres por línea.
+   *
+   * Dice 45ch y no 66ch porque `ch` mide el ancho del cero, y el cero de
+   * Satoshi es ancho: 0.7em contra los ~0.5em de una tipografía cualquiera.
+   * Con 66ch la medida daba 77 caracteres reales por línea. Está medido en el
+   * navegador, no deducido: 45ch son 540px y ahí entran unos 68 caracteres.
+   */
+  .t-cuerpo {
+    max-width: 45ch;
+    color: var(--color-suave);
+  }
+
+  .t-etiqueta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    /* 1.4 y no 1: las etiquetas largas de las tarjetas de plan se parten en
+       dos líneas y con interlineado 1 quedaban encimadas. */
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-suave);
+  }
+
+  .t-dato {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+  }
+
+  /* Ancho de lectura del sitio. */
   .contenedor {
-    padding-inline: 3rem;
+    width: 100%;
+    max-width: 82rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  .seccion {
+    padding-block: var(--espacio-seccion);
+  }
+
+  /*
+   * La primera sección de cada página, que es la que lleva el h1.
+   *
+   * Con el aire entre secciones de siempre —hasta 14rem— el título de cada
+   * página quedaba a media pantalla, lejos de la barra. Acá alcanza con
+   * despegarlo de la barra fija con holgura; la generosidad vuelve a partir de
+   * la segunda sección. El inicio no lo usa: arranca con el hero.
+   */
+  main > .seccion:first-child {
+    padding-top: clamp(8rem, 12vw, 11rem);
   }
 }
 
-@utility grilla {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: 1.5rem;
-}
-
-/* Etiqueta monoespaciada: eyebrows, plazos, metadatos, precios */
-@utility etiqueta {
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-
-/* Archivo lleva ancho condensado solo en los tamaños grandes */
-@utility condensada {
-  font-variation-settings: "wdth" 88;
-}
-
-/* Texto corrido: nunca más de 68 caracteres */
-@utility medida {
-  max-width: 68ch;
-}
-
-/* Relleno que barre de izquierda a derecha en el botón secundario.
-   Va como fondo y no como pseudo-elemento para que el texto no necesite
-   z-index ni capa propia. */
-@utility barrido {
-  background-image: linear-gradient(var(--fg), var(--fg));
-  background-repeat: no-repeat;
-  background-size: 0% 100%;
-  transition:
-    background-size var(--duration-link) var(--ease-out),
-    color var(--duration-link) var(--ease-out),
-    border-color var(--duration-link) var(--ease-out);
-
-  &:hover,
-  &:focus-visible {
-    background-size: 100% 100%;
-    color: var(--surface);
-    border-color: var(--fg);
-  }
-}
-
-/* Tarjeta que reacciona: el borde se afirma y sube 4px. Sin sombra:
-   en un sistema sin sombras difusas, la sombra sería el ruido. */
-@utility tarjeta-viva {
-  transition:
-    transform var(--duration-link) var(--ease-out),
-    border-color var(--duration-link) var(--ease-out);
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: var(--line-strong);
-  }
-}
-
-/* Subrayado que se dibuja de izquierda a derecha */
-@utility subrayado {
-  position: relative;
-  text-decoration: none;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: -0.15em;
-    height: 1px;
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--duration-link) var(--ease-out);
-  }
-
-  &:hover::after,
-  &:focus-visible::after {
-    transform: scaleX(1);
-  }
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   SIMULADOR DE GOOGLE — única excepción del sistema
-   Tipografía y color propios, encerrados en este recuadro. Se tiene
-   que leer como una captura pegada sobre la página, no como parte del
-   diseño. Arial es fuente del sistema: no agrega un solo kilobyte.
-   ══════════════════════════════════════════════════════════════════ */
-.google {
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  letter-spacing: normal;
-
-  --g-fondo: #ffffff;
-  --g-texto: #202124;
-  --g-enlace: #1a0dab;
-  --g-url: #006621;
-  --g-desc: #4d5156;
-  --g-tenue: #70757a;
-  /* Gris de la competencia: 6,05:1 sobre blanco. */
-  --g-gris: #5f6368;
-  --g-borde: #dfe1e5;
-  --g-estrella: #e7711b;
-
-  background: var(--g-fondo);
-  color: var(--g-texto);
-}
-
-/* Los dos estados comparten celda de grilla: el alto lo fija el más
-   alto de los dos y cambiar de pestaña no mueve nada de la página. */
-.google-capas {
-  display: grid;
-}
-
-.google-capa {
-  grid-area: 1 / 1;
-  transition: opacity 300ms var(--ease-out);
-}
-
-.google-capa[data-activa="false"] {
-  opacity: 0;
+/* ───────────────────────────────────────────────────────────────
+   GRANO
+   Una sola capa fija sobre todo. Es lo que más separa un fondo
+   plano de uno que parece impreso. El SVG va embebido: no hay
+   ninguna petición de red por esto.
+   ─────────────────────────────────────────────────────────────── */
+.grano {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
   pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23r)'/%3E%3C/svg%3E");
+  /* Se repite un mosaico de 300px en vez de generar ruido a pantalla completa:
+     el filtro se calcula una sola vez y no en cada repintado. */
+  background-repeat: repeat;
 }
 
-.google-capa[data-activa="true"] {
+/* ───────────────────────────────────────────────────────────────
+   ENTRADAS POR SCROLL
+   El desenfoque que se resuelve es lo que hace que se sienta caro
+   en vez de rebotado. El estado inicial se pone con JavaScript
+   (ver components/revelado.tsx): si el script no corre, el
+   contenido queda visible y legible desde el primer frame.
+   ─────────────────────────────────────────────────────────────── */
+[data-revelar] {
+  transition:
+    opacity 900ms var(--curva),
+    transform 900ms var(--curva),
+    filter 900ms var(--curva);
+}
+
+[data-revelar="oculto"] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+}
+
+[data-revelar="visible"] {
   opacity: 1;
+  transform: none;
+  filter: blur(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .google-capa {
-    transition: none !important;
+/* Entrada por máscara del título del hero, línea por línea. */
+.linea-mascara {
+  display: block;
+  overflow: hidden;
+}
+
+.linea-mascara > span {
+  display: block;
+  transform: translateY(105%);
+  animation: subir 900ms var(--curva) forwards;
+  animation-delay: var(--retardo, 0ms);
+}
+
+@keyframes subir {
+  to {
+    transform: translateY(0);
   }
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   TRANSICIÓN DE PÁGINA
-   El brief pide un fundido, pero una animación de opacidad desde 0
-   retrasa el LCP 250ms: hasta que no es visible, el navegador no la
-   cuenta como pintada. Se resuelve con un desplazamiento de 10px, que
-   se lee igual de transición y deja el contenido visible desde el
-   primer cuadro.
-   ══════════════════════════════════════════════════════════════════ */
-@keyframes entrada-pagina {
+.entra-tarde {
+  opacity: 0;
+  animation: aparecer 800ms var(--curva) forwards;
+  animation-delay: var(--retardo, 0ms);
+}
+
+@keyframes aparecer {
   from {
-    transform: translateY(10px);
+    opacity: 0;
+    transform: translateY(12px);
   }
   to {
+    opacity: 1;
     transform: none;
   }
 }
 
-.entrada-pagina {
-  animation: entrada-pagina var(--duration-page) var(--ease-out) both;
+/* ───────────────────────────────────────────────────────────────
+   TÍTULOS QUE ENTRAN LÍNEA POR LÍNEA
+
+   La misma máscara del hero, pero disparada por scroll en lugar de
+   al cargar. Las líneas las mide `components/titulo-revelado.tsx`
+   en el cliente: acá está nada más el estado quieto y el estado
+   andando.
+
+   Sin JavaScript, sin medición o con movimiento reducido, el
+   título nunca recibe la clase y queda como texto plano visible.
+   ─────────────────────────────────────────────────────────────── */
+.titulo-revelado .linea-mascara > span {
+  /* Pisa la animación inmediata que usa el hero: acá se espera. */
+  animation: none;
+  transform: translateY(105%);
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   BARRA DE PROGRESO DE LECTURA
-   Un pelo de 1px al pie de la barra de navegación. Es el elemento más
-   "instrumento" del sitio: mide, no decora.
-   ══════════════════════════════════════════════════════════════════ */
-.progreso {
+.titulo-revelado[data-entrar="si"] .linea-mascara > span {
+  animation: subir 900ms var(--curva) forwards;
+  animation-delay: var(--retardo, 0ms);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   PROGRESO DE LECTURA
+
+   Un filo de bronce de 1px sobre el borde inferior de la barra
+   fija, que crece con el scroll de la página.
+
+   Es animación dirigida por scroll, de CSS: cero JavaScript, cero
+   escuchas, y el navegador la corre fuera del hilo principal. En
+   los navegadores que todavía no la soportan la barra se queda en
+   `scaleX(0)` y no se ve nada, que es exactamente lo que
+   corresponde: es información de apoyo y no contenido.
+   ─────────────────────────────────────────────────────────────── */
+.progreso-lectura {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: 0 50%;
+  background: var(--color-acento);
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .progreso-lectura {
+    animation: avanzar linear forwards;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes avanzar {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   DERIVA DE LAS CAPTURAS
+
+   La imagen se mueve un poco más lento que la página dentro de su
+   marco. Es la única paralaje del sitio y es deliberadamente corta
+   —un 4% para cada lado— porque el efecto se nota cuando no se
+   nota: si la imagen se despega del marco, deja de leerse como
+   profundidad y pasa a leerse como un truco.
+
+   También es scroll-driven puro. El `scale(1.09)` está para que el
+   recorrido vertical no llegue nunca a descubrir el borde.
+   ─────────────────────────────────────────────────────────────── */
+@supports (animation-timeline: view()) {
+  @media (min-width: 768px) {
+    .deriva img {
+      animation: derivar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+      will-change: transform;
+    }
+  }
+}
+
+@keyframes derivar {
+  from {
+    transform: translateY(-4%) scale(1.09);
+  }
+  to {
+    transform: translateY(4%) scale(1.09);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   CAMBIO DE PÁGINA
+
+   Sólo opacidad, y es una restricción técnica y no una preferencia:
+   `transform`, `filter` y `clip-path` sobre este contenedor
+   crearían un bloque contenedor nuevo, y entonces todo lo que
+   adentro es `position: fixed` —el panel que sigue al cursor en
+   Servicios, el pin de GSAP del portfolio— se posicionaría contra
+   este div en vez de contra la ventana. Se rompería sin avisar.
+
+   Corta a propósito: el sitio es estático y las páginas están
+   precargadas, así que la navegación es instantánea. Una
+   transición larga acá sería inventar una espera que no existe.
+   ─────────────────────────────────────────────────────────────── */
+.transicion-pagina {
+  animation: entrar-pagina 380ms var(--curva) both;
+}
+
+@keyframes entrar-pagina {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   CINTA
+   ─────────────────────────────────────────────────────────────── */
+/*
+ * La velocidad y el sentido los escribe `components/cinta.tsx` según el
+ * scroll: quieta la cinta avanza sola y despacio, y al desplazarse la
+ * página acelera y se da vuelta acompañando el movimiento.
+ *
+ * Se anima con `animation-duration` y `animation-direction` en vez de
+ * mover la posición a mano en cada cuadro: la animación sigue corriendo
+ * en el compositor y el JavaScript nada más le cambia dos propiedades,
+ * que es la diferencia entre un efecto gratis y uno que trabe el scroll.
+ */
+.cinta {
+  display: flex;
+  width: max-content;
+  animation: desplazar var(--velocidad, 70s) linear infinite;
+  animation-direction: var(--sentido, normal);
   will-change: transform;
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   REVELADO AL SCROLL
-   Regla de oro: el estado por defecto es VISIBLE. El JS recién
-   esconde después de confirmar que hay IntersectionObserver y que
-   no hay reduced-motion. Si el JS no corre, si el observer nunca
-   dispara o si es un crawler, el contenido se ve igual.
-   ══════════════════════════════════════════════════════════════════ */
-[data-reveal="oculto"] {
-  opacity: 0;
-  transform: translateY(16px);
+/* Se frena al pasarle el mouse por encima. No es un adorno: los rubros pasan
+   lento pero pasan, y si alguien se detuvo ahí es porque está leyendo. */
+.cinta:hover {
+  animation-play-state: paused;
 }
 
-[data-reveal="visible"] {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--duration-reveal) var(--ease-out),
-    transform var(--duration-reveal) var(--ease-out);
-  transition-delay: var(--reveal-delay, 0ms);
+@keyframes desplazar {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
+/* ───────────────────────────────────────────────────────────────
+   MOVIMIENTO REDUCIDO
+   Regla absoluta: con esto activado el contenido aparece
+   directamente en su estado final y nada se mueve.
+   ─────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /*
+   * `transition-property: none` y no solamente una duración cortísima.
+   *
+   * El idioma habitual es poner `transition-duration: 0.01ms`, pero eso deja
+   * la transición existiendo, y hay propiedades que Chrome no resuelve con
+   * una duración de cero: el acordeón de servicios anima `grid-template-rows`
+   * de 0fr a 1fr y quedaba clavado en 0px, o sea que con movimiento reducido
+   * el detalle de cada servicio no se abría nunca. Apagar la transición, que
+   * es lo que la preferencia pide de verdad, lo arregla y de paso evita el
+   * mismo problema en cualquier propiedad que se anime más adelante.
+   */
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: none !important;
     scroll-behavior: auto !important;
   }
 
-  [data-reveal] {
+  [data-revelar],
+  [data-revelar="oculto"] {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
-  .entrada-pagina {
-    animation: none !important;
-  }
-
-  .tarjeta-viva:hover {
+  .linea-mascara > span,
+  .entra-tarde {
     transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /*
+   * Lo nuevo también se apaga, y de la forma correcta para cada caso.
+   *
+   * La deriva de las capturas y el progreso de lectura son animaciones
+   * dirigidas por scroll: no las frena `animation-duration`, porque su
+   * línea de tiempo es la posición de la página y no el reloj. Hay que
+   * desconectarles la línea de tiempo.
+   *
+   * La barra de progreso desaparece del todo en vez de quedar llena: una
+   * línea de bronce estática bajo la barra no significa nada.
+   */
+  .titulo-revelado .linea-mascara > span {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /*
+   * Las dos van con `animation: none` y no con `animation-timeline: none`.
+   *
+   * Desconectarles la línea de tiempo deja la animación existiendo: sigue
+   * aplicada, pasa a correr contra el reloj del documento y termina clavada
+   * en su último fotograma, que para la deriva es la imagen corrida un 4%.
+   * Un `transform: none !important` alcanza para taparlo —las declaraciones
+   * importantes le ganan a las animaciones en la cascada— pero es apoyarse
+   * en una regla sutil para arreglar algo que no debería estar pasando.
+   * Apagarla es más corto y no deja nada corriendo.
+   */
+  .deriva img {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .progreso-lectura {
+    animation: none !important;
+    display: none;
+  }
+
+  .transicion-pagina {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .cinta {
+    animation: none !important;
   }
 }

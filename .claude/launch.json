@@ -6,6 +6,12 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
       "runtimeArgs": ["run", "dev", "--", "--port", "3100"],
       "port": 3100
+    },
+    {
+      "name": "instagram",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+      "runtimeArgs": ["--prefix", "instagram", "run", "dev"],
+      "port": 3200
     }
   ]
 }

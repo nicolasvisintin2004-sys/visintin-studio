@@ -1,102 +1,33 @@
-import Link, { type LinkProps } from "next/link";
-import type { ReactNode } from "react";
-
-type Variante = "primario" | "secundario";
-
-type Props = {
-  href: string;
-  children: ReactNode;
-  variante?: Variante;
-  className?: string;
-};
-
 /**
- * Los botones no nombran colores: usan la capa semántica. El primario
- * es "el color del texto de fondo", así que dentro de una sección
- * invertida se da vuelta solo, sin una sola variante extra.
+ * Las clases de los botones, como strings.
+ *
+ * No es un componente porque los botones del sitio son a veces `<a>`, a veces
+ * `<button>` y a veces el `EnlaceWhatsApp`. Un componente que envolviera los
+ * tres terminaría siendo una capa de props para nada.
+ *
+ * El primario es el único relleno; el resto son bordes. Así el acento sigue
+ * apareciendo poco: si todos los botones fueran bronce, dejaría de significar.
  */
-const estilos: Record<Variante, string> = {
-  // El borde transparente no se ve, pero iguala la caja con la del
-  // secundario: sin él, dos botones de distinta variante uno al lado del
-  // otro quedan 2px corridos.
-  primario:
-    "border border-transparent bg-fg text-surface hover:opacity-88 transition-opacity",
-  // El relleno barre de izquierda a derecha, igual que el subrayado de
-  // los enlaces: es el mismo gesto del sistema a otra escala.
-  secundario: "barrido border border-line-strong text-fg",
-};
 
 const base =
-  "inline-flex items-center justify-center gap-1 rounded-md px-3 py-1.5 " +
-  "font-sans text-small font-medium tracking-tight " +
-  // Respuesta táctil al apretar. 150ms para que se sienta inmediato.
-  "transition-[scale] duration-150 active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.9375rem] font-medium leading-none transition-all duration-300 ease-[cubic-bezier(.16,1,.3,1)]";
 
-/** Exportado para que el botón de WhatsApp comparta exactamente la misma caja. */
-export function clasesBoton(variante: Variante = "primario", extra = "") {
-  return `${base} ${estilos[variante]} ${extra}`;
-}
+export const botonPrimario = `${base} bg-texto text-fondo hover:bg-acento hover:text-fondo`;
 
-export function Boton({
-  href,
-  children,
-  variante = "primario",
-  className = "",
-}: Props) {
-  const clases = clasesBoton(variante, className);
-  const externo = href.startsWith("http") || href.startsWith("mailto:");
+export const botonSecundario = `${base} border border-borde text-texto hover:border-acento hover:text-acento`;
 
-  if (externo) {
-    return (
-      <a
-        href={href}
-        className={clases}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {children}
-      </a>
-    );
-  }
+/** Para los CTA de cierre de sección: más discreto, sin caja. */
+export const botonTexto =
+  "group inline-flex items-center gap-3 text-[0.9375rem] font-medium text-texto transition-colors duration-300 hover:text-acento";
 
+/** La flecha que acompaña al botón de texto y se corre en hover. */
+export function Flecha() {
   return (
-    <Link href={href as LinkProps["href"]} className={clases}>
-      {children}
-    </Link>
-  );
-}
-
-export function EnlaceFlecha({
-  href,
-  children,
-  className = "",
-}: Omit<Props, "variante">) {
-  const clases = `subrayado inline-flex items-baseline gap-0.5 text-small font-medium text-fg ${className}`;
-  const externo = href.startsWith("http") || href.startsWith("mailto:");
-
-  const contenido = (
-    <>
-      {children}
-      <span aria-hidden="true">→</span>
-    </>
-  );
-
-  if (externo) {
-    return (
-      <a
-        href={href}
-        className={clases}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {contenido}
-      </a>
-    );
-  }
-
-  return (
-    <Link href={href as LinkProps["href"]} className={clases}>
-      {contenido}
-    </Link>
+    <span
+      aria-hidden="true"
+      className="inline-block transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-1"
+    >
+      →
+    </span>
   );
 }

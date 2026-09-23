@@ -1,68 +1,69 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+
+/**
+ * Entrada por scroll: desplazamiento corto, opacidad y un desenfoque que se
+ * resuelve. El CSS de la transición vive en `globals.css`.
+ *
+ * Regla que ordena todo esto: el HTML sale del servidor SIN estado oculto.
+ * Recién en el cliente, y sólo para lo que todavía no se ve, se aplica
+ * `data-revelar="oculto"`. Si el JavaScript no corre, falla o llega tarde,
+ * el contenido está visible y legible desde el primer frame — que es lo
+ * contrario de lo que pasa cuando un bloque espera a un observer para existir.
+ */
+
+/** Un solo observer para todo el sitio en vez de uno por elemento. */
+let observador: IntersectionObserver | null = null;
+
+function obtenerObservador() {
+  observador ??= new IntersectionObserver(
+    (entradas) => {
+      for (const entrada of entradas) {
+        if (!entrada.isIntersecting) continue;
+        (entrada.target as HTMLElement).dataset.revelar = "visible";
+        observador?.unobserve(entrada.target);
+      }
+    },
+    // Se dispara cuando el bloque entró de verdad, no cuando asoma un píxel.
+    { rootMargin: "0px 0px -12% 0px" },
+  );
+  return observador;
+}
 
 type Props = {
   children: ReactNode;
-  /** Escalonado entre hermanos. El sistema usa múltiplos de 60ms. */
-  retraso?: number;
+  /** Milisegundos de espera. Sirve para escalonar hermanos. */
+  retardo?: number;
   className?: string;
-  /** Dentro de un <ol>/<ul> tiene que renderizar <li>, no <div>. */
-  como?: "div" | "li";
+  /** Por defecto `div`; se puede pedir `li`, `article`, etc. */
+  as?: ElementType;
 };
 
-/**
- * Revelado al scroll: opacidad 0→1 y translateY 16px→0.
- *
- * El estado inicial en CSS es VISIBLE. Este componente recién esconde
- * el elemento después de comprobar tres cosas: que hay
- * IntersectionObserver, que el usuario no pidió menos movimiento, y
- * que el elemento no está ya en pantalla al montar.
- *
- * Esa última condición no es un detalle: si envolvés contenido del
- * primer viewport en una animación que arranca en opacity 0, el LCP
- * pasa a depender de la hidratación y se dispara el render delay.
- * Acá lo de arriba del pliegue simplemente no anima.
- */
-export function Revelado({
-  children,
-  retraso = 0,
-  className,
-  como = "div",
-}: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const Elemento = como as "div";
+export function Revelado({ children, retardo = 0, className, as: Etiqueta = "div" }: Props) {
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") return;
+    const elemento = ref.current;
+    if (!elemento) return;
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const yaVisible = el.getBoundingClientRect().top < window.innerHeight * 0.9;
-    if (yaVisible) return;
+    // Lo que ya está en pantalla no se esconde para después mostrarlo: eso
+    // produce un parpadeo y no una entrada.
+    if (elemento.getBoundingClientRect().top < window.innerHeight * 0.9) return;
 
-    el.style.setProperty("--reveal-delay", `${retraso}ms`);
-    el.dataset.reveal = "oculto";
+    elemento.dataset.revelar = "oculto";
+    if (retardo) elemento.style.transitionDelay = `${retardo}ms`;
 
-    const observador = new IntersectionObserver(
-      (entradas) => {
-        for (const entrada of entradas) {
-          if (!entrada.isIntersecting) continue;
-          el.dataset.reveal = "visible";
-          observador.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observador.observe(el);
-    return () => observador.disconnect();
-  }, [retraso]);
+    const obs = obtenerObservador();
+    obs.observe(elemento);
+    return () => obs.unobserve(elemento);
+  }, [retardo]);
 
   return (
-    <Elemento ref={ref} className={className}>
+    <Etiqueta ref={ref} className={className}>
       {children}
-    </Elemento>
+    </Etiqueta>
   );
 }

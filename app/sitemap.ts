@@ -1,88 +1,73 @@
 import type { MetadataRoute } from "next";
-import { obtenerNotas } from "@/content/notas/registro";
+import { notasPublicadas } from "@/content/notas/registro";
 import { slugsDeProyecto } from "@/content/proyectos";
-import { idiomas, ruta, type Idioma } from "@/lib/i18n";
-import { sitio } from "@/lib/sitio";
-
-const fijas = [
-  { camino: "", prioridad: 1, frecuencia: "monthly" },
-  { camino: "/trabajo", prioridad: 0.9, frecuencia: "monthly" },
-  { camino: "/planes", prioridad: 0.9, frecuencia: "monthly" },
-  { camino: "/estudio", prioridad: 0.7, frecuencia: "yearly" },
-  { camino: "/notas", prioridad: 0.7, frecuencia: "weekly" },
-  { camino: "/contacto", prioridad: 0.6, frecuencia: "yearly" },
-] as const;
+import { sitio } from "@/content/sitio";
+import { navegacion } from "@/content/textos";
 
 /**
- * Cada entrada lleva sus alternativas de idioma. Sin eso, Google puede
- * indexar las dos versiones como contenido duplicado en vez de como el
- * mismo contenido en dos idiomas.
+ * El sitemap.
+ *
+ * Las páginas salen de `navegacion.enlaces` y de `navegacion.destacado`, así
+ * que una página nueva en el menú entra sola acá y no hay dos listas que
+ * mantener de acuerdo.
+ *
+ * Lo que está en borrador no entra: los proyectos sin terminar ya vienen
+ * filtrados de `content/proyectos.ts`, y las notas se filtran acá con
+ * `notasPublicadas`. Declarar en el sitemap una dirección que además está
+ * marcada `noindex` es mandarle a Google dos señales opuestas.
+ *
+ * Con `output: "export"` no hay servidor que regenere nada, así que Next pide
+ * declarar explícitamente que la ruta se resuelve una sola vez, al compilar.
  */
-function alternativas(caminoPorIdioma: Record<Idioma, string>) {
-  return {
-    languages: {
-      "es-AR": `${sitio.url}${ruta("es", caminoPorIdioma.es)}`,
-      en: `${sitio.url}${ruta("en", caminoPorIdioma.en)}`,
-    },
-  };
-}
-
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const ahora = new Date();
-  const entradas: MetadataRoute.Sitemap = [];
+  const hoy = new Date();
 
-  for (const idioma of idiomas) {
-    for (const { camino, prioridad, frecuencia } of fijas) {
-      entradas.push({
-        url: `${sitio.url}${ruta(idioma, camino)}`,
-        lastModified: ahora,
-        changeFrequency: frecuencia,
-        priority: prioridad,
-        alternates: alternativas({ es: camino, en: camino }),
-      });
-    }
-
-    for (const slug of slugsDeProyecto) {
-      entradas.push({
-        url: `${sitio.url}${ruta(idioma, `/trabajo/${slug}`)}`,
-        lastModified: ahora,
-        changeFrequency: "monthly",
-        priority: 0.8,
-        alternates: alternativas({
-          es: `/trabajo/${slug}`,
-          en: `/trabajo/${slug}`,
-        }),
-      });
-    }
-
-    // Las notas tienen slug propio por idioma.
-    for (const nota of obtenerNotas(idioma)) {
-      const otro = idioma === "es" ? "en" : "es";
-      const equivalente = obtenerNotas(otro).find(
-        (n) => n.fecha === nota.fecha,
-      );
-
-      entradas.push({
-        url: `${sitio.url}${ruta(idioma, `/notas/${nota.slug}`)}`,
-        lastModified: new Date(nota.fecha),
-        changeFrequency: "yearly",
-        priority: 0.6,
-        alternates: alternativas(
-          idioma === "es"
-            ? {
-                es: `/notas/${nota.slug}`,
-                en: `/notas/${equivalente?.slug ?? nota.slug}`,
-              }
-            : {
-                es: `/notas/${equivalente?.slug ?? nota.slug}`,
-                en: `/notas/${nota.slug}`,
-              },
-        ),
-      });
-    }
-  }
-
-  return entradas;
+  return [
+    {
+      url: sitio.url,
+      lastModified: hoy,
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      // El diagnóstico va con más prioridad que el resto de las secciones:
+      // es la página a la que apuntan los enlaces de prospección y la que
+      // tiene que competir por las búsquedas de problema.
+      url: `${sitio.url}${navegacion.destacado.href}`,
+      lastModified: hoy,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...navegacion.enlaces.map(({ href }) => ({
+      url: `${sitio.url}${href}`,
+      lastModified: hoy,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...slugsDeProyecto.map((slug) => ({
+      url: `${sitio.url}/proyectos/${slug}`,
+      lastModified: hoy,
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
+    // El listado de notas sólo entra cuando hay al menos una publicada.
+    ...(notasPublicadas.length > 0
+      ? [
+          {
+            url: `${sitio.url}/notas`,
+            lastModified: hoy,
+            changeFrequency: "weekly" as const,
+            priority: 0.5,
+          },
+        ]
+      : []),
+    ...notasPublicadas.map((nota) => ({
+      url: `${sitio.url}/notas/${nota.slug}`,
+      lastModified: new Date(`${nota.fecha}T12:00:00`),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    })),
+  ];
 }

@@ -10,6 +10,14 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    /*
+     * `herramientas/probar-leads.mts` importa la función con la extensión
+     * puesta, porque `node --experimental-strip-types` la exige para poder
+     * ejecutarla sin compilar nada. Sin esto, `tsc` rechaza ese import.
+     * Sólo afecta al chequeo de tipos: Next compila con su propio
+     * transformador y no emite desde acá (`noEmit: true`).
+     */
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
@@ -30,5 +38,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "instagram"]
 }

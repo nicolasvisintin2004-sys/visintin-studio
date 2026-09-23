@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# ...menos el ejemplo, que no tiene ni un secreto y es el único lugar donde
+# está escrito qué hace cada variable y qué pasa si falta. Sin esta
+# línea, `.env*` lo tapa y el archivo no se commitea nunca.
+!.env.example
+
 # vercel
 .vercel
 
@@ -42,3 +47,15 @@ next-env.d.ts
 
 # Netlify
 .netlify/
+
+# Capturas crudas de los sitios del portfolio. Son intermedias: lo que se
+# publica son los AVIF/WebP de public/imagenes/, generados a partir de estas.
+.capturas/
+
+# Capturas de revisión del propio sitio (herramientas/capturar-pagina.mjs).
+.revision/
+
+# Capturas crudas de "antes" (busquedas, fichas, paginas caidas). Lo que se
+# publica son los AVIF/WebP de public/imagenes/evidencia/, generados con
+# herramientas/procesar-evidencia.mjs. Las crudas traen datos personales.
+.evidencia/

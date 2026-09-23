@@ -1,98 +1,205 @@
-import type { Idioma, Lista, Texto } from "@/lib/i18n";
-import type { Proyecto } from "@/lib/tipos";
+export type Captura = {
+  /**
+   * Nombre del archivo sin extensión. De cada uno existe un `.avif` y un
+   * `.webp`, generados por una de las dos herramientas de `herramientas/`.
+   */
+  archivo: string;
+  /**
+   * En qué carpeta de `public/imagenes/` está.
+   *
+   *  · `trabajo` — capturas del sitio construido, de `procesar-capturas.mjs`.
+   *  · `evidencia` — capturas del "antes", de `procesar-evidencia.mjs`.
+   */
+  carpeta?: "trabajo" | "evidencia";
+  alt: string;
+  /** Dimensiones explícitas y obligatorias: sin esto el CLS deja de ser cero. */
+  ancho: number;
+  alto: number;
+  /**
+   * Cómo se enmarca. `movil` va con las esquinas de un teléfono; `retrato` es
+   * una imagen alta que no es una pantalla de teléfono —una ficha de Google,
+   * por ejemplo— y se limita en ancho para que no domine la página.
+   */
+  formato: "escritorio" | "movil" | "retrato";
+  /** Pie de la captura. Dice qué se está mirando, no adjetivos. */
+  pie: string;
+};
+
+export type Proyecto = {
+  slug: string;
+  nombre: string;
+  /** Cómo se llama el negocio en una conversación, para el mensaje de WhatsApp. */
+  cliente: string;
+  rubro: string;
+  ubicacion: string;
+  anio: number;
+  /**
+   * `cliente` es trabajo pago y real; `demo` es un sitio completo construido
+   * por mi cuenta para mostrar el alcance.
+   *
+   * Hoy no hay ninguna demo en el portfolio y es una decisión, no una falta:
+   * había dos y se sacaron. Un portfolio con un cliente real dice menos que
+   * uno con tres entradas, pero dice la verdad, y la alternativa obligaba a
+   * aclarar en cada ficha que dos de los tres negocios no existían.
+   */
+  tipo: "cliente" | "demo";
+  estado: "en-desarrollo" | "publicado";
+  /**
+   * La línea de resultado, arriba de todo en la ficha.
+   *
+   * Es lo primero que se lee de un proyecto, antes que la descripción: qué
+   * pasaba antes y qué pasa ahora. Una descripción cuenta lo que se construyó,
+   * que es lo que le importa a quien lo construyó; el "antes y después" cuenta
+   * qué cambió para el negocio, que es lo que le importa al que está mirando.
+   *
+   * Es cualitativo a propósito. Hay una tentación fuerte de poner acá un
+   * porcentaje, y un porcentaje inventado es lo único que puede hundir la
+   * venta el día que el cliente pregunte de dónde salió.
+   */
+  resultado: { antes: string; despues: string };
+  /**
+   * El número, cuando exista.
+   *
+   * Hoy no existe: el único cliente todavía no está publicado. Se completa con
+   * datos de Search Console y de la medición del sitio cuando Taller Italia
+   * lleve unos meses en línea. Hasta entonces el campo va ausente y la ficha
+   * muestra sólo la línea cualitativa.
+   */
+  medicion?: string;
+  /** Una línea. Es lo que se lee en el panel del portfolio. */
+  resumen: string;
+  /**
+   * El problema que tenía el negocio antes. Sin esto, un sitio es decoración.
+   * Un párrafo por entrada: doscientas palabras seguidas no las lee nadie.
+   */
+  problema: readonly string[];
+  /**
+   * Las pruebas de ese problema, si existen.
+   *
+   * Vale mucho más que el párrafo de arriba: una captura de lo que devolvía
+   * Google antes del sitio no se puede discutir, y un párrafo sí. Cuando no
+   * haya, el campo va ausente y la sección no se renderiza.
+   */
+  evidencia?: readonly Captura[];
+  /** Qué construí. Cada punto es algo que se puede señalar en la pantalla. */
+  construido: readonly string[];
+  stack: readonly string[];
+  urlEnVivo: string;
+  /** Cómo se ve la dirección escrita, sin protocolo. */
+  urlVisible: string;
+  capturas: readonly Captura[];
+};
+
+const ESCRITORIO = { ancho: 2048, alto: 1280, formato: "escritorio" as const };
+const MOVIL = { ancho: 780, alto: 1688, formato: "movil" as const };
 
 /**
- * Los números de `medicion` son medidos, no estimados.
- * Cómo se reproducen, para volver a correrlos después del deploy:
+ * Los proyectos publicados.
  *
- *   next build && next start -p 4321
- *   npx lighthouse@12 http://localhost:4321/ --form-factor=mobile \
- *     --throttling-method=simulate --only-categories=performance
+ * Acá va SÓLO lo que se muestra. Los casos en curso viven en
+ * `content/proyectos-en-curso.ts`, que no lo importa nada que se renderice, y
+ * el motivo está explicado ahí: este archivo lo importa un componente de
+ * cliente, así que todo lo que esté escrito acá viaja al navegador, se
+ * renderice o no. Un caso que todavía no se puede contar no puede estar en
+ * este archivo ni marcado con una bandera.
  *
- * Cuando el sitio esté en producción se vuelve a medir contra el
- * dominio real y se actualizan `entorno`, `url` y `medidoEl`.
+ * Publicar un caso es mover su entrada de aquel archivo a este.
  */
-const fuente = [
+export const proyectos: readonly Proyecto[] = [
   {
-    slug: "garcia-ferrari-motorhomes",
-    // Nombre propio: no se traduce.
-    nombre: "García Ferrari Motorhomes",
+    slug: "taller-italia",
+    nombre: "Taller Italia — Ti Motorhome",
+    cliente: "Taller Italia",
+    rubro: "Fábrica de motorhomes a medida",
+    ubicacion: "Guaymallén, Mendoza",
     anio: 2026,
-    estado: "en-desarrollo" as const,
-    rubro: {
-      es: "Fábrica de motorhomes",
-      en: "Motorhome manufacturer",
-    } satisfies Texto,
-    resumen: {
-      es: "Sitio de catálogo para una fábrica de motorhomes sobre Sprinter: una página por modelo, ficha técnica en texto y contacto directo por WhatsApp.",
-      en: "Catalogue site for a Sprinter-based motorhome manufacturer: one page per model, specs in text and direct contact over WhatsApp.",
-    } satisfies Texto,
-    situacion: {
-      es: "Una fábrica que construye unidades de USD 50.000 y presentaba todo desde un perfil de Instagram. Las medidas y las terminaciones se explicaban de nuevo en cada conversación por mensaje privado.",
-      en: "A workshop building USD 50,000 units and presenting all of it from an Instagram profile. Dimensions and finishes had to be explained again in every private-message conversation.",
-    } satisfies Texto,
-    construido: {
-      es: [
-        "Una página por modelo, con ficha técnica en texto y no dentro de la imagen",
-        "Notas de blog sobre patentamiento, aislación y rutas, para las búsquedas del rubro",
-        "Datos estructurados y sitemap dinámico para que cada modelo entre por separado en Google",
-        "Contacto por WhatsApp desde cualquier punto del recorrido, con el modelo ya escrito en el mensaje",
-      ],
-      en: [
-        "One page per model, with specs in text rather than baked into the image",
-        "Blog posts on registration, insulation and routes, aimed at the industry's searches",
-        "Structured data and a dynamic sitemap so each model gets indexed separately",
-        "WhatsApp contact from any point in the journey, with the model already written into the message",
-      ],
-    } satisfies Lista,
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "MDX", "Vercel"],
-    entorno: {
-      es: "Build de producción, previo al deploy",
-      en: "Production build, before deployment",
-    } satisfies Texto,
-    herramienta: "Lighthouse 12.8.2",
-    medidoEl: "2026-08-14",
-    consultasPorMes: null,
-    impresionesBusqueda: null,
+    tipo: "cliente",
+    estado: "en-desarrollo",
+    resultado: {
+      antes:
+        "Veinte mil seguidores en Instagram y veintinueve reseñas en Google, pero el botón «Sitio web» de su propia ficha llevaba a un dominio que no existe.",
+      despues:
+        "El proceso de fabricación publicado como recorrido, con una página por unidad entregada y el alquiler separado de la fabricación.",
+    },
+    resumen:
+      "Fábrica fundada en 1972 que construye una unidad por vez, con línea de alquiler y clientes del exterior.",
+    problema: [
+      "Taller Italia fabrica desde 1972 y no produce en serie: cada motorhome se proyecta sobre el vehículo que aporta el cliente. Esa característica, que es su principal diferencial, resultaba difícil de comunicar en Instagram, donde no hay un catálogo que mostrar sino un proceso.",
+      "El problema no era de visibilidad. La cuenta tiene veinte mil seguidores y la ficha de Google acumula veintinueve reseñas con 4,6 de promedio: la fábrica ya era conocida y ya estaba recomendada. El problema era que no había a dónde mandar a quien preguntaba.",
+      "Al buscar el nombre en Google aparecían el perfil de Instagram, la página de Facebook y un portal de terceros. Y el botón «Sitio web» de la propia ficha de Google apuntaba a un dominio que no está registrado: cada persona que lo tocaba terminaba en una página de error.",
+      "A eso se sumaba una línea de alquiler que compartía la cuenta con la de fabricación, y consultas del exterior que se respondían sin una versión del contenido en inglés.",
+    ],
+    evidencia: [
+      {
+        archivo: "google-busqueda",
+        carpeta: "evidencia",
+        alt: "Resultados de Google para «taller italia motorhome»: el perfil de Instagram con 20.000 seguidores, la página de Facebook y un portal de terceros. Ningún sitio propio.",
+        pie: "Buscar el nombre de la fábrica devolvía Instagram, Facebook y un portal de terceros. El primer resultado propio del negocio no existía.",
+        ancho: 1340,
+        alto: 700,
+        formato: "escritorio",
+      },
+      {
+        archivo: "google-ficha",
+        carpeta: "evidencia",
+        alt: "Ficha de Google Maps de Taller Italia Motorhome: 4,6 de calificación con 29 reseñas, dirección en Mendoza y el sitio web talleritalia.com.ar",
+        pie: "La ficha tiene 4,6 con 29 reseñas: el negocio ya estaba recomendado. El sitio que figura, talleritalia.com.ar, es el de la captura siguiente.",
+        ancho: 808,
+        alto: 916,
+        formato: "retrato",
+      },
+      {
+        archivo: "sitio-caido",
+        carpeta: "evidencia",
+        alt: "Página de error del navegador: «No se puede acceder a este sitio web», con el código DNS_PROBE_FINISHED_NXDOMAIN para www.talleritalia.com.ar",
+        pie: "El dominio no está registrado. Cada persona que tocaba «Sitio web» en Google terminaba acá.",
+        ancho: 1245,
+        alto: 660,
+        formato: "escritorio",
+      },
+    ],
+    construido: [
+      "El proceso de fabricación presentado como recorrido, en reemplazo de un catálogo que no existe",
+      "Una página por cada unidad entregada, para que el cliente pueda ver trabajos terminados",
+      "Una sección de alquiler independiente de la de fabricación, con su propio canal de contacto",
+      "Un formulario de cotización con las preguntas que el taller necesita para presupuestar",
+      "Preguntas frecuentes, mapa y datos de la planta de Avellaneda 2261",
+      "Versión completa en español e inglés, para las consultas del exterior",
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Netlify"],
+    urlEnVivo: "https://talleritalia.netlify.app",
+    urlVisible: "talleritalia.netlify.app",
+    capturas: [
+      {
+        archivo: "taller-italia-inicio",
+        alt: "Portada del sitio de Taller Italia: un motorhome en la planta, con el título «Fabricamos un solo motorhome por vez. El tuyo.»",
+        pie: "La portada comunica el diferencial desde el inicio: no hay catálogo porque no hay producción en serie.",
+        ...ESCRITORIO,
+      },
+      {
+        archivo: "taller-italia-interior",
+        alt: "Página de un trabajo entregado: Sprinter con techo elevable y garage trasero, con su descripción y los botones de cotización",
+        pie: "Cada trabajo entregado tiene su propia página, con la unidad descripta en texto.",
+        ...ESCRITORIO,
+      },
+      {
+        archivo: "taller-italia-rental",
+        alt: "Sección de alquiler del sitio de Taller Italia, con el motorhome de rental y su descripción",
+        pie: "El alquiler se presenta por separado de la fabricación, porque responde a otro tipo de cliente.",
+        ...ESCRITORIO,
+      },
+      {
+        archivo: "taller-italia-movil",
+        alt: "El sitio de Taller Italia visto en un teléfono",
+        pie: "Diseñado primero para el celular, que es el dispositivo desde el que ingresa la mayoría.",
+        ...MOVIL,
+      },
+    ],
   },
 ];
 
-export function obtenerProyectos(idioma: Idioma): Proyecto[] {
-  return fuente.map((p) => ({
-    slug: p.slug,
-    nombre: p.nombre,
-    rubro: p.rubro[idioma],
-    anio: p.anio,
-    estado: p.estado,
-    resumen: p.resumen[idioma],
-    situacion: p.situacion[idioma],
-    construido: p.construido[idioma],
-    stack: p.stack,
-    medicion: {
-      herramienta: p.herramienta,
-      dispositivo: idioma === "es" ? "móvil" : "mobile",
-      entorno: p.entorno[idioma],
-      url: "/",
-      medidoEl: p.medidoEl,
-      metricas: [
-        { clave: "lcp", etiqueta: "LCP", valor: 3.8, unidad: "s", decimales: 1 },
-        { clave: "cls", etiqueta: "CLS", valor: 0.0, unidad: "", decimales: 2 },
-        {
-          clave: "lighthouse",
-          etiqueta: "Lighthouse",
-          valor: 85,
-          unidad: "/100",
-          decimales: 0,
-        },
-      ],
-    },
-    consultasPorMes: p.consultasPorMes,
-    impresionesBusqueda: p.impresionesBusqueda,
-  }));
+export function proyectoPorSlug(slug: string): Proyecto | undefined {
+  return proyectos.find((p) => p.slug === slug);
 }
 
-export function proyectoDestacado(idioma: Idioma): Proyecto {
-  return obtenerProyectos(idioma)[0];
-}
-
-export const slugsDeProyecto = fuente.map((p) => p.slug);
+export const slugsDeProyecto = proyectos.map((p) => p.slug);

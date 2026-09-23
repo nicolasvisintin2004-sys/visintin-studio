@@ -1,194 +1,153 @@
-import type { Idioma, Lista, Texto } from "@/lib/i18n";
-
 export type Plan = {
   slug: string;
   nombre: string;
-  precio: number;
+  /** Para quién es. Va arriba del nombre, en mono. */
+  para: string;
+  /** Una línea que explica qué resuelve el plan. */
   promesa: string;
-  /** Las tres que van en la home. */
-  resumen: readonly string[];
-  /** La lista completa de /planes. */
-  detalle: readonly string[];
-  mantenimientoIncluido: string;
+  /** Lo que arrastra del plan anterior. Vacío en el primero. */
+  heredado?: string;
+  incluye: readonly string[];
+  revisiones: string;
+  mantenimiento: string;
   recomendado?: boolean;
-  /** Nota honesta al pie. Deliberada: dice qué NO hace el plan. */
-  nota?: string;
 };
 
-type PlanFuente = {
-  slug: string;
-  precio: number;
-  recomendado?: boolean;
-  nombre: Texto;
-  promesa: Texto;
-  resumen: Lista;
-  detalle: Lista;
-  mantenimientoIncluido: Texto;
-  nota?: Texto;
-};
-
-const fuente: PlanFuente[] = [
+/**
+ * Los tres planes, SIN precio.
+ *
+ * El precio se pide por WhatsApp a propósito: el objetivo de esta sección es
+ * que el visitante entienda el alcance y escriba, no que compare números con
+ * otro presupuesto que incluye la mitad de las cosas.
+ */
+export const planes: readonly Plan[] = [
   {
     slug: "esencial",
-    precio: 450,
-    nombre: { es: "Esencial", en: "Essential" },
-    promesa: {
-      es: "Para dejar de perder al que ya te está buscando.",
-      en: "So you stop losing the people already looking for you.",
-    },
-    resumen: {
-      es: [
-        "Landing de una página",
-        "WhatsApp + formulario",
-        "SEO básico y Google Business",
-      ],
-      en: [
-        "One-page landing",
-        "WhatsApp + contact form",
-        "Basic SEO and Google Business",
-      ],
-    },
-    detalle: {
-      es: [
-        "Landing de una página, todo en scroll",
-        "Diseño responsive",
-        "Botón de WhatsApp + formulario de contacto",
-        "SEO básico: títulos, descripciones, sitemap, robots",
-        "Ficha de Google Business optimizada",
-        "1 ronda de revisiones",
-      ],
-      en: [
-        "One-page landing, everything on scroll",
-        "Responsive design",
-        "WhatsApp button + contact form",
-        "Basic SEO: titles, descriptions, sitemap, robots",
-        "Optimised Google Business profile",
-        "1 round of revisions",
-      ],
-    },
-    mantenimientoIncluido: {
-      es: "1 mes de mantenimiento sin cargo",
-      en: "1 month of maintenance included",
-    },
-    nota: {
-      es: "Con esto captás al que ya te conoce o te recomendaron. No te va a traer gente nueva desde Google — para eso está Crecimiento.",
-      en: "This captures people who already know you or were referred to you. It won't bring new people from Google — that's what Growth is for.",
-    },
+    nombre: "Esencial",
+    para: "Presencia correcta en Google",
+    promesa:
+      "Para que quien ya busca el negocio por su nombre lo encuentre.",
+    incluye: [
+      "Página única, diseñada primero para el celular",
+      "Botón de WhatsApp flotante y formulario de contacto",
+      "SEO base: títulos, sitemap, robots",
+      "Ficha de Google Business optimizada",
+      "Mapa y datos de contacto",
+      "Medición de las consultas recibidas por WhatsApp",
+    ],
+    revisiones: "1 ronda de revisiones",
+    mantenimiento: "1 mes de mantenimiento sin cargo",
   },
   {
     slug: "completo",
-    precio: 800,
+    nombre: "Completo",
+    para: "Un sitio orientado a la venta",
+    promesa:
+      "Para que quien está comparando encuentre las respuestas sin necesidad de consultar.",
+    heredado: "Incluye el plan Esencial, más:",
     recomendado: true,
-    nombre: { es: "Completo", en: "Complete" },
-    promesa: {
-      es: "Para convertir al que ya te está mirando.",
-      en: "So you convert the people already looking at you.",
-    },
-    resumen: {
-      es: [
-        "5 a 7 páginas, una por producto",
-        "Ficha técnica en texto, no en la imagen",
-        "SEO técnico completo + Analytics",
-      ],
-      en: [
-        "5 to 7 pages, one per product",
-        "Specs in text, not inside the image",
-        "Full technical SEO + Analytics",
-      ],
-    },
-    detalle: {
-      es: [
-        "Todo lo del plan Esencial",
-        "Sitio de 5 a 7 páginas, una por producto o modelo",
-        "Galería con ficha técnica en texto (no dentro de la imagen)",
-        "Animaciones de scroll y transiciones",
-        "SEO técnico completo + datos estructurados JSON-LD",
-        "Google Analytics con medición de clics a WhatsApp",
-        "Formulario de cotización con campos del rubro",
-        "3 rondas de revisiones + 30 días de soporte",
-      ],
-      en: [
-        "Everything in the Essential plan",
-        "5 to 7 page site, one per product or model",
-        "Gallery with specs in text (not inside the image)",
-        "Scroll animations and transitions",
-        "Full technical SEO + JSON-LD structured data",
-        "Google Analytics tracking WhatsApp clicks",
-        "Quote form with industry-specific fields",
-        "3 rounds of revisions + 30 days of support",
-      ],
-    },
-    mantenimientoIncluido: {
-      es: "3 meses de mantenimiento sin cargo",
-      en: "3 months of maintenance included",
-    },
+    incluye: [
+      "Sitio de 5 a 7 páginas, con la estructura que el negocio necesite",
+      "Una página con ficha técnica por producto o servicio, que es lo que Google indexa y lo que el comprador compara",
+      "Redacción de todos los textos a partir de una entrevista",
+      "Formularios de cotización con las preguntas necesarias para presupuestar",
+      "SEO técnico completo y datos estructurados para búsqueda local",
+      "Animaciones de desplazamiento",
+      "Informe mensual de consultas recibidas y su origen",
+    ],
+    revisiones: "3 rondas de revisiones",
+    mantenimiento: "2 meses de mantenimiento sin cargo",
   },
   {
     slug: "crecimiento",
-    precio: 1200,
-    nombre: { es: "Crecimiento", en: "Growth" },
-    promesa: {
-      es: "Para llegar a los que todavía no saben que existís.",
-      en: "So you reach the people who don't know you exist yet.",
-    },
-    resumen: {
-      es: [
-        "Redacción de todos los textos",
-        "Blog configurado + 3 artículos",
-        "Multiidioma español / inglés",
-      ],
-      en: [
-        "All copy written for you",
-        "Blog set up + 3 articles",
-        "Spanish / English bilingual",
-      ],
-    },
-    detalle: {
-      es: [
-        "Todo lo del plan Completo",
-        "Redacción de todos los textos del sitio",
-        "Investigación de palabras clave del rubro",
-        "Blog configurado + 3 artículos iniciales",
-        "Multiidioma español / inglés",
-      ],
-      en: [
-        "Everything in the Complete plan",
-        "All the site's copy written for you",
-        "Keyword research for your industry",
-        "Blog set up + 3 starter articles",
-        "Spanish / English bilingual",
-      ],
-    },
-    mantenimientoIncluido: {
-      es: "6 meses de mantenimiento sin cargo",
-      en: "6 months of maintenance included",
-    },
+    nombre: "Crecimiento",
+    para: "Alcance a nuevos clientes",
+    promesa:
+      "Para aparecer en búsquedas donde hoy el negocio no figura, e incorporar funciones que la competencia no ofrece.",
+    heredado: "Incluye el plan Completo, más:",
+    incluye: [
+      "Investigación de palabras clave del rubro y de la zona",
+      "Blog con tres artículos iniciales",
+      "Versión completa en inglés, para negocios que venden al exterior",
+      "Funcionalidad a medida: cotizador, reservas, panel de administración",
+    ],
+    revisiones: "3 rondas de revisiones",
+    mantenimiento: "3 meses de mantenimiento sin cargo",
   },
 ];
 
-export function obtenerPlanes(idioma: Idioma): Plan[] {
-  return fuente.map((plan) => ({
-    slug: plan.slug,
-    precio: plan.precio,
-    recomendado: plan.recomendado,
-    nombre: plan.nombre[idioma],
-    promesa: plan.promesa[idioma],
-    resumen: plan.resumen[idioma],
-    detalle: plan.detalle[idioma],
-    mantenimientoIncluido: plan.mantenimientoIncluido[idioma],
-    nota: plan.nota?.[idioma],
-  }));
-}
-
-export const mantenimiento = {
-  precio: 35,
-  descripcion: {
-    es: "Hosting, dominio, SSL, backups, monitoreo de uptime, actualizaciones de seguridad y 2 horas mensuales de cambios de contenido. Se factura por semestre adelantado.",
-    en: "Hosting, domain, SSL, backups, uptime monitoring, security updates and 2 monthly hours of content changes. Billed six months in advance.",
-  } satisfies Texto,
+/**
+ * Las tres ramas que salen del diagnóstico.
+ *
+ * Es el mapa del estudio en una pantalla: todos entran por el diagnóstico y
+ * de ahí se abren tres caminos, que pueden tomarse de a uno o encadenarse.
+ * Los tres planes web de arriba son el detalle de la primera rama, y por eso
+ * la página los muestra como un sub-bloque y no como la sección entera.
+ *
+ * Sólo el diagnóstico tiene precio, y eso es una regla y no un descuido: es
+ * el único trabajo acotado y cerrado. Los otros tres son variables, y un
+ * número ahí o espanta o miente.
+ */
+export type Rama = {
+  slug: string;
+  nombre: string;
+  /** Para quién es esta rama. Va arriba del nombre, en mono. */
+  para: string;
+  texto: string;
+  /** Ejemplos concretos. Son lo que hace que alguien se reconozca. */
+  ejemplos: readonly string[];
+  /** La primera rama no lleva botón propio: abajo están los tres planes. */
+  accion?: string;
 };
 
-export const notaDeMoneda: Texto = {
-  es: "Los precios se cotizan en dólares y se cobran en pesos al tipo de cambio MEP del día de pago.",
-  en: "Prices are quoted in US dollars and charged in pesos at the MEP exchange rate on the day of payment.",
+export const ramas: readonly Rama[] = [
+  {
+    slug: "sitio-web",
+    nombre: "Sitio web",
+    para: "Lo que el cliente ve",
+    texto:
+      "El sitio que presenta la oferta, el catálogo que se compara y los formularios que traen la consulta con los datos necesarios para presupuestar. Es el trabajo que más se pide y el que se organiza en tres alcances.",
+    ejemplos: [
+      "Página institucional o de catálogo",
+      "Tienda online con cobro",
+      "Cotizador y panel de administración",
+    ],
+  },
+  {
+    slug: "automatizacion",
+    nombre: "Automatización puntual",
+    para: "Trabajos acotados",
+    texto:
+      "Trabajos chicos y delimitados, que se entregan funcionando. No reemplazan la forma de trabajar: le sacan a la semana la parte que se hace a mano todos los días.",
+    ejemplos: [
+      "El formulario que carga solo en la planilla",
+      "El presupuesto que se arma solo",
+      "El mensaje que se responde solo",
+      "El reporte que llega los lunes",
+    ],
+    accion: "Consultar una automatización",
+  },
+  {
+    slug: "acompanamiento",
+    nombre: "Acompañamiento mensual",
+    para: "Para el que ya arrancó",
+    texto:
+      "Para quien ya tiene el sistema funcionando y necesita que alguien lo mantenga, lo mida y lo siga mejorando. Incluye el mantenimiento del sitio y las horas mensuales de cambios.",
+    ejemplos: [
+      "Mantenimiento, respaldos y actualizaciones",
+      "Informe mensual de consultas y su origen",
+      "Horas de cambios y mejoras",
+    ],
+    accion: "Consultar el acompañamiento",
+  },
+];
+
+/**
+ * El mantenimiento es aparte y va con cualquiera de los tres. Se explica en
+ * una línea al pie de la sección, sin tarjeta propia: no es un cuarto plan.
+ */
+export const mantenimiento = {
+  titulo: "Mantenimiento mensual",
+  texto:
+    "Hosting, dominio, certificado SSL y copias de seguridad, más horas mensuales para cambios: carga de productos, actualización de precios y reemplazo de imágenes. Es compatible con cualquiera de los tres planes y comienza al finalizar el período sin cargo.",
 };

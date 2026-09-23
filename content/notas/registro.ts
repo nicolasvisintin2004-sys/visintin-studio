@@ -1,121 +1,54 @@
-import type { MDXProps } from "mdx/types";
-import type { JSX } from "react";
-import type { Idioma, Texto } from "@/lib/i18n";
-import Ingles from "./how-much-does-a-website-cost-argentina.mdx";
-import Espanol from "./cuanto-cuesta-una-pagina-web-pyme-argentina.mdx";
+import type { ComponentType } from "react";
+import QueTareasAutomatizar from "./que-tareas-conviene-automatizar-primero.mdx";
 
-/**
- * Los metadatos viven acá y el cuerpo en el .mdx.
- *
- * Cada nota tiene un slug POR IDIOMA: un slug en español no rankea en
- * búsquedas en inglés, así que traducir el artículo y dejarle la URL
- * castellana sería tirar la mitad del trabajo.
- */
 export type Nota = {
   slug: string;
   titulo: string;
-  bajada: string;
-  /** ISO. Es la fecha de publicación que va al JSON-LD. */
+  /** Lo que se lee en el listado y lo que ve Google. Una o dos frases. */
+  descripcion: string;
+  /** Formato ISO, `AAAA-MM-DD`. De acá sale el `datetime` del `<time>`. */
   fecha: string;
-  tiempoLectura: number;
-  Contenido: (props: MDXProps) => JSX.Element;
+  /**
+   * Un borrador no aparece en el listado, ni en el sitemap, ni se indexa,
+   * pero su dirección funciona para poder leerlo y pasárselo a alguien.
+   * Publicarlo es borrar esta línea.
+   */
+  borrador?: boolean;
+  /** El cuerpo, importado del `.mdx`. */
+  Cuerpo: ComponentType;
 };
 
-type NotaFuente = {
-  slug: Texto;
-  titulo: Texto;
-  bajada: Texto;
-  fecha: string;
-  tiempoLectura: number;
-  contenido: Record<Idioma, (props: MDXProps) => JSX.Element>;
-};
-
-const fuente: NotaFuente[] = [
+/**
+ * Las notas.
+ *
+ * Los cuerpos se importan de forma estática y no con un `import()` armado con
+ * el slug: el sitio se compila entero al publicar y un import dinámico con
+ * una ruta variable obliga al empaquetador a adivinar qué archivos incluir.
+ * Agregar una nota son dos líneas —el import de arriba y la entrada acá— y el
+ * listado, el sitemap y la página se actualizan solos.
+ *
+ * `/notas` todavía no está en el menú, a propósito: con una sola nota y en
+ * borrador, una sección de notas vacía dice más de lo que conviene. Se agrega
+ * a `navegacion.enlaces` en `content/textos.ts` cuando haya dos o tres
+ * publicadas.
+ */
+export const notas: readonly Nota[] = [
   {
-    slug: {
-      es: "cuanto-cuesta-una-pagina-web-pyme-argentina",
-      en: "how-much-does-a-website-cost-argentina",
-    },
-    titulo: {
-      es: "Cuánto cuesta una página web para una PyME en Argentina (2026)",
-      en: "How much does a website cost for a small business in Argentina (2026)",
-    },
-    bajada: {
-      es: "Precios reales del mercado argentino, qué incluye cada rango y cómo saber si un presupuesto está en línea. Sin vueltas.",
-      en: "Real prices from the Argentine market, what each range includes and how to tell whether a quote is in line. No runaround.",
-    },
-    fecha: "2026-08-14",
-    tiempoLectura: 7,
-    contenido: { es: Espanol, en: Ingles },
+    slug: "que-tareas-conviene-automatizar-primero",
+    titulo: "Qué tareas conviene automatizar primero",
+    descripcion:
+      "Las tres condiciones que tiene que cumplir una tarea para que valga la pena automatizarla, por qué lo que más molesta casi nunca es lo que más horas consume, y cómo armar la lista sin contratar a nadie.",
+    fecha: "2026-09-22",
+    borrador: true,
+    Cuerpo: QueTareasAutomatizar,
   },
 ];
 
-export function obtenerNotas(idioma: Idioma): Nota[] {
-  return fuente
-    .map((n) => ({
-      slug: n.slug[idioma],
-      titulo: n.titulo[idioma],
-      bajada: n.bajada[idioma],
-      fecha: n.fecha,
-      tiempoLectura: n.tiempoLectura,
-      Contenido: n.contenido[idioma],
-    }))
-    .sort((a, b) => b.fecha.localeCompare(a.fecha));
+/** Las publicadas. Es lo único que aparece en el listado y en el sitemap. */
+export const notasPublicadas = notas.filter((nota) => !nota.borrador);
+
+export function notaPorSlug(slug: string): Nota | undefined {
+  return notas.find((nota) => nota.slug === slug);
 }
 
-export function obtenerNota(idioma: Idioma, slug: string): Nota | undefined {
-  return obtenerNotas(idioma).find((nota) => nota.slug === slug);
-}
-
-/** Slug equivalente en el otro idioma, para los enlaces alternativos. */
-export function slugEquivalente(
-  slug: string,
-  desde: Idioma,
-  hacia: Idioma,
-): string | undefined {
-  return fuente.find((n) => n.slug[desde] === slug)?.slug[hacia];
-}
-
-export const todosLosSlugs = fuente.flatMap((n) =>
-  (Object.keys(n.slug) as Idioma[]).map((idioma) => ({
-    idioma,
-    slug: n.slug[idioma],
-  })),
-);
-
-const mesesEs = [
-  "enero",
-  "febrero",
-  "marzo",
-  "abril",
-  "mayo",
-  "junio",
-  "julio",
-  "agosto",
-  "septiembre",
-  "octubre",
-  "noviembre",
-  "diciembre",
-];
-
-const mesesEn = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-export function formatearFecha(iso: string, idioma: Idioma): string {
-  const [anio, mes, dia] = iso.split("-").map(Number);
-  return idioma === "es"
-    ? `${dia} de ${mesesEs[mes - 1]} de ${anio}`
-    : `${mesesEn[mes - 1]} ${dia}, ${anio}`;
-}
+export const slugsDeNota = notas.map((nota) => nota.slug);

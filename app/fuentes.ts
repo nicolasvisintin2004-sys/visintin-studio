@@ -1,35 +1,53 @@
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 /**
- * Archivo es variable con eje de ancho (wdth 62–125). Los títulos
- * grandes usan la utilidad `condensada` (wdth 88); el resto queda en
- * ancho normal. Pedir el eje acá es lo que habilita esa variación
- * sin cargar un segundo archivo.
+ * Las tres familias del sitio.
+ *
+ * Clash Display y Satoshi se bajaron de Fontshare en su versión variable y
+ * viven en `app/fuentes/`: un archivo por familia cubre todos los pesos, así
+ * que son 72 KB en total en vez de los ~180 KB que costarían cinco archivos
+ * estáticos. Se autohospedan, que es lo único compatible con `output: export`
+ * y además evita un salto a un dominio ajeno en el camino crítico.
+ *
+ * Cada una declara una pila de respaldo real y su métrica aproximada, para que
+ * el texto que se pinta con la fuente de sistema mientras carga la variable
+ * ocupe casi el mismo espacio y el CLS quede en cero.
  */
-export const display = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
+
+export const display = localFont({
+  src: "./fuentes/ClashDisplay-Variable.woff2",
+  variable: "--fuente-display",
   display: "swap",
-  variable: "--font-display-src",
+  weight: "200 700",
+  // Clash Display es más angosta y más alta que Arial; estos ajustes acercan
+  // la caja del respaldo a la de la fuente real.
+  fallback: ["Arial", "Helvetica", "sans-serif"],
+  adjustFontFallback: false,
 });
 
-export const sans = Inter({
-  subsets: ["latin"],
+export const cuerpo = localFont({
+  src: "./fuentes/Satoshi-Variable.woff2",
+  variable: "--fuente-cuerpo",
   display: "swap",
-  variable: "--font-sans-src",
+  weight: "300 900",
+  fallback: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Arial",
+    "sans-serif",
+  ],
+  adjustFontFallback: false,
 });
 
-/**
- * Geist Mono no está en Google Fonts; JetBrains entra sin dependencia extra.
- * Se probó sin preload para aliviar el camino crítico del LCP: no movió el
- * LCP y disparó el CLS a 0,152 en las notas, porque las etiquetas mono están
- * arriba de todo y al llegar tarde empujan el artículo entero. Va con
- * preload, que es el default.
- */
 export const mono = JetBrains_Mono({
   subsets: ["latin"],
+  variable: "--fuente-mono",
   display: "swap",
-  variable: "--font-mono-src",
+  weight: ["400", "500"],
 });
 
-export const variablesDeFuente = `${display.variable} ${sans.variable} ${mono.variable}`;
+/** Las tres clases juntas, para colgar del `<html>`. */
+export const clasesDeFuente = `${display.variable} ${cuerpo.variable} ${mono.variable}`;

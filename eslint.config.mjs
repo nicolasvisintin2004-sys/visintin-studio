@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // El generador de Instagram es otro proyecto, con su propio package.json.
+    "instagram/**",
   ]),
 ]);
 
