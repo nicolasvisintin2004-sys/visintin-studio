@@ -15,6 +15,19 @@ import { inicio, pie } from "@/content/textos";
  * la sección. Un bloque de redes vacío es peor que no tenerlo.
  */
 
+/**
+ * Las clases de grilla según cuántas redes estén cargadas.
+ *
+ * Escritas enteras y no armadas con plantilla porque Tailwind lee las clases
+ * del código fuente: una cadena como `sm:grid-cols-${n}` no la encuentra al
+ * compilar y la regla nunca llega al CSS.
+ */
+const columnas: Record<number, string> = {
+  1: "",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+};
+
 /** La franja del inicio. */
 export function RedesEnInicio() {
   if (redesActivas.length === 0) return null;
@@ -28,7 +41,17 @@ export function RedesEnInicio() {
         claseTitulo="max-w-[16ch]"
       />
 
-      <ul className="mt-14 grid gap-px border border-borde bg-borde sm:grid-cols-3 lg:mt-20">
+      {/*
+        Las columnas salen de cuántas redes haya cargadas y no de un tres
+        fijo. Con `sm:grid-cols-3` y una sola red, la celda ocupaba un tercio
+        del ancho y quedaban dos tercios de recuadro vacío al lado, que se
+        lee como algo que no cargó.
+      */}
+      <ul
+        className={`mt-14 grid gap-px border border-borde bg-borde lg:mt-20 ${
+          columnas[redesActivas.length] ?? "sm:grid-cols-3"
+        }`}
+      >
         {redesActivas.map((red, i) => (
           <Revelado as="li" key={red.slug} retardo={i * 80} className="bg-fondo">
             <a

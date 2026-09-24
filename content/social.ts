@@ -29,7 +29,7 @@ export const redes: readonly Red[] = [
     slug: "instagram",
     nombre: "Instagram",
     rol: "Cómo trabajo, el detrás de escena",
-    url: "",
+    url: "https://www.instagram.com/visintin.studio/",
   },
   {
     slug: "youtube",
@@ -41,3 +41,12 @@ export const redes: readonly Red[] = [
 
 /** Las que tienen dirección cargada. Es lo único que se renderiza. */
 export const redesActivas = redes.filter((red) => red.url.trim() !== "");
+
+/**
+ * Las direcciones sueltas, para el `sameAs` de los datos estructurados.
+ *
+ * Es lo que le dice a Google que el perfil de Instagram y este sitio son el
+ * mismo negocio. Sin eso son dos entidades sueltas que casualmente se llaman
+ * parecido, y el sitio no hereda nada de lo que el perfil ya construyó.
+ */
+export const perfilesSociales = redesActivas.map((red) => red.url);

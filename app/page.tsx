@@ -8,6 +8,7 @@ import { Indice } from "@/components/indice";
 import { RedesEnInicio } from "@/components/redes";
 import { PRECIO_DIAGNOSTICO, diagnostico } from "@/content/diagnostico";
 import { pedidos } from "@/content/pedidos";
+import { perfilesSociales } from "@/content/social";
 import { lineas, servicios } from "@/content/servicios";
 import { sitio } from "@/content/sitio";
 import { meta } from "@/content/textos";
@@ -47,6 +48,14 @@ const negocio = {
     addressCountry: sitio.pais,
   },
   areaServed: { "@type": "Country", name: "Argentina" },
+  /*
+   * Los perfiles del negocio en otros lados. Es lo que le permite a Google
+   * unir este sitio con la cuenta de Instagram en vez de tratarlos como dos
+   * entidades distintas que se llaman parecido. Sale de `content/social.ts`,
+   * así que cargar una red nueva lo actualiza solo; si no hay ninguna, la
+   * propiedad no se declara en lugar de ir vacía.
+   */
+  ...(perfilesSociales.length > 0 && { sameAs: perfilesSociales }),
   priceRange: "$$",
   hasOfferCatalog: {
     "@type": "OfferCatalog",

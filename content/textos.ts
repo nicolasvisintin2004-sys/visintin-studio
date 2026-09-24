@@ -320,7 +320,15 @@ export const inicio = {
   } as Record<string, string>,
   /** La franja de redes. Cada una dice qué se publica ahí, no "seguime". */
   redesEtiqueta: "Dónde encontrarme",
-  redesTitulo: "Tres lugares, tres cosas distintas.",
+  /**
+   * No cuenta cuántas redes hay, a propósito.
+   *
+   * Decía "Tres lugares, tres cosas distintas" cuando las tres estaban
+   * vacías y la sección no se renderizaba. En cuanto se carga una sola, el
+   * título pasa a ser falso: hay un lugar. Así sirve con una, con dos o con
+   * las tres, y el sentido —que cada una publica algo distinto— se mantiene.
+   */
+  redesTitulo: "Cada lugar, una cosa distinta.",
   cierreEtiqueta: "Contacto",
   cierreTitulo: "¿Tenés un proyecto en mente?",
   cierreTexto:
