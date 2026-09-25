@@ -45,10 +45,12 @@ export type Servicio = {
 /**
  * Los cuatro servicios, agrupados en las dos líneas.
  *
- * Las cuatro pruebas visuales salen del mismo proyecto, que es el único que
- * hay. Antes salían de tres y se notaba menos; cuando entre el segundo caso,
- * conviene repartirlas para que la sección no parezca un solo sitio mirado
- * desde cuatro ángulos.
+ * Las cuatro pruebas visuales se reparten entre los dos casos, dos de cada
+ * uno, para que la sección no parezca un solo sitio mirado desde cuatro
+ * ángulos. Cada imagen va con el servicio que mejor muestra: la página de
+ * producto de BULK, con el precio calculado por variante, es software y no
+ * una página; su carrito, que arma el pedido para mandarlo por el chat,
+ * saca de encima una tarea que antes se hacía a mano.
  *
  * Dentro de cada línea van de lo que más se pide a lo que menos. El que entra
  * buscando "página web" tiene que encontrar eso primero; el que entra sabiendo
@@ -89,8 +91,8 @@ export const servicios: readonly Servicio[] = [
       "Integraciones con Mercado Pago y Supabase",
     ],
     imagen: {
-      archivo: "taller-italia-rental",
-      alt: "Sección de alquiler del sitio de Taller Italia, con la información de cada unidad",
+      archivo: "bulk-producto",
+      alt: "Página de producto de BULK con la presentación y el sabor a elegir y el precio en efectivo ya calculado",
     },
   },
   {
@@ -107,8 +109,8 @@ export const servicios: readonly Servicio[] = [
       "Carga de datos y seguimientos automáticos",
     ],
     imagen: {
-      archivo: "taller-italia-movil",
-      alt: "El sitio de Taller Italia visto en un teléfono",
+      archivo: "bulk-carrito",
+      alt: "El carrito de BULK con el pedido armado, lo que falta para el envío gratis y el ahorro pagando en efectivo",
     },
   },
   {

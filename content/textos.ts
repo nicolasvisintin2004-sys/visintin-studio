@@ -61,17 +61,19 @@ export const servicios = {
 /**
  * El portfolio.
  *
- * Ni el título ni la bajada cuentan cuántos proyectos hay, salvo la línea que
- * lo dice de frente. Había tres entradas y dos eran demostraciones propias,
- * sin cliente detrás; se sacaron. Queda una menos, pero es real, y la frase
- * "por ahora hay uno" hace más por la confianza que tres fichas de las cuales
- * dos hay que aclarar que no existen.
+ * Ni el título ni la bajada cuentan cuántos proyectos hay. Había tres
+ * entradas y dos eran demostraciones propias, sin cliente detrás; se sacaron.
+ * Los que quedan son clientes reales, y eso es lo que dice la bajada en vez de
+ * un número, que cambia con cada caso nuevo y deja la frase vieja.
+ *
+ * La bajada tampoco promete capturas del "antes" en todos: BULK abre junto
+ * con el sitio y no tiene un antes que mostrar.
  */
 export const portfolio = {
   etiqueta: "Proyectos",
   titulo: "De Instagram a un sitio propio.",
   bajada:
-    "Por ahora hay uno, y es un cliente real con el proyecto en curso. El caso empieza por el problema que tenía el negocio —con las capturas de cómo se lo encontraba en Google antes del sitio— y sigue con qué se construyó. El sitio está en línea y puede recorrerse.",
+    "Son clientes reales, no demostraciones. Cada caso empieza por la situación del negocio —con capturas de cómo se lo encontraba antes, cuando las hay— y sigue con qué se construyó. Los sitios están en línea y pueden recorrerse.",
   cierre: "¿Tenés un proyecto similar?",
   cierreAccion: "Consultar un proyecto similar",
   verProyecto: "Ver el caso",

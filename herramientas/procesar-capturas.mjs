@@ -19,7 +19,8 @@ const DESTINO = "public/imagenes/trabajo";
 /** Alto en píxeles CSS de la barra de demo de cada sitio. */
 // Taller Italia lleva una línea roja debajo de la barra que sobrevivía a un
 // recorte de 26px y aparecía como un filo rojo en el borde de la captura.
-const BARRA = { "taller-italia": 32 };
+// BULK no tiene barra: sus capturas salen del viewport exacto.
+const BARRA = { "taller-italia": 32, bulk: 0 };
 
 /** Relación de aspecto de cada tipo de captura, en píxeles CSS. */
 const FORMATO = {
@@ -32,11 +33,18 @@ const trabajos = [
   ["taller-italia-interior", "escritorio"],
   ["taller-italia-rental", "escritorio"],
   ["taller-italia-movil", "movil"],
+  ["bulk-inicio", "escritorio"],
+  ["bulk-producto", "escritorio"],
+  ["bulk-carrito", "escritorio"],
+  ["bulk-movil", "movil"],
 ];
+
+// `node herramientas/procesar-capturas.mjs bulk` procesa sólo ese proyecto.
+const solo = process.argv[2];
 
 await mkdir(DESTINO, { recursive: true });
 
-for (const [nombre, tipo] of trabajos) {
+for (const [nombre, tipo] of trabajos.filter(([n]) => !solo || n.startsWith(solo))) {
   const sitio = Object.keys(BARRA).find((s) => nombre.startsWith(s));
   const { ancho, alto, salida } = FORMATO[tipo];
   const origen = sharp(`${ORIGEN}/${nombre}.png`);

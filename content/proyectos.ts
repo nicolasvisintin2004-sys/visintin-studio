@@ -23,6 +23,15 @@ export type Captura = {
   formato: "escritorio" | "movil" | "retrato";
   /** Pie de la captura. Dice qué se está mirando, no adjetivos. */
   pie: string;
+  /**
+   * `false` apaga la deriva en esta captura.
+   *
+   * La deriva agranda la imagen un 9 % para tener margen al moverla, así que
+   * recorta un 4,5 % de cada costado. En casi todas las capturas ahí no hay
+   * nada; en la del carrito de BULK, que es un panel pegado al borde derecho,
+   * se comía los precios y los botones de cantidad.
+   */
+  deriva?: false;
 };
 
 export type Proyecto = {
@@ -60,9 +69,9 @@ export type Proyecto = {
   /**
    * El número, cuando exista.
    *
-   * Hoy no existe: el único cliente todavía no está publicado. Se completa con
-   * datos de Search Console y de la medición del sitio cuando Taller Italia
-   * lleve unos meses en línea. Hasta entonces el campo va ausente y la ficha
+   * Hoy no existe: ninguno de los dos casos lleva todavía el tiempo suficiente
+   * en línea. Se completa con datos de Search Console y de la medición del
+   * sitio cuando lleven unos meses publicados. Hasta entonces el campo va ausente y la ficha
    * muestra sólo la línea cualitativa.
    */
   medicion?: string;
@@ -192,6 +201,81 @@ export const proyectos: readonly Proyecto[] = [
         archivo: "taller-italia-movil",
         alt: "El sitio de Taller Italia visto en un teléfono",
         pie: "Diseñado primero para el celular, que es el dispositivo desde el que ingresa la mayoría.",
+        ...MOVIL,
+      },
+    ],
+  },
+  /**
+   * El segundo caso, y el primero sin "antes".
+   *
+   * BULK es un comercio que abre junto con el sitio, así que no hay un
+   * problema anterior que capturar y no lleva `evidencia`. El `resultado.antes`
+   * dice con qué contaba el negocio antes de abrir —una cuenta de Instagram
+   * recién creada— y no describe una dificultad que nunca existió: inventarla
+   * sería la misma mentira que un porcentaje falso.
+   *
+   * La cuenta de Instagram también la diseñé yo. Cuando tenga capturas que
+   * valgan como prueba, pueden entrar en `evidencia`; hasta entonces el campo
+   * va ausente y la sección no se renderiza.
+   */
+  {
+    slug: "bulk",
+    nombre: "BULK — Suplementos y nutrición deportiva",
+    cliente: "BULK",
+    rubro: "Tienda de suplementos deportivos",
+    ubicacion: "Carmen de Patagones, Buenos Aires",
+    anio: 2026,
+    tipo: "cliente",
+    estado: "en-desarrollo",
+    resultado: {
+      antes:
+        "Un local a punto de abrir, 186 productos de 41 marcas y una cuenta de Instagram recién creada, sin un lugar donde mostrar el catálogo con precios.",
+      despues:
+        "El catálogo entero con precio por sabor y presentación, y un carrito que arma el pedido listo para mandar por Instagram o por email.",
+    },
+    resumen:
+      "Tienda de suplementos que abre en Carmen de Patagones, con el catálogo en línea desde el primer día.",
+    problema: [
+      "BULK es una tienda de suplementos y nutrición deportiva que abre en Carmen de Patagones. Llega con ciento ochenta y seis productos de cuarenta y una marcas, y la mayoría viene en más de un sabor o presentación, cada una con su precio.",
+      "Antes de abrir contaba con una cuenta de Instagram recién creada, que también diseñé. Instagram sirve para mostrar el local y las novedades, pero no para recorrer un catálogo de ese tamaño: no se puede filtrar por marca, ver qué sabores hay de cada producto ni saber cuánto suma un pedido.",
+      "La venta se cierra por mensaje y se paga por transferencia o en efectivo en el local. El sitio tenía que ordenar esa forma de vender y no reemplazarla: que el cliente llegue al chat con el pedido ya armado, y no con una lista de preguntas.",
+    ],
+    construido: [
+      "Un catálogo de 186 productos con filtros por categoría y por marca, y un buscador por nombre, marca o sabor",
+      "Una página por producto, con cada sabor y presentación y el precio en efectivo ya calculado",
+      "Un carrito que se conserva aunque se cierre la página y avisa cuánto falta para el envío gratis",
+      "El pedido sale armado: se copia y se abre el chat de Instagram del local, o se envía por email",
+      "Un código de descuento para la primera compra que llega por email, con consentimiento para recibir novedades",
+      "Guías sobre creatina, proteínas y pre-entrenos, y las preguntas frecuentes de compra y envío",
+    ],
+    stack: ["Astro", "JavaScript", "Netlify"],
+    urlEnVivo: "https://bulksuplementos.netlify.app",
+    urlVisible: "bulksuplementos.netlify.app",
+    capturas: [
+      {
+        archivo: "bulk-inicio",
+        alt: "Portada del sitio de BULK: el título «Armá tu pedido en la web» junto a un ticket de pedido con tres productos, subtotal y envío gratis",
+        pie: "La portada explica cómo se compra antes que qué se vende: el ticket es el pedido tal como le llega al local.",
+        ...ESCRITORIO,
+      },
+      {
+        archivo: "bulk-producto",
+        alt: "Página de producto de BULK: una Whey Protein con la presentación y el sabor a elegir, el precio de lista y el precio en efectivo con 10 % de descuento",
+        pie: "Cada presentación y cada sabor se eligen en la misma página, con el precio en efectivo ya calculado.",
+        ...ESCRITORIO,
+      },
+      {
+        archivo: "bulk-carrito",
+        alt: "El carrito de BULK abierto con tres productos, la barra de lo que falta para el envío gratis y el ahorro pagando en efectivo",
+        pie: "El carrito muestra cuánto falta para el envío gratis y cuánto se ahorra pagando en efectivo en el local.",
+        ...ESCRITORIO,
+        // El panel va pegado al borde derecho: con la deriva se cortan los precios.
+        deriva: false,
+      },
+      {
+        archivo: "bulk-movil",
+        alt: "El sitio de BULK visto en un teléfono",
+        pie: "Pensado primero para el celular, que es donde también está el chat al que se manda el pedido.",
         ...MOVIL,
       },
     ],

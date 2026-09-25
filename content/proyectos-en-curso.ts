@@ -22,35 +22,6 @@ import type { Proyecto } from "./proyectos";
  * mantiene válido y publicarlo es mover la entrada de acá a `proyectos.ts`.
  */
 export const proyectosEnCurso: readonly Proyecto[] = [
-  /**
-   * El segundo caso.
-   *
-   * No lleva `evidencia` y no tiene que llevarla: es un comercio que abre
-   * junto con el sitio, así que no hay un "antes" que capturar. El
-   * `resultado.antes` tiene que decir con qué contaba el negocio antes de
-   * abrir —la cuenta de Instagram, la lista de proveedores, lo que sea— y no
-   * describir un problema anterior que nunca existió. Inventarlo sería la
-   * misma mentira que un porcentaje falso.
-   */
-  {
-    slug: "tienda-de-suplementos",
-    nombre: "[COMPLETAR: Nico] — nombre del comercio",
-    cliente: "[COMPLETAR: Nico]",
-    rubro: "Tienda de suplementos deportivos",
-    ubicacion: "[COMPLETAR: Nico]",
-    anio: 2026,
-    tipo: "cliente",
-    estado: "en-desarrollo",
-    resultado: {
-      antes: "[COMPLETAR: Nico] — con qué contaba el negocio antes de abrir",
-      despues: "[COMPLETAR: Nico] — qué puede hacer el día que abre",
-    },
-    resumen: "[COMPLETAR: Nico]",
-    problema: ["[COMPLETAR: Nico]"],
-    construido: ["[COMPLETAR: Nico]"],
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Netlify"],
-    urlEnVivo: "",
-    urlVisible: "",
-    capturas: [],
-  },
+  // Vacío: el de BULK, que estuvo acá, ya se publicó. El próximo caso en
+  // curso entra en esta lista hasta que se pueda contar.
 ];

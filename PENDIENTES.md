@@ -14,8 +14,8 @@ los datos a mano.
 | --- | --- | --- |
 | **Precio del diagnóstico** | `content/diagnostico.ts` → `PRECIO_DIAGNOSTICO` | Vacío. Muestra "Consultar precio" |
 | Días de trabajo del diagnóstico | `content/diagnostico.ts` → `DIAS_DE_TRABAJO` | Puesto en `5`. Es un supuesto, no una medición |
-| LinkedIn, Instagram, YouTube | `content/social.ts` → `url` | Las tres vacías. No se renderiza nada |
-| El segundo caso, la tienda de suplementos | `content/proyectos-en-curso.ts` | Seis campos en `[COMPLETAR: Nico]` |
+| LinkedIn y YouTube | `content/social.ts` → `url` | Vacías. Instagram ya está cargado |
+| Revisar el texto del caso de BULK | `content/proyectos.ts` | Publicado. Ver "Revisá el texto del caso de BULK" |
 | Números de resultado del proyecto | `content/proyectos.ts` → campo opcional `medicion` | Ausente. Ver abajo |
 
 ### El precio es la decisión que más importa
@@ -173,47 +173,68 @@ que mantener de acuerdo.
 
 ---
 
-## El portfolio quedó en un solo proyecto
+## El portfolio: dos clientes reales
 
 Se sacaron las dos demostraciones —García Ferrari y JAYCOR—. Eran sitios
 propios sin cliente detrás, y además arrastraban dos problemas que estaban
 anotados acá: una mostraba la marca equivocada en su propia barra y la otra
-tenía un marcador de plantilla sin reemplazar en la portada. Queda Taller
-Italia, que es real.
+tenía un marcador de plantilla sin reemplazar en la portada.
 
-**Es la decisión correcta y tiene un costo que conviene mirar de frente.**
-Quien entra a `/proyectos` ve un caso, de una fábrica de motorhomes, con el
-sitio todavía en desarrollo. No hay volumen que mostrar y no hay variedad de
-rubros.
+Quedan dos casos reales, de rubros bien distintos: **Taller Italia**, una
+fábrica de motorhomes con el "antes" documentado en tres capturas —la búsqueda
+de Google sin sitio propio, la ficha con 4,6 y 29 reseñas, y la página de
+error del dominio que figuraba en esa ficha—, y **BULK**, una tienda de
+suplementos de Carmen de Patagones que abre junto con el sitio.
 
-Lo que compensa, y bastante: el caso que queda ahora tiene el "antes"
-documentado con tres capturas reales —la búsqueda de Google sin sitio propio,
-la ficha con 4,6 y 29 reseñas, y la página de error del dominio que figuraba en
-esa ficha—. Eso es prueba y no adjetivos, y es algo que la mayoría de los
-portfolios del rubro no tiene.
+La bajada de `/proyectos` ya no cuenta cuántos hay —decía "por ahora hay
+uno"— y las cuatro pruebas visuales de Servicios se repartieron dos y dos.
 
-El sitio ya no cuenta cuántos proyectos hay en ninguna parte, salvo una línea
-en `/proyectos` que dice "por ahora hay uno" de frente. Cuando entre el de
-suplementos hay que ajustar esa frase y repartir las cuatro pruebas visuales de
-la página de Servicios, que hoy salen las cuatro del mismo sitio.
+### BULK no tiene "antes", y está bien
 
-### Cuando llegue el de la tienda de suplementos
+Es un comercio que abre con el sitio. El `resultado.antes` dice con qué
+contaba antes de abrir —el local, el catálogo y una cuenta de Instagram recién
+creada— y no le inventa un problema anterior.
 
-La entrada ya está creada en `content/proyectos-en-curso.ts`, que no lo
-importa nada que se renderice. Publicarla es mover la entrada a
-`content/proyectos.ts`.
+La cuenta de Instagram también la diseñaste vos. Si querés que entre como
+parte del caso, la forma es cargarla en `evidencia` con capturas reales, igual
+que las de Taller Italia; hoy el campo va ausente y esa sección no se muestra.
 
-Son dos archivos y no una bandera porque `proyectos.ts` lo importa un
-componente de cliente: todo lo que esté escrito ahí viaja al navegador aunque
-no se renderice. Se descubrió buscando el texto del borrador en `out/` y
-apareciendo dentro de un `.js` público. Con placeholders no importaba; con el
-nombre real de un cliente que todavía no se anunció, sí.
+### Revisá el texto del caso de BULK
 
-Ese caso **no tiene un "antes"**: es un comercio que abre con el sitio. Está
-anotado en el archivo para que no se caiga en la tentación de inventarle un
-problema anterior. El `resultado.antes` tiene que decir con qué contaba el
-negocio antes de abrir —una cuenta de Instagram, una lista de proveedores, lo
-que sea— y no describir una situación que nunca existió.
+Lo escribí a partir de lo que dice el sitio en línea, sin el código a mano.
+Conviene que lo leas en `content/proyectos.ts` antes de publicar, sobre todo:
+
+- **El stack** dice Astro, JavaScript y Netlify, que es lo que se ve desde
+  afuera. Si usaste algo más que valga nombrar —Resend para el email del
+  código, por ejemplo—, agregalo.
+- **Que el Instagram lo diseñaste vos** está dicho en el segundo párrafo del
+  problema. Lo tomé de tu mensaje.
+
+### El sitio de BULK muestra avisos "FALTA:" en línea
+
+El botón "Visitar el sitio" del caso lleva a `bulksuplementos.netlify.app`, y
+ahí hay notas de desarrollo visibles para cualquiera:
+
+- en el inicio, `FALTA: lista de productos más vendidos…`
+- en `/combos/`, `FALTA: contenido del combo…` tres veces
+- en `/carrito/` y `/como-comprar/`, los datos bancarios y los costos de envío
+  por debajo de $100.000
+
+Las capturas del portfolio se eligieron para que no aparezca ninguno, pero
+quien entra al sitio desde el caso los ve. Conviene completarlos, u ocultarlos
+en producción, antes de mandar a nadie a mirar ese caso.
+
+### Cómo se sacaron las capturas
+
+```bash
+bash herramientas/capturar-portfolio.sh .capturas bulk
+node herramientas/procesar-capturas.mjs bulk
+```
+
+El segundo argumento limita a un proyecto, para no volver a fotografiar los
+otros sitios, que pueden haber cambiado en línea. En BULK la herramienta cierra
+la ventana de bienvenida, saca la insignia de Netlify y carga tres productos
+antes de abrir el carrito.
 
 ---
 

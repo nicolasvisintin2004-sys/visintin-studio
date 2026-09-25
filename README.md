@@ -184,9 +184,8 @@ haya números de verdad —Search Console, la medición del sitio— van en el c
 opcional `medicion`.
 
 Un caso que todavía no se puede mostrar va en **`content/proyectos-en-curso.ts`**
-y no en `proyectos.ts`. Hay uno así ahora, el de la tienda de suplementos, con
-los campos marcados `[COMPLETAR: Nico]`. Publicarlo es mover la entrada de un
-archivo al otro.
+y no en `proyectos.ts`. Hoy está vacío: el de BULK pasó por ahí y ya se
+publicó. Publicar un caso es mover la entrada de un archivo al otro.
 
 Son dos archivos y no una bandera `borrador` por un motivo que se descubrió
 midiendo: `components/portfolio.tsx` es un componente de cliente e importa
