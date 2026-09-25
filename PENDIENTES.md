@@ -106,14 +106,18 @@ desde `visintinstudio@gmail.com` y no desde `onboarding@resend.dev`.
 
 Está cargado como cliente "en desarrollo". Cuando el sitio se publique, cambiar
 `estado: "en-desarrollo"` por `"publicado"` en `content/proyectos.ts`, y de
-paso revisar si la dirección sigue siendo `talleritalia.netlify.app`.
+paso confirmar que el sitio ya responde en `talleritalia.com.ar`.
 
-**Y decile a Taller Italia que arregle el enlace de su ficha de Google.** Hoy
-el botón "Sitio web" apunta a `talleritalia.com.ar`, que no está registrado:
-está verificado por DNS y es la tercera captura del caso. Cada persona que lo
-toca termina en una página de error. Se cambia en un minuto desde el perfil de
-empresa de Google y, mientras el dominio propio no exista, conviene que apunte
-a `talleritalia.netlify.app`.
+**La ficha de Google se arregla sola, con una condición.** El botón "Sitio
+web" apunta a `www.talleritalia.com.ar` —con `www`, es lo que muestra la
+tercera captura del caso—. En cuanto el sitio esté en ese dominio, el botón
+deja de dar error sin tocar la ficha, pero sólo si en Netlify están cargadas
+**las dos** variantes, con y sin `www`. Si falta la de `www`, el botón sigue
+llevando a la misma página de error.
+
+Y vale la pena contarlo en el caso: el dominio que daba error es el mismo en el
+que ahora está el sitio. Cuando esté andando, se puede sumar a
+`resultado.despues` en `content/proyectos.ts`.
 
 ---
 
@@ -210,10 +214,27 @@ Conviene que lo leas en `content/proyectos.ts` antes de publicar, sobre todo:
 - **Que el Instagram lo diseñaste vos** está dicho en el segundo párrafo del
   problema. Lo tomé de tu mensaje.
 
+### Los dos casos apuntan a dominios que todavía no existen
+
+Los botones "Visitar el sitio" llevan a `talleritalia.com.ar` y a
+`bulksuplementos.com.ar`, que son los dominios definitivos. Cuando se cambiaron
+(2026-09-25) ninguno de los dos resolvía por DNS, ni con `www` ni sin él.
+
+**No pushear este cambio hasta que los dos respondan.** Si se publica antes,
+el botón del caso de Taller Italia lleva exactamente a la página de error que
+el mismo caso muestra como el "antes". Para comprobarlo:
+
+```bash
+curl -sI https://talleritalia.com.ar https://www.talleritalia.com.ar https://bulksuplementos.com.ar https://www.bulksuplementos.com.ar | grep -i "^HTTP"
+```
+
+Las herramientas de captura siguen usando las direcciones `.netlify.app`, que
+no dejan de andar cuando se agrega el dominio: Netlify las redirige solo.
+
 ### El sitio de BULK muestra avisos "FALTA:" en línea
 
-El botón "Visitar el sitio" del caso lleva a `bulksuplementos.netlify.app`, y
-ahí hay notas de desarrollo visibles para cualquiera:
+El botón "Visitar el sitio" del caso lleva al sitio de BULK, y ahí hay notas
+de desarrollo visibles para cualquiera:
 
 - en el inicio, `FALTA: lista de productos más vendidos…`
 - en `/combos/`, `FALTA: contenido del combo…` tres veces
