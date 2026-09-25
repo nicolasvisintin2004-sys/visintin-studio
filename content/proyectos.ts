@@ -234,26 +234,31 @@ export const proyectos: readonly Proyecto[] = [
     estado: "en-desarrollo",
     resultado: {
       antes:
-        "Un local a punto de abrir, 186 productos de 41 marcas y una cuenta de Instagram recién creada, sin un lugar donde mostrar el catálogo con precios.",
+        "Un local a punto de abrir, la lista mayorista del proveedor en texto plano y una cuenta de Instagram recién creada.",
       despues:
-        "El catálogo entero con precio por sabor y presentación, y un carrito que arma el pedido listo para mandar por Instagram o por email.",
+        "Un catálogo que se arma solo desde la lista del proveedor y un carrito que deja el pedido listo para mandar.",
     },
     resumen:
       "Tienda de suplementos que abre en Carmen de Patagones, con el catálogo en línea desde el primer día.",
     problema: [
-      "BULK es una tienda de suplementos y nutrición deportiva que abre en Carmen de Patagones. Llega con ciento ochenta y seis productos de cuarenta y una marcas, y la mayoría viene en más de un sabor o presentación, cada una con su precio.",
-      "Antes de abrir contaba con una cuenta de Instagram recién creada, que también diseñé. Instagram sirve para mostrar el local y las novedades, pero no para recorrer un catálogo de ese tamaño: no se puede filtrar por marca, ver qué sabores hay de cada producto ni saber cuánto suma un pedido.",
-      "La venta se cierra por mensaje y se paga por transferencia o en efectivo en el local. El sitio tenía que ordenar esa forma de vender y no reemplazarla: que el cliente llegue al chat con el pedido ya armado, y no con una lista de preguntas.",
+      "BULK es una tienda de suplementos y nutrición deportiva que abre en Carmen de Patagones. Llega con ciento ochenta y seis productos de cuarenta y una marcas que, entre sabores y presentaciones, suman trescientas cincuenta y una variantes, cada una con su precio.",
+      "Todo eso existía en un solo lugar: la lista mayorista del proveedor, tal como se copia de su web, con nombres abreviados, ofertas, promociones de 2x1 y precios tachados mezclados en texto plano. Cargarla a mano en una tienda era un trabajo largo, y rehacerlo cada vez que el proveedor cambia los precios, imposible de sostener.",
+      "Contaba además con una cuenta de Instagram recién creada, que también diseñé, y es ahí donde se cierra la venta: el pedido se manda por mensaje y se paga por transferencia o en efectivo en el local. El sitio tenía que ordenar esa forma de vender y no reemplazarla: que el cliente llegue al chat con el pedido ya armado, y no con una lista de preguntas.",
     ],
+    /*
+     * La regla de precios del negocio —contra qué se compara y con qué
+     * margen— no se cuenta acá a propósito: es información del cliente, y un
+     * caso público no es el lugar para publicarla.
+     */
     construido: [
-      "Un catálogo de 186 productos con filtros por categoría y por marca, y un buscador por nombre, marca o sabor",
+      "Un importador que convierte la lista mayorista, pegada tal cual, en el catálogo: agrupa sabores y presentaciones, elige qué precio tomar entre ofertas y promociones, y aparta duplicados y dudas para revisar",
+      "Reimportar una lista nueva actualiza los precios sin borrar lo cargado a mano: fotos, descripciones, información nutricional y modo de uso",
       "Una página por producto, con cada sabor y presentación y el precio en efectivo ya calculado",
-      "Un carrito que se conserva aunque se cierre la página y avisa cuánto falta para el envío gratis",
-      "El pedido sale armado: se copia y se abre el chat de Instagram del local, o se envía por email",
-      "Un código de descuento para la primera compra que llega por email, con consentimiento para recibir novedades",
+      "Un carrito que se conserva aunque se cierre la página, avisa cuánto falta para el envío gratis y arma el pedido para mandarlo por Instagram o por email",
+      "Un código de descuento único para la primera compra, que llega por email, se valida contra ese email y se marca como usado al enviar el pedido",
       "Guías sobre creatina, proteínas y pre-entrenos, y las preguntas frecuentes de compra y envío",
     ],
-    stack: ["Astro", "JavaScript", "Netlify"],
+    stack: ["Astro", "JavaScript", "Netlify Functions", "Brevo"],
     urlEnVivo: "https://bulksuplementos.com.ar",
     urlVisible: "bulksuplementos.com.ar",
     capturas: [

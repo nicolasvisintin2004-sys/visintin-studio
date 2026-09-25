@@ -203,16 +203,22 @@ La cuenta de Instagram también la diseñaste vos. Si querés que entre como
 parte del caso, la forma es cargarla en `evidencia` con capturas reales, igual
 que las de Taller Italia; hoy el campo va ausente y esa sección no se muestra.
 
-### Revisá el texto del caso de BULK
+### El caso de BULK sale del código, no sólo del sitio
 
-Lo escribí a partir de lo que dice el sitio en línea, sin el código a mano.
-Conviene que lo leas en `content/proyectos.ts` antes de publicar, sobre todo:
+El texto está contrastado con el repositorio (`Desktop/Bulk_AR`): 186
+productos, 351 variantes y 41 marcas contados de `productos.json`, y el stack
+—Astro, funciones de Netlify y Brevo para los emails— de `package.json` y del
+README. Lo que más pesa del caso es algo que desde afuera no se ve: **el
+importador de la lista mayorista**, que es automatización de un proceso y le
+da al caso peso en la segunda línea del estudio, no sólo en la de sitios.
 
-- **El stack** dice Astro, JavaScript y Netlify, que es lo que se ve desde
-  afuera. Si usaste algo más que valga nombrar —Resend para el email del
-  código, por ejemplo—, agregalo.
-- **Que el Instagram lo diseñaste vos** está dicho en el segundo párrafo del
-  problema. Lo tomé de tu mensaje.
+**Lo que se dejó afuera a propósito:** la regla de precios. Contra qué tienda
+se comparan y con qué margen es información del negocio de BULK, y un caso
+público no es el lugar para publicarla. El caso dice que el importador elige
+qué precio tomar, y nada más.
+
+Que el Instagram lo diseñaste vos está dicho en el tercer párrafo del
+problema; lo tomé de tu mensaje.
 
 ### Los dos casos apuntan a dominios que todavía no existen
 
@@ -242,8 +248,13 @@ de desarrollo visibles para cualquiera:
   por debajo de $100.000
 
 Las capturas del portfolio se eligieron para que no aparezca ninguno, pero
-quien entra al sitio desde el caso los ve. Conviene completarlos, u ocultarlos
-en producción, antes de mandar a nadie a mirar ese caso.
+quien entra al sitio desde el caso los ve. Conviene completarlos antes de
+mandar a nadie a mirar ese caso.
+
+El sitio de BULK ya tiene el interruptor: `mostrarFaltantes` en
+`src/config/negocio.js`, hoy en `true`. Ponerlo en `false` saca los carteles,
+pero no completa los datos: el carrito seguiría sin los datos bancarios para
+transferir, sólo que sin avisarlo.
 
 ### Cómo se sacaron las capturas
 
