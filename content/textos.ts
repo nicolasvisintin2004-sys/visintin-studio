@@ -30,9 +30,15 @@ export const hero = {
    * el alto del título y empuja el resto del hero fuera de la pantalla.
    *
    * Medidas actuales, en em de Clash Display 600 con este tracking:
-   *   "Ordeno el trabajo" 7,96 · "de tu empresa" 6,68 · "y lo automatizo." 7,12
+   *   "Que tu empresa" 7,41 · "trabaje más" 5,49 · "y vos menos." 5,98
+   *
+   * Habla de lo que gana el dueño y no de lo que hace el estudio. La frase
+   * anterior —"Ordeno el trabajo de tu empresa y lo automatizo"— describía
+   * el servicio; esta describe el resultado, y el cómo queda para la bajada.
+   * No lleva un número de horas a propósito: todavía no hay un caso medido
+   * que lo respalde, y un número sin fuente es lo primero que se discute.
    */
-  titulo: ["Ordeno el trabajo", "de tu empresa", "y lo automatizo."],
+  titulo: ["Que tu empresa", "trabaje más", "y vos menos."],
   bajada:
     "Dos líneas con el mismo peso: los sitios y sistemas que usan tus clientes, y las automatizaciones que le sacan horas repetidas a la semana. Las dos empiezan en el mismo lugar, que es entender cómo trabaja el negocio y por dónde entra el dinero.",
   accionPrincipal: "Ver el diagnóstico",

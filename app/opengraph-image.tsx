@@ -16,7 +16,7 @@ export const contentType = TIPO;
 
 export default async function Imagen() {
   return imagenOg({
-    titulo: "Ordeno el trabajo de tu empresa y lo automatizo.",
+    titulo: "Que tu empresa trabaje más y vos menos.",
     pie: "Sitios y sistemas web, automatización de procesos e IA aplicada, para PyMEs argentinas.",
   });
 }
