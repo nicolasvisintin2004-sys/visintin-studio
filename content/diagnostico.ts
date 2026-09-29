@@ -28,11 +28,16 @@ export const PRECIO_SIN_DEFINIR = "Consultar precio";
 /**
  * Los días hábiles de trabajo que van entre la llamada y la entrega.
  *
- * Es un valor por defecto razonable y no una medición: todavía no hay
- * diagnósticos entregados para promediar. Figura en la lista de decisiones
- * pendientes del README para ajustarlo con el primero que salga.
+ * Diez, dos semanas, y todavía no es una medición: no hay diagnósticos
+ * entregados para promediar. Se eligió con margen a propósito, porque se hace
+ * en paralelo con otros trabajos y las dudas se consultan por WhatsApp.
+ * Entregar antes de lo prometido suma; entregar tarde arranca mal la relación.
+ * Se ajusta con los primeros que salgan.
+ *
+ * El post del diagnóstico en Instagram (instagram/posts/10-diagnostico.md)
+ * dice el mismo número: si cambia acá, cambia allá.
  */
-export const DIAS_DE_TRABAJO = 5;
+export const DIAS_DE_TRABAJO = 10;
 
 export const diagnostico = {
   etiqueta: "Diagnóstico",
