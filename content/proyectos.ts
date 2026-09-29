@@ -126,7 +126,7 @@ export const proyectos: readonly Proyecto[] = [
     estado: "en-desarrollo",
     resultado: {
       antes:
-        "Veinte mil seguidores en Instagram y veintinueve reseñas en Google, pero el botón «Sitio web» de su propia ficha llevaba a un dominio que no existía.",
+        "Veinte mil seguidores en Instagram y veintinueve reseñas en Google, pero el botón «Sitio web» de su propia ficha llevaba a un dominio que no existe.",
       despues:
         "El proceso de fabricación publicado como recorrido, con una página por unidad entregada y el alquiler separado de la fabricación.",
     },
@@ -135,7 +135,7 @@ export const proyectos: readonly Proyecto[] = [
     problema: [
       "Taller Italia fabrica desde 1972 y no produce en serie: cada motorhome se proyecta sobre el vehículo que aporta el cliente. Esa característica, que es su principal diferencial, resultaba difícil de comunicar en Instagram, donde no hay un catálogo que mostrar sino un proceso.",
       "El problema no era de visibilidad. La cuenta tiene veinte mil seguidores y la ficha de Google acumula veintinueve reseñas con 4,6 de promedio: la fábrica ya era conocida y ya estaba recomendada. El problema era que no había a dónde mandar a quien preguntaba.",
-      "Al buscar el nombre en Google aparecían el perfil de Instagram, la página de Facebook y un portal de terceros. Y el botón «Sitio web» de la propia ficha de Google apuntaba a un dominio que no estaba registrado: cada persona que lo tocaba terminaba en una página de error.",
+      "Al buscar el nombre en Google aparecían el perfil de Instagram, la página de Facebook y un portal de terceros. Y el botón «Sitio web» de la propia ficha de Google apuntaba a un dominio que no está registrado: cada persona que lo tocaba terminaba en una página de error.",
       "A eso se sumaba una línea de alquiler que compartía la cuenta con la de fabricación, y consultas del exterior que se respondían sin una versión del contenido en inglés.",
     ],
     evidencia: [
@@ -161,7 +161,7 @@ export const proyectos: readonly Proyecto[] = [
         archivo: "sitio-caido",
         carpeta: "evidencia",
         alt: "Página de error del navegador: «No se puede acceder a este sitio web», con el código DNS_PROBE_FINISHED_NXDOMAIN para www.talleritalia.com.ar",
-        pie: "El dominio no estaba registrado. Cada persona que tocaba «Sitio web» en Google terminaba acá. Es el mismo en el que hoy está el sitio.",
+        pie: "El dominio no está registrado. Cada persona que tocaba «Sitio web» en Google terminaba acá.",
         ancho: 1245,
         alto: 660,
         formato: "escritorio",
@@ -177,12 +177,12 @@ export const proyectos: readonly Proyecto[] = [
     ],
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Netlify"],
     /*
-     * El dominio de la tercera captura del "antes": el que figuraba en la
-     * ficha de Google y no existía. Por eso los textos del caso que hablan de
-     * él van en pasado.
+     * No es el dominio de la tercera captura del "antes". Aquel,
+     * talleritalia.com.ar, sigue sin existir; el sitio quedó en otro. Por eso
+     * los textos del caso que hablan de aquel van en presente.
      */
-    urlEnVivo: "https://talleritalia.com.ar",
-    urlVisible: "talleritalia.com.ar",
+    urlEnVivo: "https://timotorhome.com.ar",
+    urlVisible: "timotorhome.com.ar",
     capturas: [
       {
         archivo: "taller-italia-inicio",

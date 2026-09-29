@@ -13,7 +13,7 @@ los datos a mano.
 | Qué | Dónde | Estado |
 | --- | --- | --- |
 | **Precio del diagnóstico** | `content/diagnostico.ts` → `PRECIO_DIAGNOSTICO` | Vacío. Muestra "Consultar precio" |
-| Días de trabajo del diagnóstico | `content/diagnostico.ts` → `DIAS_DE_TRABAJO` | Puesto en `5`. Es un supuesto, no una medición |
+| Días de trabajo del diagnóstico | `content/diagnostico.ts` → `DIAS_DE_TRABAJO` | Puesto en `10`, con margen. Ajustar con los primeros diagnósticos entregados |
 | LinkedIn y YouTube | `content/social.ts` → `url` | Vacías. Instagram ya está cargado |
 | Revisar el texto del caso de BULK | `content/proyectos.ts` | Publicado. Ver "Revisá el texto del caso de BULK" |
 | Números de resultado del proyecto | `content/proyectos.ts` → campo opcional `medicion` | Ausente. Ver abajo |
@@ -106,18 +106,18 @@ desde `visintinstudio@gmail.com` y no desde `onboarding@resend.dev`.
 
 Está cargado como cliente "en desarrollo". Cuando el sitio se publique, cambiar
 `estado: "en-desarrollo"` por `"publicado"` en `content/proyectos.ts`, y de
-paso confirmar que el sitio ya responde en `talleritalia.com.ar`.
+paso confirmar que el sitio sigue respondiendo en `timotorhome.com.ar`.
 
-**La ficha de Google se arregla sola, con una condición.** El botón "Sitio
-web" apunta a `www.talleritalia.com.ar` —con `www`, es lo que muestra la
-tercera captura del caso—. En cuanto el sitio esté en ese dominio, el botón
-deja de dar error sin tocar la ficha, pero sólo si en Netlify están cargadas
-**las dos** variantes, con y sin `www`. Si falta la de `www`, el botón sigue
-llevando a la misma página de error.
+**Y decile a Taller Italia que cambie el enlace de su ficha de Google.** El
+botón "Sitio web" apunta a `www.talleritalia.com.ar`, que no está registrado:
+está verificado contra los servidores de NIC Argentina y es la tercera captura
+del caso. El sitio quedó en **`timotorhome.com.ar`**, así que la ficha no se
+arregla sola: cada persona que toca el botón sigue terminando en una página de
+error. Se cambia en un minuto desde el perfil de empresa de Google.
 
-Y vale la pena contarlo en el caso: el dominio que daba error es el mismo en el
-que ahora está el sitio. Cuando esté andando, se puede sumar a
-`resultado.despues` en `content/proyectos.ts`.
+Es probablemente el cambio con más impacto de todo el proyecto y no requiere
+código: la ficha tiene 29 reseñas y es por donde llega la gente que ya busca
+el nombre.
 
 ---
 
@@ -220,19 +220,10 @@ qué precio tomar, y nada más.
 Que el Instagram lo diseñaste vos está dicho en el tercer párrafo del
 problema; lo tomé de tu mensaje.
 
-### Los dos casos apuntan a dominios que todavía no existen
+### Los dominios de los casos
 
-Los botones "Visitar el sitio" llevan a `talleritalia.com.ar` y a
-`bulksuplementos.com.ar`, que son los dominios definitivos. Cuando se cambiaron
-(2026-09-25) ninguno de los dos resolvía por DNS, ni con `www` ni sin él.
-
-**No pushear este cambio hasta que los dos respondan.** Si se publica antes,
-el botón del caso de Taller Italia lleva exactamente a la página de error que
-el mismo caso muestra como el "antes". Para comprobarlo:
-
-```bash
-curl -sI https://talleritalia.com.ar https://www.talleritalia.com.ar https://bulksuplementos.com.ar https://www.bulksuplementos.com.ar | grep -i "^HTTP"
-```
+Taller Italia está en `timotorhome.com.ar` y BULK en `bulksuplementos.com.ar`.
+Los dos responden, con y sin `www` (verificado el 2026-09-29).
 
 Las herramientas de captura siguen usando las direcciones `.netlify.app`, que
 no dejan de andar cuando se agrega el dominio: Netlify las redirige solo.
