@@ -159,6 +159,18 @@ export const planes = {
 export const sobreMi = {
   etiqueta: "El estudio",
   titulo: "Una persona, no una agencia.",
+  /**
+   * La idea de fondo del estudio, dicha una vez y destacada. Va entre el
+   * párrafo de Ingeniería Industrial y el de las PyMEs: es la conclusión del
+   * primero y la razón del segundo.
+   *
+   * Salió de "el éxito se garantiza con la organización del tiempo". La idea
+   * se mantuvo y se sacó el "garantiza": nada garantiza el éxito, y un dueño
+   * con años de oficio lo sabe. Esta versión une tiempo y plata sin prometer
+   * nada que no se pueda sostener.
+   */
+  conviccion:
+    "Una empresa que no sabe en qué se le va el tiempo, tampoco sabe en qué se le va la plata.",
   parrafos: [
     "Visintin Studio es Nicolás Visintin. Cada consulta la respondo personalmente, y cada proyecto lo desarrollo y lo mantengo yo mismo, sin intermediarios ni equipos rotativos.",
     "Estudio Ingeniería Industrial en la UADE, una disciplina centrada en analizar procesos y eliminar lo que no aporta valor. Es el enfoque que aplico a cada proyecto, y es literalmente lo que hace el diagnóstico: antes que el diseño o el software, me interesa entender cómo trabaja el negocio y dónde pierde tiempo.",

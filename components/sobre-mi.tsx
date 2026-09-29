@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Contador } from "@/components/contador";
 import { Revelado } from "@/components/revelado";
 import { sobreMi as textos } from "@/content/textos";
@@ -32,10 +33,17 @@ export function SobreMi() {
 
           <Revelado retardo={120}>
             <div className="flex flex-col gap-6">
-              {textos.parrafos.map((parrafo) => (
-                <p key={parrafo} className="t-cuerpo">
-                  {parrafo}
-                </p>
+              {textos.parrafos.map((parrafo, i) => (
+                <Fragment key={parrafo}>
+                  <p className="t-cuerpo">{parrafo}</p>
+                  {/* La convicción cierra el párrafo de la carrera: es lo que
+                      esa formación enseña, dicho en términos del negocio. */}
+                  {i === 1 && (
+                    <p className="t-subtitulo my-4 border-l border-acento pl-6 text-balance">
+                      {textos.conviccion}
+                    </p>
+                  )}
+                </Fragment>
               ))}
             </div>
           </Revelado>
