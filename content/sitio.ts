@@ -36,8 +36,13 @@ export const sitio = {
 
   /**
    * Verificación de propiedad de Google Search Console. Es un token público:
-   * va en el HTML de todas las páginas y no da acceso a nada. Corresponde al
-   * dominio de Netlify; si se registra el dominio propio, Google entrega otro.
+   * va en el HTML de todas las páginas y no da acceso a nada. Corresponde a
+   * la propiedad vieja, la de visintinstudio.netlify.app.
+   *
+   * El dominio propio, visintinstudio.com.ar, se verificó de otra forma: con
+   * un registro TXT en el DNS de Netlify, que cubre el dominio entero y no
+   * depende de esta etiqueta. Se deja porque no molesta y mantiene verificada
+   * la propiedad anterior mientras Google termina de pasar de una a otra.
    */
   verificacionGoogle: "byjy1nX8alSqxtKqDPgMa1zFKUxlv_OIJHdRbG9DsAk",
 

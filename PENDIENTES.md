@@ -93,11 +93,26 @@ Lo que más información va a dar es el par `view_diagnostico` / `submit_lead`.
 Es el número que dice si la página del diagnóstico funciona, y hoy no hay forma
 de saberlo.
 
-### 4. Decidir el dominio
+### 4. El dominio: `visintinstudio.com.ar`
 
-Con dominio propio hay que definir `NEXT_PUBLIC_SITE_URL` y pedirle a Google
-Search Console un token de verificación nuevo, porque el que está en
-`content/sitio.ts` es del dominio de Netlify.
+Registrado en DonWeb el 2026-09-30 y delegado a los servidores de Netlify
+(`dns1…dns4.p06.nsone.net`). El DNS se maneja entero desde Netlify; en DonWeb
+no hay que crear ninguna zona.
+
+No hizo falta definir `NEXT_PUBLIC_SITE_URL`: Netlify le pasa el dominio
+principal a cada compilación, y de ahí salen el sitemap, el canonical de cada
+página y las imágenes de Open Graph.
+
+En Google Search Console la propiedad es de tipo **Dominio**, verificada con
+un registro TXT en el DNS de Netlify. Si alguna vez se borra ese registro, la
+propiedad se desverifica.
+
+**Lo que falta, del lado de Google:**
+
+- Enviar `sitemap.xml` en Search Console, y pedir la indexación del inicio,
+  `/diagnostico`, `/servicios`, `/proyectos` y los dos casos.
+- Crear el Perfil de empresa de Google, con el sitio bien escrito.
+- Poner `visintinstudio.com.ar` en la bio de Instagram.
 
 También hace falta un dominio verificado en Resend para que el aviso salga
 desde `visintinstudio@gmail.com` y no desde `onboarding@resend.dev`.
