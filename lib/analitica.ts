@@ -159,6 +159,30 @@ export function registrarVistaCaso(slug: string) {
 }
 
 /**
+ * Los de la página de Visintin Turnos.
+ *
+ * Los clics en "Pedir una demo" no tienen evento propio: son clics a
+ * WhatsApp y se cuentan como `click_whatsapp`, con un `origen` que empieza
+ * con `turnos_` y dice desde qué sección salió. Tener dos eventos para el
+ * mismo gesto obligaría a sumarlos a mano en el panel.
+ */
+
+/** Alguien cambió un número de la calculadora. Se registra una vez por visita. */
+export function registrarUsoCalculadora() {
+  registrarEvento("use_calculadora");
+}
+
+/** Alguien abrió uno de los dos demos. `cual` es `consultorio` o `clinica`. */
+export function registrarAperturaDemo(cual: string, desde: string) {
+  registrarEvento("open_demo", { demo: cual, desde });
+}
+
+/** Alguien desplegó una pregunta frecuente. */
+export function registrarAperturaPregunta(pregunta: string, pagina: string) {
+  registrarEvento("open_faq", { pregunta, pagina });
+}
+
+/**
  * Se envió el formulario y el servidor lo aceptó.
  *
  * Se registra recién con la respuesta correcta del servidor y no al tocar el

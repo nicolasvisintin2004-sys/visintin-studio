@@ -5,6 +5,7 @@ import { RedesEnPie } from "@/components/redes";
 import { redesActivas } from "@/content/social";
 import { mensajes, sitio } from "@/content/sitio";
 import { navegacion, pie as textos } from "@/content/textos";
+import { TURNOS_PUBLICADA, turnos } from "@/content/turnos";
 
 export function Pie() {
   const anio = new Date().getFullYear();
@@ -15,7 +16,12 @@ export function Pie() {
    * es la única lista completa de páginas del sitio, y es de donde sale
    * también el mapa mental de alguien que llega por una página suelta.
    */
-  const secciones = [navegacion.destacado, ...navegacion.enlaces];
+  const secciones = [
+    navegacion.destacado,
+    ...navegacion.enlaces,
+    // El producto propio va último y sólo cuando la página ya se anuncia.
+    ...(TURNOS_PUBLICADA ? [{ href: "/turnos", texto: turnos.etiqueta }] : []),
+  ];
 
   // La cuarta columna sólo existe si hay alguna red cargada.
   const columnas = redesActivas.length > 0 ? "lg:grid-cols-[1.4fr_1fr_1fr_1fr]" : "lg:grid-cols-[1.4fr_1fr_1fr]";

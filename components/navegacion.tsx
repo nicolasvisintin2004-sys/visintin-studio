@@ -3,12 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { Marca } from "@/components/marca";
 import { diagnostico } from "@/content/diagnostico";
 import { navegacion } from "@/content/textos";
+import { ACCION_DEMO, MENSAJE_DEMO } from "@/content/turnos-acciones";
 
 /** Las rutas que se muestran con la barra reducida. */
-const RUTAS_DE_ATERRIZAJE = ["/diagnostico"];
+const RUTAS_DE_ATERRIZAJE = ["/diagnostico", "/turnos"];
+
+const claseBotonDeAterrizaje =
+  "rounded-full border border-acento px-5 py-2.5 text-[0.875rem] font-medium text-acento transition-colors duration-300 hover:bg-acento hover:text-fondo";
 
 /**
  * La barra de navegación. Vive en el layout, así que es la misma en todas las
@@ -23,6 +28,9 @@ const RUTAS_DE_ATERRIZAJE = ["/diagnostico"];
  * menú completo no hace más que ofrecer seis formas de irse antes de leerla.
  * El logotipo sigue siendo un enlace al inicio, porque una barra sin salida
  * es una trampa y no un diseño.
+ *
+ * /turnos se trata igual, por el mismo motivo: tiene un solo objetivo, que es
+ * pedir la demo. Su botón no lleva a un formulario sino a WhatsApp.
  */
 export function Navegacion() {
   const ruta = usePathname();
@@ -137,11 +145,16 @@ export function Navegacion() {
               En la página del diagnóstico el botón apunta al formulario de
               esa misma página, que es el único destino que tiene.
             */}
-            {esAterrizaje ? (
-              <a
-                href="#solicitar"
-                className="rounded-full border border-acento px-5 py-2.5 text-[0.875rem] font-medium text-acento transition-colors duration-300 hover:bg-acento hover:text-fondo"
+            {ruta.startsWith("/turnos") ? (
+              <EnlaceWhatsApp
+                mensaje={MENSAJE_DEMO}
+                origen="turnos_barra_superior"
+                className={claseBotonDeAterrizaje}
               >
+                {ACCION_DEMO}
+              </EnlaceWhatsApp>
+            ) : esAterrizaje ? (
+              <a href="#solicitar" className={claseBotonDeAterrizaje}>
                 {diagnostico.accion}
               </a>
             ) : (

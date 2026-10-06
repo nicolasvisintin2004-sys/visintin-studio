@@ -3,6 +3,7 @@ import { notasPublicadas } from "@/content/notas/registro";
 import { slugsDeProyecto } from "@/content/proyectos";
 import { sitio } from "@/content/sitio";
 import { navegacion } from "@/content/textos";
+import { TURNOS_PUBLICADA } from "@/content/turnos";
 
 /**
  * El sitemap.
@@ -46,6 +47,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    // La página del producto, cuando ya se anuncia. Antes está `noindex`, y
+    // declararla acá sería mandarle a Google dos señales opuestas.
+    ...(TURNOS_PUBLICADA
+      ? [
+          {
+            url: `${sitio.url}/turnos`,
+            lastModified: hoy,
+            changeFrequency: "monthly" as const,
+            priority: 0.9,
+          },
+        ]
+      : []),
     ...slugsDeProyecto.map((slug) => ({
       url: `${sitio.url}/proyectos/${slug}`,
       lastModified: hoy,

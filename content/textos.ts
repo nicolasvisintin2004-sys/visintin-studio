@@ -393,7 +393,7 @@ export const paginas = {
   proyectos: {
     titulo: "Proyectos",
     descripcion:
-      "Un proyecto para una PyME argentina que presentaba su oferta solo en Instagram: cómo se la encontraba en Google antes del sitio, qué se construyó y el sitio publicado, para recorrerlo.",
+      "Proyectos para PyMEs argentinas que presentaban su oferta solo en Instagram: una fábrica de motorhomes y una tienda de suplementos. La situación inicial de cada una, qué se construyó y el sitio publicado, para recorrerlo.",
   },
   planes: {
     titulo: "Cómo trabajo",

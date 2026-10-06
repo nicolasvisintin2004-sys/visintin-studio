@@ -9,8 +9,9 @@ export type Captura = {
    *
    *  · `trabajo` — capturas del sitio construido, de `procesar-capturas.mjs`.
    *  · `evidencia` — capturas del "antes", de `procesar-evidencia.mjs`.
+   *  · `turnos` — pantallas de Visintin Turnos, de `procesar-turnos.mjs`.
    */
-  carpeta?: "trabajo" | "evidencia";
+  carpeta?: "trabajo" | "evidencia" | "turnos";
   alt: string;
   /** Dimensiones explícitas y obligatorias: sin esto el CLS deja de ser cero. */
   ancho: number;

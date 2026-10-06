@@ -276,6 +276,122 @@ antes de abrir el carrito.
 
 ---
 
+## La página de Visintin Turnos (`/turnos`)
+
+Está hecha entera y **no se anuncia todavía**: se abre escribiendo la
+dirección, pero no está en el sitemap, lleva `noindex` y no hay ningún enlace
+que lleve a ella. Si se publica el sitio con esto adentro, nadie la encuentra
+salvo que le pases el link.
+
+### Para anunciarla, en `content/turnos.ts`
+
+| Qué | Dónde | Estado |
+| --- | --- | --- |
+| **Las direcciones de los dos demos** | `DEMOS` | Vacías. El producto no está publicado |
+| **Encender la página** | `TURNOS_PUBLICADA` | `false` |
+| Precio | la pregunta "¿Cuánto cuesta?" | "Te lo digo en la demo". Sin sección de precios |
+
+Con `DEMOS` cargado aparece sola la sección **"Probalo ahora"** —pestañas, el
+demo embebido en escritorio, el código QR y el botón de abrir en el celular— y
+el segundo botón de la portada pasa de "Ver cómo funciona" a "Probalo ahora".
+Mientras esté vacío, esa sección no existe: invitar a probar algo que no se
+puede abrir es peor que no decir nada.
+
+Con `TURNOS_PUBLICADA` en `true` la página entra al sitemap, deja de ser
+`noindex` y se enlaza desde el pie y desde una franja al final de Servicios.
+
+**No la enciendas antes de que el demo tenga dirección y los recordatorios por
+WhatsApp salgan de verdad.** La página promete las dos cosas.
+
+### Lo que la aplicación de turnos tiene que permitir
+
+Para que el demo se vea embebido, la aplicación tiene que dejar que este sitio
+la muestre adentro de un marco. Si responde con `X-Frame-Options: DENY` o con
+un `frame-ancestors` que no incluya `visintinstudio.com.ar`, el marco queda en
+blanco. Se configura del lado de la aplicación.
+
+Y no hay forma de detectarlo desde acá: cuando un marco embebido falla, el
+navegador avisa "cargó" igual que cuando anda. Por eso el enlace "Abrirlo en
+otra pestaña" está siempre a la vista. Probalo en escritorio el día que
+cargues las direcciones.
+
+### Tres respuestas que afirman algo del servicio
+
+Están en las preguntas frecuentes y hay que poder sostenerlas:
+
+- **"Se hace un mes de prueba y se mide."**
+- **"El alta lleva menos de una hora."**
+- **Los mensajes salen "desde un número del sistema".** Según
+  `LO-QUE-FALTA.md` del proyecto de turnos, ese número todavía es una decisión
+  pendiente.
+
+### Las capturas no son las ideales
+
+Salen de `capturas/` del proyecto de turnos y se procesan con:
+
+```bash
+node herramientas/procesar-turnos.mjs
+```
+
+Tres cosas a mejorar cuando se vuelvan a sacar:
+
+- **Están a densidad 1.** Las de escritorio miden 1366 px; en la página se
+  muestran chicas para que se vean nítidas. Con `deviceScaleFactor: 2` en
+  `scripts/capturas.ts` se podrían mostrar más grandes.
+- **No hay captura de la reserva de un consultorio chico.** El archivo
+  `reserva-inicio.png` que pedía el documento no existe. La portada usa la del
+  centro médico, que es la que tiene el atajo "Lo antes posible" en buena
+  resolución.
+- **La agenda del día se sacó un domingo y sale vacía**, así que el paso 2
+  muestra la semana. Y todas traen la insignia "N" de Next abajo a la
+  izquierda, que acá se recorta.
+
+### Decisiones distintas a las del documento
+
+- **El modo claro no existe.** El sitio es sólo oscuro. Se usan las capturas
+  `-oscuro` donde hay.
+- **Primera persona del singular.** El documento hablaba en plural ("te
+  mostramos"); la página del estudio se titula "Una persona, no una agencia".
+- **No está en el menú principal.** El menú es para PyMEs en general; la
+  página se enlaza desde Servicios y desde el pie.
+- **El chat de WhatsApp está escrito en HTML**, no es una captura: la que hay
+  mide 320 px y muestra una dirección de `localhost` adentro del mensaje. Los
+  textos son los que manda el sistema.
+- **"Lo que incluye" va numerado, sin íconos.** El sitio no tiene un juego de
+  íconos; doce dibujados para esta página serían otro sistema visual.
+- **La miniatura para compartir es sólo tipográfica**, como las demás: una
+  pantalla de celular en una miniatura de WhatsApp no se lee.
+- **En escritorio y en celular hay recortes distintos** de la agenda y los
+  resultados: la pantalla entera reducida al ancho de un teléfono es una
+  mancha.
+- **En el celular, el círculo flotante de WhatsApp se oculta** en esta página:
+  lo reemplaza la barra fija "Pedir una demo".
+
+### Lighthouse, en celular
+
+Medido contra el build local, sin compresión (Netlify sí comprime):
+
+| | `/turnos` | `/diagnostico`, de referencia |
+| --- | --- | --- |
+| Rendimiento | 77 | 80 |
+| Accesibilidad | 100 | — |
+| Buenas prácticas | 100 | — |
+| SEO | 69 | — |
+
+El **SEO en 69 es por el `noindex`**, que es a propósito; con la página
+encendida no queda ninguna otra falla. El **rendimiento no llega al 95** que
+pedía el documento, y no es por esta página: es el piso de Next que está
+explicado más abajo, en "El bundle no baja de 150 KB". Hay que volver a
+medirlo contra el sitio publicado.
+
+### Eventos nuevos en la medición
+
+`view_turnos`, `use_calculadora`, `open_demo` y `open_faq`. Los clics en
+"Pedir una demo" se cuentan como `click_whatsapp`, con un `origen` que empieza
+con `turnos_` y dice desde qué sección salió.
+
+---
+
 ## Contenido que me falta de tu parte
 
 ### Una foto tuya
