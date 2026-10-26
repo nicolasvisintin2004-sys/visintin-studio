@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Analitica } from "@/components/analitica";
 import { BotonFlotante } from "@/components/boton-flotante";
-import { Cursor } from "@/components/cursor";
 import { Navegacion } from "@/components/navegacion";
 import { Pie } from "@/components/pie";
-import { Preloader } from "@/components/preloader";
 import { Resplandor } from "@/components/resplandor";
 import { sitio } from "@/content/sitio";
 import { meta } from "@/content/textos";
@@ -59,18 +57,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Resplandor />
         <div className="grano" aria-hidden="true" />
 
-        {/* El preloader va en el layout y no en el inicio: el layout se monta
-            una sola vez por carga completa, así que el telón aparece al
-            entrar al sitio —por la página que sea— y no cada vez que se
-            vuelve al inicio desde otra sección. */}
-        <Preloader />
         <Navegacion />
 
         {children}
 
         <Pie />
         <BotonFlotante />
-        <Cursor />
         <Analitica />
       </body>
     </html>

@@ -1,8 +1,7 @@
 import { Acordeon } from "@/components/acordeon";
-import { botonTexto, Flecha } from "@/components/boton";
+import { botonTexto } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
-import { Revelado } from "@/components/revelado";
 import { preguntas as lista } from "@/content/preguntas";
 import { mensajes } from "@/content/sitio";
 import { preguntas as textos } from "@/content/textos";
@@ -19,7 +18,6 @@ export function Preguntas() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.etiqueta}
           titulo={textos.titulo}
           claseTitulo="max-w-[16ch]"
         />
@@ -28,7 +26,7 @@ export function Preguntas() {
           <Acordeon items={lista} />
         </div>
 
-        <Revelado>
+        <div>
           <div className="mt-16 flex flex-wrap items-baseline justify-between gap-6">
             <p className="t-subtitulo max-w-[18ch]">{textos.cierre}</p>
             <EnlaceWhatsApp
@@ -37,10 +35,9 @@ export function Preguntas() {
               className={botonTexto}
             >
               {textos.cierreAccion}
-              <Flecha />
             </EnlaceWhatsApp>
           </div>
-        </Revelado>
+        </div>
       </div>
     </section>
   );

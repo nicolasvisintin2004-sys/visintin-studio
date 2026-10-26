@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { botonTexto, Flecha } from "@/components/boton";
+import { botonTexto } from "@/components/boton";
 import { DatosEstructurados } from "@/components/datos-estructurados";
-import { Revelado } from "@/components/revelado";
 import { notaPorSlug, slugsDeNota } from "@/content/notas/registro";
 import { sitio } from "@/content/sitio";
 import { notas as textos } from "@/content/textos";
@@ -73,12 +72,9 @@ export default async function PaginaDeNota({
         <article className="contenedor pb-24 pt-36 lg:pt-44">
           <header className="max-w-[26ch]">
             <p className="t-dato mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-suave">
-              <time dateTime={nota.fecha}>{fechaLegible(nota.fecha)}</time>
-              <span aria-hidden="true" className="opacity-40">
-                ·
-              </span>
               <span>
-                {minutos} {textos.lectura}
+                <time dateTime={nota.fecha}>{fechaLegible(nota.fecha)}</time>, {minutos}{" "}
+                {textos.lectura}
               </span>
               {nota.borrador && (
                 <span className="rounded-full border border-acento px-3 py-1 text-[0.6875rem] uppercase tracking-[0.12em] text-acento">
@@ -93,16 +89,15 @@ export default async function PaginaDeNota({
           <p className="t-bajada mt-10 max-w-[46ch]">{nota.descripcion}</p>
 
           <div className="mt-20 border-t border-borde pt-20">
-            <Revelado>
+            <div>
               <Cuerpo />
-            </Revelado>
+            </div>
           </div>
         </article>
 
         <nav className="contenedor border-t border-borde py-14">
           <Link href="/notas" className={botonTexto}>
             {textos.volver}
-            <Flecha />
           </Link>
         </nav>
       </main>

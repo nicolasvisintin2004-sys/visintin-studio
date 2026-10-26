@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { botonPrimario, botonSecundario } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
-import { Revelado } from "@/components/revelado";
 import { mensajes } from "@/content/sitio";
 import { inicio } from "@/content/textos";
 
@@ -17,10 +15,8 @@ import { inicio } from "@/content/textos";
 export function CierreInicio() {
   return (
     <section className="contenedor pb-[var(--espacio-seccion)]">
-      <Revelado>
+      <div>
         <div className="relative rounded-xl border border-acento bg-superficie p-10 lg:p-16">
-          <LuzEnTarjeta />
-          <p className="t-etiqueta mb-6 text-acento">{inicio.cierreEtiqueta}</p>
           <h2 className="t-titulo max-w-[16ch]">{inicio.cierreTitulo}</h2>
           <p className="t-cuerpo mt-6">{inicio.cierreTexto}</p>
 
@@ -29,7 +25,6 @@ export function CierreInicio() {
               mensaje={mensajes.general}
               origen="inicio_cierre"
               className={botonPrimario}
-              magnetico
             >
               {inicio.cierreAccion}
             </EnlaceWhatsApp>
@@ -38,7 +33,7 @@ export function CierreInicio() {
             </Link>
           </div>
         </div>
-      </Revelado>
+      </div>
     </section>
   );
 }

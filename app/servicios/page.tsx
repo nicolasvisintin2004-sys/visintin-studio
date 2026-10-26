@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { botonTexto, Flecha } from "@/components/boton";
+import { botonTexto } from "@/components/boton";
 import { Pedidos } from "@/components/pedidos";
 import { Servicios } from "@/components/servicios";
 import { SiguientePagina } from "@/components/siguiente-pagina";
@@ -36,8 +36,7 @@ export default function PaginaServicios() {
               </p>
             </div>
             <Link href="/turnos" className={`${botonTexto} shrink-0`}>
-              Ver el producto <Flecha />
-            </Link>
+              Ver el producto            </Link>
           </div>
         </section>
       )}

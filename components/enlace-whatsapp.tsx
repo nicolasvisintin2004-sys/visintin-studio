@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMagnetico } from "@/hooks/use-magnetico";
 import { linkWhatsApp } from "@/content/sitio";
 import { registrarClicWhatsApp } from "@/lib/analitica";
 
@@ -12,15 +11,6 @@ type Props = {
   origen: string;
   children: ReactNode;
   className?: string;
-  /**
-   * Hace que el botón se corra hacia el cursor cuando se le acerca.
-   *
-   * Va nada más en el botón principal de cada página que tiene uno: el hero y
-   * el cierre del inicio, y la tarjeta de WhatsApp de contacto. Puesto en
-   * todos los enlaces a WhatsApp del sitio, el gesto dejaría de señalar cuál
-   * es el importante.
-   */
-  magnetico?: boolean;
   /** Para lectores de pantalla, cuando el texto visible no alcanza. */
   "aria-label"?: string;
 };
@@ -37,16 +27,10 @@ export function EnlaceWhatsApp({
   origen,
   children,
   className,
-  magnetico = false,
   "aria-label": etiqueta,
 }: Props) {
-  // El hook se llama siempre —las reglas de los hooks no admiten otra cosa— y
-  // el ref se cuelga sólo si se pidió el efecto.
-  const ref = useMagnetico<HTMLAnchorElement>();
-
   return (
     <a
-      ref={magnetico ? ref : undefined}
       href={linkWhatsApp(mensaje)}
       target="_blank"
       rel="noopener noreferrer"

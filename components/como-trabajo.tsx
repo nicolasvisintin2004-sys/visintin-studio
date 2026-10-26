@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { botonPrimario, botonSecundario, botonTexto, Flecha } from "@/components/boton";
+import { botonPrimario, botonSecundario, botonTexto } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
 import { Planes } from "@/components/planes";
-import { Revelado } from "@/components/revelado";
 import { diagnostico } from "@/content/diagnostico";
 import { ramas } from "@/content/planes";
 import { mensajes } from "@/content/sitio";
@@ -28,7 +26,6 @@ export function ComoTrabajo() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h1"
-          etiqueta={textos.etiqueta}
           titulo={textos.titulo}
           bajada={textos.bajada}
           claseTitulo="max-w-[16ch]"
@@ -47,15 +44,14 @@ export function ComoTrabajo() {
       <Planes />
 
       <div className="contenedor">
-        <Revelado>
+        <div>
           <div className="mt-16 flex flex-wrap items-baseline justify-between gap-6">
             <p className="t-subtitulo max-w-[20ch]">{textos.cierre}</p>
             <EnlaceWhatsApp mensaje={mensajes.general} origen="como_trabajo" className={botonTexto}>
               {textos.cierreAccion}
-              <Flecha />
             </EnlaceWhatsApp>
           </div>
-        </Revelado>
+        </div>
       </div>
     </section>
   );
@@ -72,9 +68,8 @@ export function ComoTrabajo() {
 function EntradaPorDiagnostico() {
   return (
     <>
-      <Revelado>
+      <div>
         <div className="relative mt-16 rounded-xl border border-acento bg-superficie p-8 lg:mt-24 lg:p-12">
-          <LuzEnTarjeta />
 
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -92,7 +87,7 @@ function EntradaPorDiagnostico() {
             </div>
           </div>
         </div>
-      </Revelado>
+      </div>
 
       {/* El tramo vertical del diagrama: la única línea que baja del
           diagnóstico hacia las tres ramas. Decorativa y oculta a los
@@ -108,13 +103,13 @@ function EntradaPorDiagnostico() {
 function Ramas() {
   return (
     <>
-      <Revelado>
+      <div>
         <p className="t-etiqueta text-center">{textos.ramasEtiqueta}</p>
-      </Revelado>
+      </div>
 
       <ul className="mt-10 grid gap-px border border-borde bg-borde lg:grid-cols-3">
-        {ramas.map((rama, i) => (
-          <Revelado as="li" key={rama.slug} retardo={i * 90} className="bg-fondo">
+        {ramas.map((rama) => (
+          <li key={rama.slug} className="bg-fondo">
             <div className="flex h-full flex-col p-8 lg:p-10">
               <p className="t-etiqueta">{rama.para}</p>
               <h2 className="t-subtitulo mt-4">{rama.nombre}</h2>
@@ -145,7 +140,7 @@ function Ramas() {
                 </div>
               )}
             </div>
-          </Revelado>
+          </li>
         ))}
       </ul>
     </>

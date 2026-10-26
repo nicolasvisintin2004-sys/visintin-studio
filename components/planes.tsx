@@ -1,8 +1,6 @@
-import { botonPrimario, botonSecundario, botonTexto, Flecha } from "@/components/boton";
+import { botonPrimario, botonSecundario, botonTexto } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
-import { Revelado } from "@/components/revelado";
 import { mantenimiento, planes as listaDePlanes } from "@/content/planes";
 import { mensajes } from "@/content/sitio";
 import { planes as textos } from "@/content/textos";
@@ -24,21 +22,19 @@ export function Planes() {
     <div id="planes" className="contenedor pt-24 lg:pt-32">
       <EncabezadoSeccion
         nivel="h2"
-        etiqueta={textos.planesEtiqueta}
         titulo={textos.planesTitulo}
         bajada={textos.planesBajada}
         claseTitulo="max-w-[18ch] text-[clamp(1.875rem,4vw,3.25rem)]"
       />
 
       <ul className="mt-16 grid gap-6 lg:mt-20 lg:grid-cols-3 lg:items-start">
-        {listaDePlanes.map((plan, i) => (
-          <Revelado as="li" key={plan.slug} retardo={i * 90}>
+        {listaDePlanes.map((plan) => (
+          <li key={plan.slug}>
             <article
               className={`relative flex h-full flex-col rounded-xl border bg-superficie p-8 lg:p-10 ${
                 plan.recomendado ? "border-acento lg:-mt-6 lg:pb-14 lg:pt-14" : "border-borde"
               }`}
             >
-              <LuzEnTarjeta />
               {plan.recomendado && (
                 <p className="t-dato mb-6 text-acento">{textos.recomendado}</p>
               )}
@@ -80,11 +76,11 @@ export function Planes() {
                 </EnlaceWhatsApp>
               </div>
             </article>
-          </Revelado>
+          </li>
         ))}
       </ul>
 
-      <Revelado>
+      <div>
         <div className="mt-10 rounded-xl border border-borde p-8">
           <h3 className="t-dato text-texto">{mantenimiento.titulo}</h3>
           <p className="t-cuerpo mt-3 text-[0.9375rem]">{mantenimiento.texto}</p>
@@ -94,10 +90,9 @@ export function Planes() {
             className={`${botonTexto} mt-5`}
           >
             {textos.accionMantenimiento}
-            <Flecha />
           </EnlaceWhatsApp>
         </div>
-      </Revelado>
+      </div>
     </div>
   );
 }

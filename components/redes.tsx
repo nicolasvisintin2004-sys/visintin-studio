@@ -1,4 +1,3 @@
-import { Revelado } from "@/components/revelado";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { redesActivas } from "@/content/social";
 import { inicio, pie } from "@/content/textos";
@@ -36,7 +35,6 @@ export function RedesEnInicio() {
     <section className="contenedor pb-[var(--espacio-seccion)]">
       <EncabezadoSeccion
         nivel="h2"
-        etiqueta={inicio.redesEtiqueta}
         titulo={inicio.redesTitulo}
         claseTitulo="max-w-[16ch]"
       />
@@ -52,8 +50,8 @@ export function RedesEnInicio() {
           columnas[redesActivas.length] ?? "sm:grid-cols-3"
         }`}
       >
-        {redesActivas.map((red, i) => (
-          <Revelado as="li" key={red.slug} retardo={i * 80} className="bg-fondo">
+        {redesActivas.map((red) => (
+          <li key={red.slug} className="bg-fondo">
             <a
               href={red.url}
               target="_blank"
@@ -75,7 +73,7 @@ export function RedesEnInicio() {
                 {red.rol}
               </span>
             </a>
-          </Revelado>
+          </li>
         ))}
       </ul>
     </section>

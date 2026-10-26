@@ -19,7 +19,6 @@
 
   --font-display: var(--fuente-display), Arial, Helvetica, sans-serif;
   --font-cuerpo: var(--fuente-cuerpo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-mono: var(--fuente-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Aire entre secciones. Más del que parece necesario, a propósito. */
   --espacio-seccion: clamp(7rem, 14vw, 14rem);
@@ -198,20 +197,34 @@
     color: var(--color-suave);
   }
 
+  /*
+   * El rótulo chico: el nombre de un producto arriba de su bloque, la
+   * columna del pie, el "para quién es" de cada plan.
+   *
+   * Era monoespaciada, en mayúsculas y con 0.16em de espaciado, y estaba
+   * arriba de cada título del sitio. Ese tratamiento es el que más rápido
+   * delata una plantilla, y repetido en todas las secciones dejaba de
+   * distinguir nada. Ahora es la letra del cuerpo, en minúscula normal y un
+   * poco más gruesa: se lee como un rótulo sin gritar, y quedó sólo donde
+   * dice algo que el título no dice.
+   */
   .t-etiqueta {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 500;
     /* 1.4 y no 1: las etiquetas largas de las tarjetas de plan se parten en
        dos líneas y con interlineado 1 quedaban encimadas. */
     line-height: 1.4;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
     color: var(--color-suave);
   }
 
+  /*
+   * Los datos: precios, plazos, cantidades, pies de captura.
+   *
+   * También era monoespaciada. Ahora es la letra del cuerpo con cifras
+   * tabulares, que es lo único que la mono aportaba de verdad: que los
+   * números de una columna queden alineados.
+   */
   .t-dato {
-    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     font-size: 0.875rem;
   }
@@ -259,32 +272,6 @@
   background-repeat: repeat;
 }
 
-/* ───────────────────────────────────────────────────────────────
-   ENTRADAS POR SCROLL
-   El desenfoque que se resuelve es lo que hace que se sienta caro
-   en vez de rebotado. El estado inicial se pone con JavaScript
-   (ver components/revelado.tsx): si el script no corre, el
-   contenido queda visible y legible desde el primer frame.
-   ─────────────────────────────────────────────────────────────── */
-[data-revelar] {
-  transition:
-    opacity 900ms var(--curva),
-    transform 900ms var(--curva),
-    filter 900ms var(--curva);
-}
-
-[data-revelar="oculto"] {
-  opacity: 0;
-  transform: translateY(28px);
-  filter: blur(8px);
-}
-
-[data-revelar="visible"] {
-  opacity: 1;
-  transform: none;
-  filter: blur(0);
-}
-
 /* Entrada por máscara del título del hero, línea por línea. */
 .linea-mascara {
   display: block;
@@ -319,28 +306,6 @@
     opacity: 1;
     transform: none;
   }
-}
-
-/* ───────────────────────────────────────────────────────────────
-   TÍTULOS QUE ENTRAN LÍNEA POR LÍNEA
-
-   La misma máscara del hero, pero disparada por scroll en lugar de
-   al cargar. Las líneas las mide `components/titulo-revelado.tsx`
-   en el cliente: acá está nada más el estado quieto y el estado
-   andando.
-
-   Sin JavaScript, sin medición o con movimiento reducido, el
-   título nunca recibe la clase y queda como texto plano visible.
-   ─────────────────────────────────────────────────────────────── */
-.titulo-revelado .linea-mascara > span {
-  /* Pisa la animación inmediata que usa el hero: acá se espera. */
-  animation: none;
-  transform: translateY(105%);
-}
-
-.titulo-revelado[data-entrar="si"] .linea-mascara > span {
-  animation: subir 900ms var(--curva) forwards;
-  animation-delay: var(--retardo, 0ms);
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -380,46 +345,14 @@
 }
 
 /* ───────────────────────────────────────────────────────────────
-   DERIVA DE LAS CAPTURAS
-
-   La imagen se mueve un poco más lento que la página dentro de su
-   marco. Es la única paralaje del sitio y es deliberadamente corta
-   —un 4% para cada lado— porque el efecto se nota cuando no se
-   nota: si la imagen se despega del marco, deja de leerse como
-   profundidad y pasa a leerse como un truco.
-
-   También es scroll-driven puro. El `scale(1.09)` está para que el
-   recorrido vertical no llegue nunca a descubrir el borde.
-   ─────────────────────────────────────────────────────────────── */
-@supports (animation-timeline: view()) {
-  @media (min-width: 768px) {
-    .deriva img {
-      animation: derivar linear both;
-      animation-timeline: view();
-      animation-range: entry 0% exit 100%;
-      will-change: transform;
-    }
-  }
-}
-
-@keyframes derivar {
-  from {
-    transform: translateY(-4%) scale(1.09);
-  }
-  to {
-    transform: translateY(4%) scale(1.09);
-  }
-}
-
-/* ───────────────────────────────────────────────────────────────
    CAMBIO DE PÁGINA
 
    Sólo opacidad, y es una restricción técnica y no una preferencia:
    `transform`, `filter` y `clip-path` sobre este contenedor
    crearían un bloque contenedor nuevo, y entonces todo lo que
-   adentro es `position: fixed` —el panel que sigue al cursor en
-   Servicios, el pin de GSAP del portfolio— se posicionaría contra
-   este div en vez de contra la ventana. Se rompería sin avisar.
+   adentro es `position: fixed` —la barra de Turnos en el celular,
+   el pin de GSAP del portfolio— se posicionaría contra este div en
+   vez de contra la ventana. Se rompería sin avisar.
 
    Corta a propósito: el sitio es estático y las páginas están
    precargadas, así que la navegación es instantánea. Una
@@ -435,39 +368,6 @@
   }
   to {
     opacity: 1;
-  }
-}
-
-/* ───────────────────────────────────────────────────────────────
-   CINTA
-   ─────────────────────────────────────────────────────────────── */
-/*
- * La velocidad y el sentido los escribe `components/cinta.tsx` según el
- * scroll: quieta la cinta avanza sola y despacio, y al desplazarse la
- * página acelera y se da vuelta acompañando el movimiento.
- *
- * Se anima con `animation-duration` y `animation-direction` en vez de
- * mover la posición a mano en cada cuadro: la animación sigue corriendo
- * en el compositor y el JavaScript nada más le cambia dos propiedades,
- * que es la diferencia entre un efecto gratis y uno que trabe el scroll.
- */
-.cinta {
-  display: flex;
-  width: max-content;
-  animation: desplazar var(--velocidad, 70s) linear infinite;
-  animation-direction: var(--sentido, normal);
-  will-change: transform;
-}
-
-/* Se frena al pasarle el mouse por encima. No es un adorno: los rubros pasan
-   lento pero pasan, y si alguien se detuvo ahí es porque está leyendo. */
-.cinta:hover {
-  animation-play-state: paused;
-}
-
-@keyframes desplazar {
-  to {
-    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -501,13 +401,6 @@
     scroll-behavior: auto !important;
   }
 
-  [data-revelar],
-  [data-revelar="oculto"] {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-
   .linea-mascara > span,
   .entra-tarde {
     transform: none !important;
@@ -515,37 +408,11 @@
   }
 
   /*
-   * Lo nuevo también se apaga, y de la forma correcta para cada caso.
-   *
-   * La deriva de las capturas y el progreso de lectura son animaciones
-   * dirigidas por scroll: no las frena `animation-duration`, porque su
-   * línea de tiempo es la posición de la página y no el reloj. Hay que
-   * desconectarles la línea de tiempo.
-   *
-   * La barra de progreso desaparece del todo en vez de quedar llena: una
+   * El progreso de lectura es una animación dirigida por scroll: no la frena
+   * `animation-duration`, porque su línea de tiempo es la posición de la
+   * página y no el reloj. Se apaga del todo en vez de quedar llena: una
    * línea de bronce estática bajo la barra no significa nada.
    */
-  .titulo-revelado .linea-mascara > span {
-    animation: none !important;
-    transform: none !important;
-  }
-
-  /*
-   * Las dos van con `animation: none` y no con `animation-timeline: none`.
-   *
-   * Desconectarles la línea de tiempo deja la animación existiendo: sigue
-   * aplicada, pasa a correr contra el reloj del documento y termina clavada
-   * en su último fotograma, que para la deriva es la imagen corrida un 4%.
-   * Un `transform: none !important` alcanza para taparlo —las declaraciones
-   * importantes le ganan a las animaciones en la cascada— pero es apoyarse
-   * en una regla sutil para arreglar algo que no debería estar pasando.
-   * Apagarla es más corto y no deja nada corriendo.
-   */
-  .deriva img {
-    animation: none !important;
-    transform: none !important;
-  }
-
   .progreso-lectura {
     animation: none !important;
     display: none;
@@ -556,7 +423,4 @@
     opacity: 1 !important;
   }
 
-  .cinta {
-    animation: none !important;
-  }
 }

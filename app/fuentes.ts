@@ -1,8 +1,7 @@
-import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
- * Las tres familias del sitio.
+ * Las dos familias del sitio.
  *
  * Clash Display y Satoshi se bajaron de Fontshare en su versión variable y
  * viven en `app/fuentes/`: un archivo por familia cubre todos los pesos, así
@@ -42,12 +41,12 @@ export const cuerpo = localFont({
   adjustFontFallback: false,
 });
 
-export const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--fuente-mono",
-  display: "swap",
-  weight: ["400", "500"],
-});
-
-/** Las tres clases juntas, para colgar del `<html>`. */
-export const clasesDeFuente = `${display.variable} ${cuerpo.variable} ${mono.variable}`;
+/**
+ * Las dos clases juntas, para colgar del `<html>`.
+ *
+ * Había una tercera, JetBrains Mono, para las etiquetas y los datos. Se sacó:
+ * la mono en mayúsculas espaciadas arriba de cada título era el rasgo más de
+ * plantilla del sitio, y lo único útil que aportaba —cifras alineadas— lo da
+ * Satoshi con `tabular-nums`. Son unos 30 KB menos en cada primera visita.
+ */
+export const clasesDeFuente = `${display.variable} ${cuerpo.variable}`;

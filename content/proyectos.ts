@@ -24,15 +24,6 @@ export type Captura = {
   formato: "escritorio" | "movil" | "retrato";
   /** Pie de la captura. Dice qué se está mirando, no adjetivos. */
   pie: string;
-  /**
-   * `false` apaga la deriva en esta captura.
-   *
-   * La deriva agranda la imagen un 9 % para tener margen al moverla, así que
-   * recorta un 4,5 % de cada costado. En casi todas las capturas ahí no hay
-   * nada; en la del carrito de BULK, que es un panel pegado al borde derecho,
-   * se comía los precios y los botones de cantidad.
-   */
-  deriva?: false;
 };
 
 export type Proyecto = {
@@ -280,8 +271,6 @@ export const proyectos: readonly Proyecto[] = [
         alt: "El carrito de BULK abierto con tres productos, la barra de lo que falta para el envío gratis y el ahorro pagando en efectivo",
         pie: "El carrito muestra cuánto falta para el envío gratis y cuánto se ahorra pagando en efectivo en el local.",
         ...ESCRITORIO,
-        // El panel va pegado al borde derecho: con la deriva se cortan los precios.
-        deriva: false,
       },
       {
         archivo: "bulk-movil",

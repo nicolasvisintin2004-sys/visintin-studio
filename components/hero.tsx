@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { botonPrimario, botonSecundario } from "@/components/boton";
-import { EnlaceMagnetico } from "@/components/enlace-magnetico";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { disponibilidad, mensajes } from "@/content/sitio";
 import { hero } from "@/content/textos";
@@ -19,10 +19,6 @@ import { hero } from "@/content/textos";
 export function Hero() {
   return (
     <section className="contenedor relative flex min-h-[88svh] flex-col justify-end pb-16 pt-32 sm:pb-24">
-      <p className="t-etiqueta entra-tarde mb-8" style={{ "--retardo": "80ms" } as Estilo}>
-        {hero.etiqueta}
-      </p>
-
       <h1 className="t-display">
         {hero.titulo.map((linea, i) => (
           <span key={linea} className="linea-mascara">
@@ -50,9 +46,9 @@ export function Hero() {
             le pide justamente eso. El diagnóstico le ofrece algo concreto,
             acotado y con precio, que es una decisión bastante más fácil.
           */}
-          <EnlaceMagnetico href="/diagnostico" className={botonPrimario}>
+          <Link href="/diagnostico" className={botonPrimario}>
             {hero.accionPrincipal}
-          </EnlaceMagnetico>
+          </Link>
           <EnlaceWhatsApp
             mensaje={mensajes.general}
             origen="hero"

@@ -100,8 +100,6 @@ export const capturasTurnos = {
     ancho: 1366,
     alto: 840,
     formato: "escritorio",
-    // Las columnas llegan hasta los dos bordes: con la deriva se cortan.
-    deriva: false,
     movil: { archivo: "agenda-movil", ancho: 480, alto: 500 },
   },
   resultados: {
@@ -112,7 +110,6 @@ export const capturasTurnos = {
     ancho: 1366,
     alto: 775,
     formato: "escritorio",
-    deriva: false,
     movil: { archivo: "resultados-movil", ancho: 480, alto: 205 },
   },
 } as const satisfies Record<string, CapturaDeTurnos>;

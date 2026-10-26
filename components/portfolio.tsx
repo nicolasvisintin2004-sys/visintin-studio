@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { botonTexto, Flecha } from "@/components/boton";
+import { botonTexto } from "@/components/boton";
 import { Captura } from "@/components/captura";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
-import { Revelado } from "@/components/revelado";
 import { proyectos } from "@/content/proyectos";
 import { mensajes } from "@/content/sitio";
 import { portfolio as textos } from "@/content/textos";
@@ -121,7 +120,6 @@ export function Portfolio() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h1"
-          etiqueta={textos.etiqueta}
           titulo={textos.titulo}
           bajada={textos.bajada}
           claseTitulo="max-w-[14ch]"
@@ -166,7 +164,7 @@ export function Portfolio() {
               : "contenedor mt-16 grid gap-16 lg:mt-20"
           }
         >
-          {proyectos.map((proyecto, i) => {
+          {proyectos.map((proyecto) => {
             const portada = proyecto.capturas[0];
 
             return (
@@ -176,8 +174,7 @@ export function Portfolio() {
                   horizontal ? "flex w-[min(58vw,860px)] shrink-0 flex-col" : ""
                 }
               >
-                <Revelado
-                  retardo={horizontal ? 0 : i * 80}
+                <div
                   className={horizontal ? "flex min-h-0 flex-1 flex-col" : ""}
                 >
                   <article className={horizontal ? "flex min-h-0 flex-1 flex-col" : ""}>
@@ -201,11 +198,10 @@ export function Portfolio() {
                     <div className="mt-6 flex shrink-0 flex-wrap items-start justify-between gap-x-8 gap-y-4">
                       <div className="min-w-0">
                         <p className="t-dato flex flex-wrap items-center gap-x-3 gap-y-1 text-suave">
-                          <span>{proyecto.ubicacion}</span>
-                          <span aria-hidden="true" className="opacity-40">
-                            ·
+                          {/* Una frase y no datos sueltos separados por puntos. */}
+                          <span>
+                            {proyecto.rubro} en {proyecto.ubicacion}
                           </span>
-                          <span>{proyecto.rubro}</span>
                           <Estado proyecto={proyecto} />
                         </p>
                         <h2 className="t-subtitulo mt-3">{proyecto.nombre}</h2>
@@ -213,7 +209,6 @@ export function Portfolio() {
 
                       <Link href={`/proyectos/${proyecto.slug}`} className={botonTexto}>
                         {textos.verProyecto}
-                        <Flecha />
                       </Link>
                     </div>
 
@@ -225,7 +220,7 @@ export function Portfolio() {
                       <p className="t-cuerpo mt-4 max-w-[52ch]">{proyecto.resumen}</p>
                     )}
                   </article>
-                </Revelado>
+                </div>
               </li>
             );
           })}
@@ -233,7 +228,7 @@ export function Portfolio() {
       </div>
 
       <div className="contenedor">
-        <Revelado>
+        <div>
           <div className="mt-16 flex flex-wrap items-baseline justify-between gap-6">
             <p className="t-subtitulo max-w-[18ch]">{textos.cierre}</p>
             <EnlaceWhatsApp
@@ -242,10 +237,9 @@ export function Portfolio() {
               className={botonTexto}
             >
               {textos.cierreAccion}
-              <Flecha />
             </EnlaceWhatsApp>
           </div>
-        </Revelado>
+        </div>
       </div>
     </section>
   );

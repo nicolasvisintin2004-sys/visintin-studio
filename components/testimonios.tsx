@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Revelado } from "@/components/revelado";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { testimonios } from "@/content/testimonios";
 
@@ -43,8 +42,8 @@ export function Testimonios({ titulo = "Lo que dijeron", proyecto }: Props) {
             lista.length > 1 ? "lg:grid-cols-2" : ""
           }`}
         >
-          {lista.map((testimonio, i) => (
-            <Revelado as="li" key={testimonio.nombre} retardo={i * 80} className="bg-fondo">
+          {lista.map((testimonio) => (
+            <li key={testimonio.nombre} className="bg-fondo">
               <figure className="flex h-full flex-col p-8 lg:p-10">
                 <span aria-hidden="true" className="font-display text-4xl leading-none text-acento">
                   &ldquo;
@@ -69,7 +68,7 @@ export function Testimonios({ titulo = "Lo que dijeron", proyecto }: Props) {
                   )}
                 </figcaption>
               </figure>
-            </Revelado>
+            </li>
           ))}
         </ul>
       </div>

@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { botonPrimario, botonSecundario, botonTexto, Flecha } from "@/components/boton";
+import { botonPrimario, botonSecundario, botonTexto } from "@/components/boton";
 import { CapturaEnmarcada } from "@/components/captura";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { MedirVista } from "@/components/medir-vista";
-import { Revelado } from "@/components/revelado";
 import { proyectoPorSlug, proyectos, slugsDeProyecto } from "@/content/proyectos";
 import { mensajes } from "@/content/sitio";
 import { caso } from "@/content/textos";
@@ -67,16 +66,8 @@ export default async function PaginaDeProyecto({
               </Link>
             </nav>
 
-            <p className="t-etiqueta mb-7 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <span>{proyecto.ubicacion}</span>
-              <span aria-hidden="true" className="opacity-40">
-                ·
-              </span>
-              <span>{proyecto.rubro}</span>
-              <span aria-hidden="true" className="opacity-40">
-                ·
-              </span>
-              <span>{proyecto.anio}</span>
+            <p className="t-etiqueta mb-7">
+              {proyecto.rubro} en {proyecto.ubicacion}, {proyecto.anio}.
             </p>
 
             <h1 className="t-display text-[clamp(2.75rem,7.5vw,6rem)]">{proyecto.nombre}</h1>
@@ -143,11 +134,11 @@ export default async function PaginaDeProyecto({
                 titulo={caso.antes}
                 claseTitulo="text-[clamp(1.75rem,3.5vw,2.75rem)]"
               />
-              <Revelado>
+              <div>
                 <span aria-hidden="true" className="mt-7 block h-px w-20 bg-acento" />
-              </Revelado>
+              </div>
             </div>
-            <Revelado retardo={100}>
+            <div>
               {/* El problema va en varios párrafos y no en uno solo: doscientas
                   palabras seguidas no las lee nadie. */}
               <div className="flex flex-col gap-6">
@@ -157,7 +148,7 @@ export default async function PaginaDeProyecto({
                   </p>
                 ))}
               </div>
-            </Revelado>
+            </div>
           </div>
 
           {/*
@@ -168,13 +159,13 @@ export default async function PaginaDeProyecto({
           */}
           {proyecto.evidencia && proyecto.evidencia.length > 0 && (
             <section className="contenedor pt-20 lg:pt-28">
-              <Revelado>
+              <div>
                 <h2 className="t-etiqueta">{caso.evidencia}</h2>
-              </Revelado>
+              </div>
 
               <div className="mt-10 flex flex-col gap-16 lg:mt-14 lg:gap-20">
-                {proyecto.evidencia.map((captura, i) => (
-                  <Revelado key={captura.archivo} retardo={i * 60}>
+                {proyecto.evidencia.map((captura) => (
+                  <div key={captura.archivo}>
                     <CapturaEnmarcada
                       captura={captura}
                       sizes={
@@ -183,14 +174,14 @@ export default async function PaginaDeProyecto({
                           : "(min-width: 1024px) 82rem, 100vw"
                       }
                     />
-                  </Revelado>
+                  </div>
                 ))}
               </div>
             </section>
           )}
 
           <div className="contenedor grid gap-14 pt-24 lg:grid-cols-[1fr_1.2fr] lg:gap-20 lg:pt-32">
-            <Revelado>
+            <div>
               <EncabezadoSeccion
                 nivel="h2"
                 titulo={caso.construido}
@@ -207,9 +198,9 @@ export default async function PaginaDeProyecto({
                   </li>
                 ))}
               </ul>
-            </Revelado>
+            </div>
 
-            <Revelado retardo={100}>
+            <div>
               <ul className="flex flex-col">
                 {proyecto.construido.map((item, i) => (
                   <li
@@ -223,7 +214,7 @@ export default async function PaginaDeProyecto({
                   </li>
                 ))}
               </ul>
-            </Revelado>
+            </div>
           </div>
 
           <section className="contenedor pt-24 lg:pt-36">
@@ -234,21 +225,21 @@ export default async function PaginaDeProyecto({
             />
 
             <div className="mt-14 flex flex-col gap-20 lg:gap-28">
-              {resto.map((captura, i) => (
-                <Revelado key={captura.archivo} retardo={i * 60}>
+              {resto.map((captura) => (
+                <div key={captura.archivo}>
                   <CapturaEnmarcada
                     captura={captura}
                     sizes={
                       captura.formato === "movil" ? "280px" : "(min-width: 1024px) 82rem, 100vw"
                     }
                   />
-                </Revelado>
+                </div>
               ))}
             </div>
           </section>
 
           <section className="contenedor seccion">
-            <Revelado>
+            <div>
               <div className="rounded-xl border border-borde bg-superficie p-10 lg:p-16">
                 <p className="t-etiqueta mb-6">{caso.enLineaEtiqueta}</p>
                 <h2 className="t-titulo max-w-[16ch] text-[clamp(1.75rem,4vw,3rem)]">
@@ -274,7 +265,7 @@ export default async function PaginaDeProyecto({
                   </EnlaceWhatsApp>
                 </div>
               </div>
-            </Revelado>
+            </div>
           </section>
         </article>
 
@@ -288,7 +279,6 @@ export default async function PaginaDeProyecto({
           </div>
           <Link href={`/proyectos/${siguiente.slug}`} className={botonTexto}>
             {caso.verSiguiente}
-            <Flecha />
           </Link>
         </nav>
       </main>

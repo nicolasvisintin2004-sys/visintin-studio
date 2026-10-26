@@ -56,7 +56,7 @@ export function CalculadoraTurnos() {
   const perdido = Math.round(cantidad * (faltan / 10) * valor);
 
   const campo =
-    "w-full rounded-lg border border-borde bg-fondo px-4 py-3.5 font-mono text-[1.0625rem] tabular-nums text-texto transition-colors duration-300 focus:border-acento focus:outline-none";
+    "w-full rounded-lg border border-borde bg-fondo px-4 py-3.5 text-[1.0625rem] tabular-nums text-texto transition-colors duration-300 focus:border-acento focus:outline-none";
 
   return (
     <div className="rounded-lg border border-borde bg-superficie p-6 sm:p-8 lg:p-10">
@@ -100,7 +100,7 @@ export function CalculadoraTurnos() {
             />
             <output
               htmlFor={idFaltan}
-              className="w-9 shrink-0 text-right font-mono text-[1.0625rem] tabular-nums"
+              className="w-9 shrink-0 text-right text-[1.0625rem] tabular-nums"
             >
               {decimal.format(faltan)}
             </output>
@@ -114,7 +114,7 @@ export function CalculadoraTurnos() {
           <div className="relative">
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-suave"
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-suave"
             >
               $
             </span>

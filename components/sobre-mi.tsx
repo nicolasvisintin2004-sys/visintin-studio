@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import { Contador } from "@/components/contador";
-import { Revelado } from "@/components/revelado";
 import { sobreMi as textos } from "@/content/textos";
 
 /**
@@ -18,20 +17,16 @@ export function SobreMi() {
   return (
     <section id="estudio" className="seccion">
       <div className="contenedor">
-        <Revelado>
-          <p className="t-etiqueta mb-6">{textos.etiqueta}</p>
-        </Revelado>
-
         <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-          <Revelado>
+          <div>
             <h1 className="t-titulo max-w-[10ch]">{textos.titulo}</h1>
             <span
               aria-hidden="true"
               className="mt-8 block h-px w-24 bg-acento"
             />
-          </Revelado>
+          </div>
 
-          <Revelado retardo={120}>
+          <div>
             <div className="flex flex-col gap-6">
               {textos.parrafos.map((parrafo, i) => (
                 <Fragment key={parrafo}>
@@ -46,10 +41,10 @@ export function SobreMi() {
                 </Fragment>
               ))}
             </div>
-          </Revelado>
+          </div>
         </div>
 
-        <Revelado>
+        <div>
           <dl className="mt-20 grid grid-cols-2 gap-px border border-borde bg-borde lg:mt-28 lg:grid-cols-4">
             {textos.datos.map((dato) => (
               <div
@@ -66,7 +61,7 @@ export function SobreMi() {
               </div>
             ))}
           </dl>
-        </Revelado>
+        </div>
       </div>
     </section>
   );

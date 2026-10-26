@@ -16,18 +16,13 @@ export const botonPrimario = `${base} bg-texto text-fondo hover:bg-acento hover:
 
 export const botonSecundario = `${base} border border-borde text-texto hover:border-acento hover:text-acento`;
 
-/** Para los CTA de cierre de sección: más discreto, sin caja. */
+/**
+ * Para los CTA de cierre de sección: más discreto, sin caja.
+ *
+ * Se señala con un subrayado y no con una flecha al final. La flecha estaba
+ * en quince enlaces del sitio, y en todos lados deja de indicar nada: un
+ * enlace ya se sabe que lleva a otro lado. El subrayado dice lo mismo y en
+ * hover se pinta de bronce, que es la respuesta a lo que hace la persona.
+ */
 export const botonTexto =
-  "group inline-flex items-center gap-3 text-[0.9375rem] font-medium text-texto transition-colors duration-300 hover:text-acento";
-
-/** La flecha que acompaña al botón de texto y se corre en hover. */
-export function Flecha() {
-  return (
-    <span
-      aria-hidden="true"
-      className="inline-block transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-1"
-    >
-      →
-    </span>
-  );
-}
+  "inline-flex items-center text-[0.9375rem] font-medium text-texto underline decoration-borde decoration-1 underline-offset-[6px] transition-colors duration-300 hover:text-acento hover:decoration-acento";

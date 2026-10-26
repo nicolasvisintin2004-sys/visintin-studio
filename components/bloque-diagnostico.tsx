@@ -1,7 +1,5 @@
+import Link from "next/link";
 import { botonPrimario } from "@/components/boton";
-import { EnlaceMagnetico } from "@/components/enlace-magnetico";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
-import { Revelado } from "@/components/revelado";
 import {
   PRECIO_DIAGNOSTICO,
   PRECIO_SIN_DEFINIR,
@@ -25,9 +23,8 @@ export function BloqueDiagnostico() {
 
   return (
     <section className="contenedor pb-[var(--espacio-seccion)]">
-      <Revelado>
+      <div>
         <div className="relative rounded-xl border border-acento bg-superficie p-8 lg:p-14">
-          <LuzEnTarjeta />
 
           <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
             <div>
@@ -38,9 +35,9 @@ export function BloqueDiagnostico() {
               <p className="t-cuerpo mt-8">{textos.bajada}</p>
 
               <div className="mt-10 flex flex-wrap items-center gap-6">
-                <EnlaceMagnetico href="/diagnostico" className={botonPrimario}>
+                <Link href="/diagnostico" className={botonPrimario}>
                   {textos.accion}
-                </EnlaceMagnetico>
+                </Link>
                 <p className="t-dato text-suave">
                   {definido ? PRECIO_DIAGNOSTICO : PRECIO_SIN_DEFINIR}
                 </p>
@@ -54,18 +51,17 @@ export function BloqueDiagnostico() {
               {textos.entregables.lista.map((item) => (
                 <li
                   key={item.numero}
-                  className="grid grid-cols-[auto_1fr] items-baseline gap-5 border-b border-borde py-5"
+                  className="border-b border-borde py-5 text-[1.0625rem] leading-snug"
                 >
-                  <span className="t-dato text-acento">{item.numero}</span>
-                  <span className="text-[1.0625rem] leading-snug">{item.nombre}</span>
+                  {item.nombre}
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="t-dato mt-12 text-acento">{textos.entregables.cierre}</p>
+          <p className="mt-12 text-[0.9375rem] text-acento">{textos.entregables.cierre}</p>
         </div>
-      </Revelado>
+      </div>
     </section>
   );
 }

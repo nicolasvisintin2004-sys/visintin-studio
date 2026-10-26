@@ -19,7 +19,6 @@
  */
 
 export const hero = {
-  etiqueta: "Sistemas web y automatización · Buenos Aires",
   /**
    * Tres líneas, cortadas a mano: cada una entra con su propia máscara, con
    * 80 ms de diferencia.
@@ -95,7 +94,7 @@ export const portfolio = {
    * honesto en uno inflado.
    */
   estados: {
-    clienteEnCurso: "Cliente · en desarrollo",
+    clienteEnCurso: "Cliente, en desarrollo",
     cliente: "Cliente",
     demo: "Demostración",
   },
@@ -327,7 +326,6 @@ export const navegacion = {
  * estudio y ofrece un índice con una línea por sección.
  */
 export const inicio = {
-  indiceEtiqueta: "Contenido",
   indiceTitulo: "Por dónde seguir.",
   /** Una línea por página. Se leen en el índice, abajo del nombre. */
   indice: {
@@ -339,7 +337,6 @@ export const inicio = {
     "/diagnostico": "Una radiografía de cómo trabaja tu empresa, por escrito.",
   } as Record<string, string>,
   /** La franja de redes. Cada una dice qué se publica ahí, no "seguime". */
-  redesEtiqueta: "Dónde encontrarme",
   /**
    * No cuenta cuántas redes hay, a propósito.
    *
@@ -349,7 +346,8 @@ export const inicio = {
    * las tres, y el sentido —que cada una publica algo distinto— se mantiene.
    */
   redesTitulo: "Cada lugar, una cosa distinta.",
-  cierreEtiqueta: "Contacto",
+  /** Abre la frase de los rubros, en la franja de abajo del diagnóstico. */
+  rubrosIntro: "Trabajo con",
   cierreTitulo: "¿Tenés un proyecto en mente?",
   cierreTexto:
     "La primera conversación dura alrededor de veinte minutos, se realiza por WhatsApp y no tiene costo.",
@@ -420,7 +418,6 @@ export const paginas = {
 /** Etiquetas para lectores de pantalla, donde el texto visible no alcanza. */
 export const accesibilidad = {
   botonFlotante: "Consultar por WhatsApp",
-  cinta: "Rubros con los que trabaja el estudio",
 };
 
 export const noEncontrada = {

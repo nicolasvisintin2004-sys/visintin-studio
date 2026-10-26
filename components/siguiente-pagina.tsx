@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { botonTexto, Flecha } from "@/components/boton";
+import { botonTexto } from "@/components/boton";
 import { inicio, navegacion } from "@/content/textos";
 
 type Props = {
@@ -32,7 +32,6 @@ export function SiguientePagina({ actual }: Props) {
       </div>
       <Link href={siguiente.href} className={botonTexto}>
         {siguiente.texto}
-        <Flecha />
       </Link>
     </nav>
   );

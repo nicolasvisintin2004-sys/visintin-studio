@@ -4,8 +4,8 @@
     {
       "name": "visintin-studio",
       "runtimeExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
-      "runtimeArgs": ["run", "dev", "--", "--port", "3100"],
-      "port": 3100
+      "runtimeArgs": ["run", "dev", "--", "--port", "3300"],
+      "port": 3300
     },
     {
       "name": "instagram",

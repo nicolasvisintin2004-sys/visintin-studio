@@ -6,7 +6,6 @@ import { CapturaEnmarcada } from "@/components/captura";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { MedirPreguntas } from "@/components/medir-preguntas";
-import { Revelado } from "@/components/revelado";
 import { BarraDemo } from "@/components/turnos-barra";
 import { CalculadoraTurnos } from "@/components/turnos-calculadora";
 import { DemoTurnos } from "@/components/turnos-demo";
@@ -102,7 +101,6 @@ function Portada() {
           <EnlaceWhatsApp
             mensaje={MENSAJE_DEMO}
             origen="turnos_portada"
-            magnetico
             className={botonPrimario}
           >
             {textos.portada.accion}
@@ -140,13 +138,12 @@ function Calculadora() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.calculadora.etiqueta}
           titulo={textos.calculadora.titulo}
           claseTitulo="max-w-[18ch]"
         />
-        <Revelado className="mt-12 lg:mt-16">
+        <div className="mt-12 lg:mt-16">
           <CalculadoraTurnos />
-        </Revelado>
+        </div>
       </div>
     </section>
   );
@@ -211,7 +208,6 @@ function Probar() {
           encabezado={
             <EncabezadoSeccion
               nivel="h2"
-              etiqueta={textos.probar.etiqueta}
               titulo={textos.probar.titulo}
               bajada={textos.probar.bajada}
               claseTitulo="max-w-[14ch]"
@@ -372,21 +368,20 @@ function Pasos() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.pasos.etiqueta}
           titulo={textos.pasos.titulo}
         />
 
         <ol className="mt-16 flex flex-col gap-20 lg:mt-24 lg:gap-32">
           {textos.pasos.lista.map((paso, i) => (
             <li key={paso.nombre} className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
-              <Revelado className={i % 2 === 1 ? "lg:order-2" : ""}>
+              <div className={i % 2 === 1 ? "lg:order-2" : ""}>
                 <p className="t-dato text-acento">{String(i + 1).padStart(2, "0")}</p>
                 <h3 className="t-subtitulo mt-4 max-w-[18ch]">{paso.nombre}</h3>
                 <p className="t-cuerpo mt-5 text-[1.0625rem]">{paso.texto}</p>
-              </Revelado>
-              <Revelado retardo={100}>
+              </div>
+              <div>
                 {ilustraciones[paso.ilustracion as keyof typeof ilustraciones]}
-              </Revelado>
+              </div>
             </li>
           ))}
         </ol>
@@ -398,10 +393,10 @@ function Pasos() {
 /**
  * Lo que incluye.
  *
- * Van numeradas y no con un ícono cada una. El sitio no tiene un juego de
- * íconos —el trabajo gráfico lo hacen la tipografía y el número en bronce, en
- * los entregables del diagnóstico y en los servicios— y doce íconos dibujados
- * para esta sola página serían un segundo sistema visual injertado.
+ * Sin íconos y sin numerar. El sitio no tiene un juego de íconos, y doce
+ * dibujados para esta sola página serían un segundo sistema visual injertado.
+ * Tampoco van numeradas: son doce cosas que hace el producto, no doce pasos,
+ * y un número adelante sugiere un orden que no existe.
  */
 function Incluye() {
   return (
@@ -409,15 +404,13 @@ function Incluye() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.incluye.etiqueta}
           titulo={textos.incluye.titulo}
         />
 
         <ul className="mt-14 grid gap-px border border-borde bg-borde sm:grid-cols-2 lg:mt-20 lg:grid-cols-3">
-          {textos.incluye.lista.map((item, i) => (
+          {textos.incluye.lista.map((item) => (
             <li key={item.nombre} className="bg-fondo p-6 lg:p-8">
-              <p className="t-dato text-acento">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="mt-4 font-display text-[1.125rem] font-medium leading-snug tracking-[-0.01em]">
+              <h3 className="font-display text-[1.125rem] font-medium leading-snug tracking-[-0.01em]">
                 {item.nombre}
               </h3>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-suave">{item.texto}</p>
@@ -436,13 +429,12 @@ function Encaje() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.encaje.etiqueta}
           titulo={textos.encaje.titulo}
           claseTitulo="max-w-[16ch]"
         />
 
         <div className="mt-14 grid gap-px border border-borde bg-borde lg:mt-20 lg:grid-cols-2">
-          <Revelado className="bg-fondo p-7 lg:p-10">
+          <div className="bg-fondo p-7 lg:p-10">
             <h3 className="t-subtitulo">{textos.encaje.si.titulo}</h3>
             <ul className="mt-7 flex flex-col gap-4">
               {textos.encaje.si.lista.map((item) => (
@@ -452,9 +444,9 @@ function Encaje() {
                 </li>
               ))}
             </ul>
-          </Revelado>
+          </div>
 
-          <Revelado retardo={100} className="bg-fondo p-7 lg:p-10">
+          <div className="bg-fondo p-7 lg:p-10">
             <h3 className="t-subtitulo text-suave">{textos.encaje.no.titulo}</h3>
             <ul className="mt-7 flex flex-col gap-4 text-suave">
               {textos.encaje.no.lista.map((item) => (
@@ -464,14 +456,14 @@ function Encaje() {
                 </li>
               ))}
             </ul>
-          </Revelado>
+          </div>
         </div>
 
-        <Revelado className="mt-12">
+        <div className="mt-12">
           <p className="max-w-[40ch] font-display text-[1.25rem] font-medium leading-snug tracking-[-0.01em] sm:text-[1.5rem]">
             {textos.encaje.cierre}
           </p>
-        </Revelado>
+        </div>
       </div>
     </section>
   );
@@ -485,17 +477,16 @@ function Datos() {
         <div>
           <EncabezadoSeccion
             nivel="h2"
-            etiqueta={textos.datos.etiqueta}
             titulo={textos.datos.titulo}
             claseTitulo="max-w-[14ch]"
           />
         </div>
 
         <ul className="border-t border-borde">
-          {textos.datos.lista.map((linea, i) => (
-            <Revelado as="li" key={linea} retardo={i * 70}>
+          {textos.datos.lista.map((linea) => (
+            <li key={linea}>
               <p className="border-b border-borde py-6 text-[1.0625rem] leading-relaxed">{linea}</p>
-            </Revelado>
+            </li>
           ))}
         </ul>
       </div>
@@ -509,7 +500,6 @@ function Preguntas() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.preguntas.etiqueta}
           titulo={textos.preguntas.titulo}
         />
         <div className="mt-14 lg:mt-20">
@@ -539,11 +529,10 @@ function Cierre() {
           claseTitulo="max-w-[16ch]"
         />
 
-        <Revelado className="mt-10">
+        <div className="mt-10">
           <EnlaceWhatsApp
             mensaje={MENSAJE_DEMO}
             origen="turnos_cierre"
-            magnetico
             className={`${botonPrimario} w-full sm:w-auto`}
           >
             {textos.cierre.accion}
@@ -558,7 +547,7 @@ function Cierre() {
               {sitio.email}
             </a>
           </p>
-        </Revelado>
+        </div>
       </div>
     </section>
   );

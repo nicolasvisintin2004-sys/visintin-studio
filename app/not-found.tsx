@@ -54,12 +54,6 @@ export default function NoEncontrada() {
                 </span>
               </span>
 
-              <span
-                aria-hidden="true"
-                className="text-xl leading-none text-suave transition-all duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-1.5 group-hover:text-acento"
-              >
-                →
-              </span>
             </Link>
           </li>
         ))}

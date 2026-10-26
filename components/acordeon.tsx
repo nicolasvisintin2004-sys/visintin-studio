@@ -1,4 +1,3 @@
-import { Revelado } from "@/components/revelado";
 
 export type ItemAcordeon = {
   pregunta: string;
@@ -34,8 +33,8 @@ type Props = {
 export function Acordeon({ items, nivel: Encabezado = "h3" }: Props) {
   return (
     <div className="border-t border-borde">
-      {items.map((item, i) => (
-        <Revelado key={item.pregunta} retardo={i * 50}>
+      {items.map((item) => (
+        <div key={item.pregunta}>
           <details className="group relative border-b border-borde">
             {/* La línea que se dibuja de izquierda a derecha sobre el borde
                 inferior. Va sobre el `<details>` y no sobre el `<summary>`
@@ -57,7 +56,7 @@ export function Acordeon({ items, nivel: Encabezado = "h3" }: Props) {
             </summary>
             <p className="t-cuerpo pb-8 pr-8">{item.respuesta}</p>
           </details>
-        </Revelado>
+        </div>
       ))}
     </div>
   );

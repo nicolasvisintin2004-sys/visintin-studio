@@ -3,8 +3,6 @@ import { botonPrimario, botonSecundario } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { Formulario } from "@/components/formulario";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
-import { Revelado } from "@/components/revelado";
 import {
   DIAS_DE_TRABAJO,
   PRECIO_DIAGNOSTICO,
@@ -110,19 +108,18 @@ function Sintomas() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.sintomas.etiqueta}
           titulo={textos.sintomas.titulo}
           claseTitulo="max-w-[20ch]"
         />
 
         <ul className="mt-14 border-t border-borde lg:mt-20">
-          {textos.sintomas.lista.map((sintoma, i) => (
-            <Revelado as="li" key={sintoma} retardo={i * 70}>
+          {textos.sintomas.lista.map((sintoma) => (
+            <li key={sintoma}>
               <div className="grid grid-cols-[auto_1fr] gap-5 border-b border-borde py-7 sm:gap-8">
                 <span aria-hidden="true" className="mt-3.5 h-px w-8 shrink-0 bg-acento sm:w-12" />
                 <p className="max-w-[56ch] text-[1.0625rem] leading-relaxed">{sintoma}</p>
               </div>
-            </Revelado>
+            </li>
           ))}
         </ul>
       </div>
@@ -137,7 +134,6 @@ function Entregables() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.entregables.etiqueta}
           titulo={textos.entregables.titulo}
           bajada={textos.entregables.bajada}
           claseTitulo="max-w-[16ch]"
@@ -147,18 +143,17 @@ function Entregables() {
             Servicios y de los números del estudio: `gap-px` sobre un fondo
             del color del borde. */}
         <ul className="mt-16 grid gap-px border border-borde bg-borde lg:mt-24 lg:grid-cols-2">
-          {textos.entregables.lista.map((item, i) => (
-            <Revelado as="li" key={item.numero} retardo={i * 80} className="bg-fondo">
+          {textos.entregables.lista.map((item) => (
+            <li key={item.numero} className="bg-fondo">
               <div className="flex h-full flex-col p-8 lg:p-10">
-                <p className="t-dato text-acento">{item.numero}</p>
-                <h3 className="t-subtitulo mt-5">{item.nombre}</h3>
+                <h3 className="t-subtitulo">{item.nombre}</h3>
                 <p className="t-cuerpo mt-4 text-[0.9375rem]">{item.texto}</p>
               </div>
-            </Revelado>
+            </li>
           ))}
         </ul>
 
-        <Revelado>
+        <div>
           {/*
             La frase que cierra el bloque. Es la que más vende de toda la
             página, porque es la única que le saca riesgo a la compra: si el
@@ -168,7 +163,7 @@ function Entregables() {
           <p className="t-subtitulo mt-14 max-w-[26ch] text-acento">
             {textos.entregables.cierre}
           </p>
-        </Revelado>
+        </div>
       </div>
     </section>
   );
@@ -181,14 +176,13 @@ function Proceso() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.proceso.etiqueta}
           titulo={textos.proceso.titulo}
           claseTitulo="max-w-[14ch]"
         />
 
         <ol className="mt-16 border-t border-borde lg:mt-24">
-          {textos.proceso.pasos.map((paso, i) => (
-            <Revelado as="li" key={paso.numero} retardo={i * 80}>
+          {textos.proceso.pasos.map((paso) => (
+            <li key={paso.numero}>
               <div className="grid gap-5 border-b border-borde py-9 sm:grid-cols-[auto_1fr_auto] sm:gap-8 sm:py-12">
                 <span className="t-dato text-suave">{paso.numero}</span>
 
@@ -204,7 +198,7 @@ function Proceso() {
                   {paso.tiempo.replace("{dias}", String(DIAS_DE_TRABAJO))}
                 </span>
               </div>
-            </Revelado>
+            </li>
           ))}
         </ol>
       </div>
@@ -226,13 +220,12 @@ function Encaje() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.encaje.etiqueta}
           titulo={textos.encaje.titulo}
           claseTitulo="max-w-[14ch]"
         />
 
         <div className="mt-16 grid gap-px border border-borde bg-borde lg:mt-24 lg:grid-cols-2">
-          <Revelado className="bg-fondo">
+          <div className="bg-fondo">
             <div className="h-full p-8 lg:p-10">
               <h3 className="t-etiqueta text-acento">{textos.encaje.siTitulo}</h3>
               <ul className="mt-8 flex flex-col gap-5">
@@ -244,9 +237,9 @@ function Encaje() {
                 ))}
               </ul>
             </div>
-          </Revelado>
+          </div>
 
-          <Revelado retardo={100} className="bg-fondo">
+          <div className="bg-fondo">
             <div className="h-full p-8 lg:p-10">
               <h3 className="t-etiqueta">{textos.encaje.noTitulo}</h3>
               <ul className="mt-8 flex flex-col gap-5">
@@ -264,7 +257,7 @@ function Encaje() {
                 ))}
               </ul>
             </div>
-          </Revelado>
+          </div>
         </div>
       </div>
     </section>
@@ -285,9 +278,8 @@ function Precio() {
   return (
     <section className="seccion">
       <div className="contenedor">
-        <Revelado>
+        <div>
           <div className="relative rounded-xl border border-acento bg-superficie p-10 lg:p-16">
-            <LuzEnTarjeta />
             <p className="t-etiqueta mb-6 text-acento">{textos.precio.etiqueta}</p>
             <h2 className="t-titulo max-w-[16ch]">{textos.precio.titulo}</h2>
 
@@ -324,7 +316,7 @@ function Precio() {
               {textos.accion}
             </a>
           </div>
-        </Revelado>
+        </div>
       </div>
     </section>
   );
@@ -338,18 +330,17 @@ function SolicitarPor() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
           <EncabezadoSeccion
             nivel="h2"
-            etiqueta={textos.formulario.etiqueta}
             titulo={textos.formulario.titulo}
             bajada={textos.formulario.texto}
           />
 
-          <Revelado retardo={100}>
+          <div>
             <div className="rounded-xl border border-borde p-8 lg:p-10">
               {/* `origen` viaja hasta la base: es lo que después permite
                   saber si esta página trae más consultas que contacto. */}
               <Formulario origen="diagnostico" />
             </div>
-          </Revelado>
+          </div>
         </div>
       </div>
     </section>
@@ -362,7 +353,6 @@ function PreguntasDelDiagnostico() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h2"
-          etiqueta={textos.preguntas.etiqueta}
           titulo={textos.preguntas.titulo}
           claseTitulo="max-w-[16ch]"
         />

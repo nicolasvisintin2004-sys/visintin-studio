@@ -1,6 +1,5 @@
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
-import { Revelado } from "@/components/revelado";
 import { pedidos } from "@/content/pedidos";
 import { servicios as textos } from "@/content/textos";
 
@@ -37,7 +36,7 @@ export function Pedidos() {
         claseTitulo="max-w-[20ch] text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium"
       />
 
-      <Revelado>
+      <div>
         <ul className="mt-12 grid gap-px border border-borde bg-borde sm:grid-cols-2 lg:grid-cols-3">
           {pedidos.map((pedido) => (
             <li key={pedido.slug} className="bg-fondo">
@@ -67,7 +66,7 @@ export function Pedidos() {
             </li>
           ))}
         </ul>
-      </Revelado>
+      </div>
     </div>
   );
 }

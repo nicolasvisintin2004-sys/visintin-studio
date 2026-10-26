@@ -62,14 +62,10 @@ export function CapturaEnmarcada({ captura, prioritaria, sizes }: Props) {
 
   return (
     <figure className={ancho}>
-      {/* `deriva` mueve la imagen un poco mas lento que la pagina dentro
-          del marco. El marco ya recorta, asi que el recorrido no descubre
-          el borde. Es CSS dirigido por scroll; ver `globals.css`. Una
-          captura con algo importante pegado a un costado la apaga. */}
       <div
         className={`overflow-hidden border border-borde bg-superficie ${
-          captura.deriva === false ? "" : "deriva"
-        } ${esMovil ? "rounded-[2rem] p-2" : "rounded-lg"}`}
+          esMovil ? "rounded-[2rem] p-2" : "rounded-lg"
+        }`}
       >
         <Captura
           captura={captura}

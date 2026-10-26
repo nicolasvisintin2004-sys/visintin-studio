@@ -2,8 +2,6 @@ import { botonPrimario } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { Formulario } from "@/components/formulario";
-import { LuzEnTarjeta } from "@/components/luz-en-tarjeta";
-import { Revelado } from "@/components/revelado";
 import { mensajes, sitio } from "@/content/sitio";
 import { contacto as textos } from "@/content/textos";
 
@@ -20,7 +18,6 @@ export function Contacto() {
       <div className="contenedor">
         <EncabezadoSeccion
           nivel="h1"
-          etiqueta={textos.etiqueta}
           titulo={textos.titulo}
           bajada={textos.bajada}
           claseTitulo="max-w-[14ch]"
@@ -30,9 +27,8 @@ export function Contacto() {
             alto que la tarjeta de WhatsApp, y sin esto la tarjeta se estiraba
             para igualarlo y quedaba media pantalla vacía adentro. */}
         <div className="mt-16 grid gap-6 lg:mt-24 lg:grid-cols-[1.1fr_1fr] lg:items-start lg:gap-8">
-          <Revelado>
+          <div>
             <div className="relative flex h-full flex-col rounded-xl border border-acento bg-superficie p-8 lg:p-10">
-              <LuzEnTarjeta />
               <p className="t-etiqueta text-acento">{textos.whatsappTitulo}</p>
               <p className="t-subtitulo mt-5">{textos.whatsappCanal}</p>
               <p className="t-cuerpo mt-5 text-[0.9375rem]">{textos.whatsappTexto}</p>
@@ -41,7 +37,6 @@ export function Contacto() {
                 mensaje={mensajes.contacto}
                 origen="contacto_principal"
                 className={`${botonPrimario} mt-10 w-full sm:w-auto`}
-                magnetico
               >
                 {textos.whatsappAccion}
               </EnlaceWhatsApp>
@@ -56,9 +51,9 @@ export function Contacto() {
                 </a>
               </p>
             </div>
-          </Revelado>
+          </div>
 
-          <Revelado retardo={100}>
+          <div>
             <div className="rounded-xl border border-borde p-8 lg:p-10">
               <h2 className="t-subtitulo">{textos.formularioTitulo}</h2>
               <p className="t-cuerpo mt-4 text-[0.9375rem]">{textos.formularioTexto}</p>
@@ -66,7 +61,7 @@ export function Contacto() {
                 <Formulario origen="contacto" />
               </div>
             </div>
-          </Revelado>
+          </div>
         </div>
       </div>
     </section>
