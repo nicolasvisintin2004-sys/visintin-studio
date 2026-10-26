@@ -16,6 +16,12 @@ type Props = {
    * JavaScript del navegador, porque no hay nada que interactuar en ellos.
    */
   pedidos?: ReactNode;
+  /**
+   * Los servicios de Instagram, que van entre las dos líneas y los
+   * entregables. Llegan armados desde la página por el mismo motivo que
+   * `pedidos`: son de servidor y no tienen nada que interactuar.
+   */
+  instagram?: ReactNode;
 };
 
 /**
@@ -33,7 +39,7 @@ type Props = {
  * no montando nodos, así el texto existe para Google y para un lector de
  * pantalla aunque nadie abra la fila.
  */
-export function Servicios({ pedidos }: Props) {
+export function Servicios({ pedidos, instagram }: Props) {
   const [activo, setActivo] = useState<number | null>(null);
 
   const servicioActivo = activo !== null ? listaDeServicios[activo] : null;
@@ -176,7 +182,11 @@ export function Servicios({ pedidos }: Props) {
             </ul>
           </div>
         ))}
+      </div>
 
+      {instagram}
+
+      <div className="contenedor">
         {pedidos}
 
         <div>

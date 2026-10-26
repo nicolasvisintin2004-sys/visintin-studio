@@ -3,6 +3,7 @@ import Link from "next/link";
 import { botonTexto } from "@/components/boton";
 import { Pedidos } from "@/components/pedidos";
 import { Servicios } from "@/components/servicios";
+import { ServiciosInstagram } from "@/components/servicios-instagram";
 import { SiguientePagina } from "@/components/siguiente-pagina";
 import { paginas } from "@/content/textos";
 import { TURNOS_PUBLICADA, turnos } from "@/content/turnos";
@@ -18,7 +19,7 @@ export default function PaginaServicios() {
     <main id="contenido">
       {/* Los entregables se arman acá, del lado del servidor, y llegan a
           Servicios —que es de cliente— ya renderizados. */}
-      <Servicios pedidos={<Pedidos />} />
+      <Servicios pedidos={<Pedidos />} instagram={<ServiciosInstagram />} />
 
       {/*
         El producto propio. Va acá y no en el menú: el menú es para PyMEs en

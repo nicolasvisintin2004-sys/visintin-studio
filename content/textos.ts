@@ -142,7 +142,7 @@ export const planes = {
   etiqueta: "Cómo trabajo",
   titulo: "Todos entran por el mismo lugar.",
   bajada:
-    "El trabajo empieza siempre por el diagnóstico, porque es la única manera de saber qué conviene hacer primero. De ahí salen tres caminos, que pueden tomarse de a uno o encadenarse. Sólo el diagnóstico tiene precio publicado: es el único trabajo acotado y cerrado, y el resto depende de lo que el diagnóstico encuentre.",
+    "El trabajo empieza siempre por el diagnóstico, porque es la única manera de saber qué conviene hacer primero. De ahí salen tres caminos, que pueden tomarse de a uno o encadenarse. El diagnóstico tiene precio publicado porque es un trabajo acotado y cerrado; el resto depende de lo que encuentre. Los servicios de Instagram son aparte: tienen el alcance definido de antemano y precio fijo.",
   ramasEtiqueta: "Los tres caminos",
   planesEtiqueta: "El detalle de la rama de sitios",
   planesTitulo: "Tres alcances. El precio se define en la consulta.",
@@ -329,7 +329,7 @@ export const inicio = {
   indiceTitulo: "Por dónde seguir.",
   /** Una línea por página. Se leen en el índice, abajo del nombre. */
   indice: {
-    "/servicios": "Sitios y sistemas web, automatización, IA aplicada e informes.",
+    "/servicios": "Sitios y sistemas web, automatización, IA aplicada, informes e Instagram.",
     "/proyectos": "De Instagram a un sitio propio, con el antes documentado.",
     "/planes": "El diagnóstico, las tres ramas que salen de ahí y los planes web.",
     "/estudio": "Quién está detrás del trabajo y cómo se trabaja.",
@@ -386,7 +386,7 @@ export const paginas = {
   servicios: {
     titulo: "Servicios",
     descripcion:
-      "Sitios y sistemas web, automatización de procesos, inteligencia artificial aplicada e informes para PyMEs argentinas. Catálogos, tiendas online, turnos y reservas, cotizadores, paneles de administración y asistentes que responden consultas.",
+      "Sitios y sistemas web, automatización de procesos, inteligencia artificial aplicada e informes para PyMEs argentinas. Catálogos, tiendas online, turnos y reservas, cotizadores y paneles. Y para Instagram: auditoría de la cuenta, mensajes automáticos por palabra clave y creación de contenido, con precio fijo.",
   },
   proyectos: {
     titulo: "Proyectos",
@@ -396,7 +396,7 @@ export const paginas = {
   planes: {
     titulo: "Cómo trabajo",
     descripcion:
-      "Todos los proyectos empiezan por el diagnóstico. De ahí salen tres caminos: sitio web —con tres alcances—, automatización puntual y acompañamiento mensual. Sólo el diagnóstico tiene precio publicado.",
+      "Todos los proyectos empiezan por el diagnóstico. De ahí salen tres caminos: sitio web —con tres alcances—, automatización puntual y acompañamiento mensual. Aparte, tres servicios de Instagram con precio fijo.",
   },
   estudio: {
     titulo: "Estudio",

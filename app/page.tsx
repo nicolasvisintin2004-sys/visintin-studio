@@ -7,6 +7,7 @@ import { Hero } from "@/components/hero";
 import { Indice } from "@/components/indice";
 import { RedesEnInicio } from "@/components/redes";
 import { PRECIO_DIAGNOSTICO, diagnostico } from "@/content/diagnostico";
+import { instagram } from "@/content/instagram";
 import { pedidos } from "@/content/pedidos";
 import { perfilesSociales } from "@/content/social";
 import { lineas, servicios } from "@/content/servicios";
@@ -26,8 +27,8 @@ export const metadata: Metadata = metadatosDePagina({
 /**
  * Qué es este negocio, dónde está y qué ofrece, para Google.
  *
- * Va en el inicio porque describe al estudio entero. El catálogo lleva tres
- * listas: las dos líneas de trabajo, las cuatro categorías de servicio y los
+ * Va en el inicio porque describe al estudio entero. El catálogo lleva, además
+ * de los servicios de Instagram, tres listas: las dos líneas de trabajo, las cuatro categorías de servicio y los
  * nueve entregables concretos, que son los que están escritos con las
  * palabras que la gente busca —"tienda online", "turnos y reservas",
  * "cotizador"—. El diagnóstico va primero porque es por donde entran todos.
@@ -83,6 +84,22 @@ const negocio = {
       ...servicios.map((s) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name: s.nombre, description: s.promesa },
+      })),
+      // Los de Instagram son los únicos con precio fijo además del
+      // diagnóstico. Los mensuales lo dicen con la unidad "MON" (mes).
+      ...instagram.servicios.map((s) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: s.nombre, description: s.promesa },
+        price: s.precio.valor,
+        priceCurrency: "USD",
+        ...(s.precio.periodo === "por mes" && {
+          priceSpecification: {
+            "@type": "UnitPriceSpecification",
+            price: s.precio.valor,
+            priceCurrency: "USD",
+            referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
+          },
+        }),
       })),
       ...pedidos.map((p) => ({
         "@type": "Offer",
