@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { botonPrimario, botonSecundario } from "@/components/boton";
 import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
+import { MapaProceso } from "@/components/mapa-proceso";
 import { disponibilidad, mensajes } from "@/content/sitio";
 import { hero } from "@/content/textos";
 
@@ -27,7 +28,18 @@ export function Hero() {
         ))}
       </h1>
 
-      <div className="mt-10 flex flex-col gap-10 lg:mt-14 lg:flex-row lg:items-end lg:justify-between">
+      {/* Lo que el título promete, mostrado: un proceso que se ordena. Es el
+          único movimiento del sitio que no lo dispara la persona.
+
+          En el celular va después de los botones (`order-3`): ahí el mapa es
+          vertical y ocupa más de una pantalla, y antes de él los botones
+          quedaban casi dos pantallas abajo. En escritorio va entre el título
+          y la bajada, que es el orden en que se lee la idea. */}
+      <div className="order-3 mt-14 lg:order-none lg:mt-16">
+        <MapaProceso />
+      </div>
+
+      <div className="mt-14 flex flex-col gap-10 lg:mt-16 lg:flex-row lg:items-end lg:justify-between">
         <p
           className="t-cuerpo entra-tarde text-[1.0625rem] leading-[1.6]"
           style={{ "--retardo": "560ms" } as Estilo}
@@ -60,7 +72,7 @@ export function Hero() {
       </div>
 
       <p
-        className="t-etiqueta entra-tarde mt-12 flex items-center gap-2.5"
+        className="t-etiqueta entra-tarde order-4 mt-12 flex items-center gap-2.5 lg:order-none"
         style={{ "--retardo": "800ms" } as Estilo}
       >
         <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-acento" />

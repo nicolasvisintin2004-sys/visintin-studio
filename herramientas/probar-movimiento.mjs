@@ -9,9 +9,18 @@
  * La máquina donde se desarrolla este sitio tiene `prefers-reduced-motion:
  * reduce` activado en el sistema. Eso significa que el navegador local —y el
  * panel de vista previa, que hereda la preferencia— muestra el sitio
- * completamente quieto: sin preloader, sin entradas por scroll, sin cursor,
- * sin cinta. Todo correcto según lo que pide la preferencia, y completamente
- * inútil para revisar si el movimiento está bien hecho.
+ * completamente quieto. Correcto según lo que pide la preferencia, y
+ * completamente inútil para revisar si el movimiento está bien hecho.
+ *
+ * ── Qué revisa ──
+ *
+ * El sitio tiene un solo movimiento que no dispara la persona: la portada,
+ * con el título que entra línea por línea y el mapa de procesos que se
+ * ordena. Todo lo demás —entradas al bajar, cinta, deriva, cursor— se sacó a
+ * propósito. Así que esto comprueba dos cosas: que el mapa se anime y termine
+ * en su estado final, y que en ninguna página haya otra animación corriendo
+ * que no sea de las permitidas. Si alguien vuelve a agregar un efecto
+ * repartido, acá aparece.
  *
  * Esta herramienta levanta Chrome emulando `no-preference` y verifica cada
  * pieza por separado, mirando el estado real del DOM y de las animaciones en
@@ -82,59 +91,43 @@ function conectar(direccion) {
 const SONDA = `(async () => {
   const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  // Recorrer la página entera dispara los observers y carga lo diferido.
-  const paso = window.innerHeight * 0.8;
-  for (let y = 0; y < document.body.scrollHeight; y += paso) {
-    window.scrollTo(0, y);
-    await dormir(120);
-  }
-  await dormir(600);
+  // Lo que puede moverse solo. Cualquier otra animación es un efecto
+  // repartido que no tendría que estar.
+  const PERMITIDAS = ".mapa, .linea-mascara, .entra-tarde, .transicion-pagina, .progreso-lectura";
 
-  // ── Títulos partidos en líneas ──────────────────────────────────
-  const titulos = [...document.querySelectorAll(".titulo-revelado")].map((t) => ({
-    lineas: t.querySelectorAll(".linea-mascara").length,
-    entro: t.dataset.entrar === "si",
-    texto: t.textContent.replace(/\\s+/g, " ").trim(),
-  }));
+  const mapa = document.querySelector(".mapa");
+  const animMapa = mapa ? mapa.getAnimations({ subtree: true }).length : -1;
 
-  // ── Progreso de lectura ─────────────────────────────────────────
+  // El último paso termina de aparecer a los 3,7 s de la carga. Se espera a
+  // que haya terminado, con margen, para leer el estado final, que es el
+  // que importa.
+  await dormir(4400);
+  const despues = mapa
+    ? [...mapa.querySelectorAll(".mapa-despues")].map((n) => getComputedStyle(n).opacity)
+    : [];
+
+  const intrusas = document
+    .getAnimations()
+    .filter((a) => {
+      const blanco = a.effect && a.effect.target;
+      return !(blanco && blanco.closest && blanco.closest(PERMITIDAS));
+    })
+    .map((a) => (a.animationName || a.constructor.name) + " en " + (a.effect?.target?.className || "?"));
+
   const barra = document.querySelector(".progreso-lectura");
-  const animBarra = barra ? barra.getAnimations().length : -1;
-
-  // ── Cinta ───────────────────────────────────────────────────────
-  const cinta = document.querySelector(".cinta");
-  const animCinta = cinta ? cinta.getAnimations() : [];
-  let tasaCinta = null;
-  if (animCinta.length) {
-    // Un scroll brusco tiene que cambiarle la velocidad.
-    window.scrollTo(0, 0);
-    await dormir(200);
-    window.scrollTo(0, 1200);
-    await dormir(80);
-    tasaCinta = animCinta[0].playbackRate;
-  }
-
-  // ── Deriva de las capturas ──────────────────────────────────────
-  const conDeriva = [...document.querySelectorAll(".deriva img")];
-  const animDeriva = conDeriva.filter((i) => i.getAnimations().length > 0).length;
-
-  // ── Transición de página ────────────────────────────────────────
-  const transicion = document.querySelector(".transicion-pagina");
 
   return {
-    titulos,
+    mapa: Boolean(mapa),
+    animMapa,
+    despues,
+    intrusas,
     barraExiste: Boolean(barra),
-    animBarra,
-    cintaExiste: Boolean(cinta),
-    animCinta: animCinta.length,
-    tasaCinta,
-    capturas: conDeriva.length,
-    animDeriva,
-    transicion: Boolean(transicion),
+    animBarra: barra ? barra.getAnimations().length : -1,
+    transicion: Boolean(document.querySelector(".transicion-pagina")),
   };
 })()`;
 
-const PAGINAS = ["/", "/servicios", "/diagnostico", "/proyectos/taller-italia"];
+const PAGINAS = ["/", "/servicios", "/diagnostico", "/proyectos/taller-italia", "/turnos"];
 
 async function main() {
   const ws = await conectar(await puntoDeEntrada());
@@ -173,7 +166,6 @@ async function main() {
   });
 
   let fallas = 0;
-  let partidosEnTotal = 0;
 
   for (const preferencia of ["no-preference", "reduce"]) {
     console.log(`\n${"═".repeat(78)}`);
@@ -188,7 +180,7 @@ async function main() {
       const cargada = cuandoOcurra("Page.loadEventFired");
       await enviar("Page.navigate", { url: `${BASE}${ruta}` });
       await cargada;
-      await esperar(2200);
+      await esperar(400);
 
       const { result } = await enviar("Runtime.evaluate", {
         awaitPromise: true,
@@ -204,45 +196,31 @@ async function main() {
       }
 
       const conMovimiento = preferencia === "no-preference";
-      const partidos = d.titulos.filter((t) => t.lineas > 1).length;
-      if (conMovimiento) partidosEnTotal += partidos;
-      const entraron = d.titulos.filter((t) => t.entro).length;
+      const enInicio = ruta === "/";
+      const todosVisibles = d.despues.length > 0 && d.despues.every((o) => o === "1");
 
       const filas = [
         [
-          "títulos partidos en líneas",
-          `${partidos} de ${d.titulos.length} (${entraron} ya entraron)`,
-          /*
-           * Con movimiento, el conteo por página es informativo y no una
-           * condición. Un título que ya está en pantalla al cargar no se
-           * parte a propósito —esconderlo para después mostrarlo sería un
-           * parpadeo— y uno que entra en un solo renglón tampoco, porque la
-           * técnica no aportaría nada. Así que hay páginas donde cero es
-           * exactamente lo correcto: la del caso, sin ir más lejos, tiene
-           * tres encabezados y los tres entran en un renglón.
-           *
-           * Lo que sí es condición: que el sitio entero parta alguno (se
-           * comprueba al final) y que con movimiento reducido no parta
-           * ninguno, en ninguna página.
-           */
-          conMovimiento ? true : d.titulos.length === 0,
+          "mapa de procesos",
+          !d.mapa
+            ? "no está en esta página"
+            : `${d.animMapa} animación(es), ${d.despues.filter((o) => o === "1").length}/${d.despues.length} pasos visibles al final`,
+          // En el inicio tiene que estar, terminar con todos los pasos a la
+          // vista y animarse sólo si el movimiento está permitido. En el
+          // resto de las páginas no tiene que estar.
+          enInicio
+            ? d.mapa && todosVisibles && (conMovimiento ? d.animMapa > 0 : d.animMapa === 0)
+            : !d.mapa,
+        ],
+        [
+          "animaciones fuera de lugar",
+          d.intrusas.length === 0 ? "ninguna" : d.intrusas.join(", "),
+          d.intrusas.length === 0,
         ],
         [
           "progreso de lectura",
           d.barraExiste ? `${d.animBarra} animación(es)` : "no está",
           d.barraExiste && (conMovimiento ? d.animBarra > 0 : true),
-        ],
-        [
-          "cinta",
-          d.cintaExiste
-            ? `${d.animCinta} anim · velocidad ${d.tasaCinta ?? "—"}`
-            : "no está en esta página",
-          !d.cintaExiste || (conMovimiento ? d.animCinta > 0 : d.animCinta === 0),
-        ],
-        [
-          "deriva de capturas",
-          d.capturas === 0 ? "no hay capturas" : `${d.animDeriva}/${d.capturas}`,
-          d.capturas === 0 || (conMovimiento ? d.animDeriva > 0 : d.animDeriva === 0),
         ],
         ["transición de página", d.transicion ? "presente" : "FALTA", d.transicion],
       ];
@@ -252,28 +230,10 @@ async function main() {
         if (!bien) fallas++;
         console.log(`    ${bien ? "ok  " : "MAL "} ${que.padEnd(28)} ${valor}`);
       }
-
-      // El texto de un título partido tiene que seguir siendo el mismo.
-      for (const t of d.titulos) {
-        if (t.texto.includes("  ") || t.texto !== t.texto.trim()) {
-          console.log(`    MAL  texto corrompido al partir: ${JSON.stringify(t.texto)}`);
-          fallas++;
-        }
-      }
     }
   }
 
   console.log(`\n${"═".repeat(78)}`);
-  // El sitio entero tiene que partir titulos en alguna parte. Si esto da
-  // cero, la medicion de lineas se rompio y nadie lo vio: el titulo se sigue
-  // leyendo igual, nada mas que quieto.
-  if (partidosEnTotal === 0) {
-    console.log("MAL  ningun titulo se partio en lineas en todo el sitio");
-    fallas++;
-  } else {
-    console.log(`ok   ${partidosEnTotal} titulos partidos en lineas en total`);
-  }
-
   console.log(fallas === 0 ? "Todo en orden." : `${fallas} comprobacion(es) fallaron.`);
   ws.close();
   chrome.kill();

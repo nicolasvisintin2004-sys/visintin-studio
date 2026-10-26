@@ -309,6 +309,205 @@
 }
 
 /* ───────────────────────────────────────────────────────────────
+   MAPA DE PROCESOS
+   El elemento propio del sitio, en la portada. Ver
+   `components/mapa-proceso.tsx`.
+
+   Los estilos de base son el estado FINAL: cada paso con lo de
+   antes tachado y lo de ahora abajo, la línea completa y los nodos
+   encendidos. La animación vive sólo dentro de
+   `prefers-reduced-motion: no-preference` y arranca desde el estado
+   inicial con `animation-fill-mode: both`. Así, sin movimiento, o
+   si la animación no corre por lo que sea, se ve el mapa terminado
+   y nunca un estado a medio camino.
+
+   Nada cambia de tamaño: el texto de "ahora" ocupa su lugar desde
+   el primer cuadro, invisible, y el CLS sigue en cero.
+   ─────────────────────────────────────────────────────────────── */
+.mapa-titulo {
+  margin-bottom: 1.5rem;
+}
+
+.mapa-recorrido {
+  position: relative;
+}
+
+/* La línea apagada, de fondo, y la de bronce que la recorre encima. */
+.mapa-recorrido::before,
+.mapa-linea {
+  position: absolute;
+  left: calc(0.3125rem - 0.5px);
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  pointer-events: none;
+}
+
+.mapa-recorrido::before {
+  content: "";
+  background: var(--color-borde);
+}
+
+.mapa-linea {
+  background: var(--color-acento);
+  transform-origin: 50% 0;
+}
+
+.mapa-pasos {
+  display: grid;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mapa-paso {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.mapa-nodo {
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1px solid var(--color-acento);
+  border-radius: 50%;
+  background: var(--color-acento);
+}
+
+.mapa-antes {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-suave);
+  text-decoration-line: line-through;
+  text-decoration-color: color-mix(in srgb, var(--color-suave) 70%, transparent);
+}
+
+.mapa-despues {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-texto);
+}
+
+/* El primer paso no se ordena: es lo que dispara el proceso. */
+.mapa-despues--inicio {
+  margin-top: 0;
+}
+
+/* En pantallas anchas, los cuatro pasos en fila y la línea horizontal. */
+@media (min-width: 768px) {
+  .mapa-pasos {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .mapa-paso {
+    padding-left: 0;
+    padding-top: 1.5rem;
+  }
+
+  .mapa-nodo {
+    top: 0;
+  }
+
+  .mapa-recorrido::before,
+  .mapa-linea {
+    left: 0;
+    right: 0;
+    top: calc(0.3125rem - 0.5px);
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+
+  .mapa-linea {
+    transform-origin: 0 50%;
+  }
+}
+
+/* En escritorio el mapa convive con un título de 8 rem: un poco más grande
+   para que no quede como una nota al pie. */
+@media (min-width: 1024px) {
+  .mapa-antes {
+    font-size: 0.9375rem;
+  }
+
+  .mapa-despues {
+    font-size: 1.3125rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mapa-linea {
+    animation: trazar-y 2000ms linear 1300ms both;
+  }
+
+  .mapa-nodo {
+    animation: encender 320ms var(--curva) var(--cuando) both;
+  }
+
+  .mapa-antes {
+    animation: tachar 520ms var(--curva) var(--cuando) both;
+  }
+
+  .mapa-despues {
+    animation: ordenar 700ms var(--curva) calc(var(--cuando) + 180ms) both;
+  }
+
+  /* El primer paso aparece con la línea, sin "antes" que tachar. */
+  .mapa-despues--inicio {
+    animation-delay: var(--cuando);
+  }
+
+  @media (min-width: 768px) {
+    .mapa-linea {
+      animation-name: trazar-x;
+    }
+  }
+}
+
+@keyframes trazar-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes trazar-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes encender {
+  from {
+    background: var(--color-fondo);
+    border-color: var(--color-suave);
+  }
+}
+
+@keyframes tachar {
+  from {
+    color: var(--color-texto);
+    text-decoration-color: transparent;
+  }
+}
+
+@keyframes ordenar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
    PROGRESO DE LECTURA
 
    Un filo de bronce de 1px sobre el borde inferior de la barra

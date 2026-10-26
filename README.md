@@ -46,11 +46,10 @@ Queda en http://localhost:3100.
 > llama *Configuración → Accesibilidad → Efectos visuales → Efectos de
 > animación*; macOS, *Accesibilidad → Pantalla → Reducir movimiento*.
 >
-> Con eso activado el sitio apaga **todo** a propósito: el preloader, las
-> entradas por scroll, los títulos que suben línea por línea, el cursor, la
-> cinta, la deriva de las capturas y el progreso de lectura. Es correcto y es
-> obligatorio, pero deja el sitio pareciendo estático, y desde ahí es
-> imposible revisar si el movimiento está bien hecho.
+> Con eso activado el sitio apaga a propósito lo poco que se mueve solo: la
+> entrada del título de la portada, el mapa de procesos y el progreso de
+> lectura. El mapa se ve directamente terminado. Es correcto y es obligatorio,
+> pero desde ahí no se puede revisar si la animación está bien hecha.
 >
 > Para verlo con el movimiento encendido sin tocar la configuración del
 > sistema, está la herramienta de más abajo:
@@ -94,8 +93,7 @@ botón una vez y confirmar que WhatsApp reconoce el número.
 
 ### Poner el precio del diagnóstico
 
-Es el único precio del sitio, y está en una sola línea de
-`content/diagnostico.ts`:
+Está en una sola línea de `content/diagnostico.ts`:
 
 ```ts
 export const PRECIO_DIAGNOSTICO = "USD 180";   // vacío muestra "Consultar precio"
@@ -108,10 +106,29 @@ estructurado de Google omite el precio en vez de declarar uno inválido.
 En el mismo archivo está `DIAS_DE_TRABAJO`, que es el plazo que aparece en el
 paso del medio del proceso.
 
-**Sólo el diagnóstico muestra precio.** Los tres planes, la automatización
-puntual y el acompañamiento no, y es una regla y no un olvido: el diagnóstico
-es el único trabajo acotado y cerrado, así que ahí el número ayuda. Los demás
-son variables, y un número suelto o espanta o miente.
+**Sólo lo que tiene alcance cerrado muestra precio.** El diagnóstico y los
+tres servicios de Instagram sí; los tres planes, la automatización puntual y
+el acompañamiento no, y es una regla y no un olvido. Donde el alcance está
+definido de antemano, el número ayuda a decidir. Donde depende de lo que se
+encuentre, un número suelto o espanta o miente.
+
+### Cambiar los servicios de Instagram
+
+Están en `content/instagram.ts`: nombre, precio, qué es y, para el de
+mensajes automáticos, la lista de por qué es mensual. El precio se escribe dos
+veces a propósito, como texto para leer (`"USD 200"`) y como número para Google
+(`200`).
+
+Las publicaciones de ejemplo del servicio de contenido son de la cuenta de
+BULK. Se eligen y se procesan con:
+
+```bash
+node herramientas/procesar-contenido.mjs
+```
+
+Las primeras publicaciones de BULK, con ilustraciones generadas, quedan afuera
+a propósito: se ven de baja calidad. Para cambiar cuáles se muestran, se edita
+la lista `piezas` de esa herramienta y la de `content/instagram.ts`.
 
 ### Cambiar un texto de una sección
 
@@ -298,110 +315,49 @@ y en los nueve entregables.
 
 ### Qué se mueve
 
-Una idea sola y no una pila de efectos: **la página sabe dónde estás y a qué
-velocidad vas.** Todo lo de acá abajo se apaga por completo con
-`prefers-reduced-motion`.
+**Una sola cosa se mueve sin que la persona haga nada: la portada.** El título
+entra línea por línea y, enseguida, el mapa de procesos se ordena. Todo lo
+demás responde a algo que hace quien navega: abrir una pregunta o un servicio,
+abrir el menú, pasar el mouse por un enlace.
+
+Hubo una etapa con muchos más efectos —telón de carga, entradas al bajar en
+cada sección, títulos que subían línea por línea al aparecer, cursor propio,
+luz que seguía al mouse, botones magnéticos, una cinta que aceleraba con el
+scroll, capturas con paralaje— y se sacaron todos en octubre de 2026. Repetidos
+en cada sección dejaban de llamar la atención sobre algo, y el movimiento en
+todos lados es lo que más rápido hace que un sitio se lea como plantilla. Si
+alguien vuelve a sumar uno, `herramientas/probar-movimiento.mjs` lo marca como
+"animación fuera de lugar".
 
 | Qué | Dónde | Cómo |
 | --- | --- | --- |
-| Telón de entrada | Al cargar el sitio | CSS, sin JavaScript |
-| Título del hero, línea por línea | Inicio y `/diagnostico` | CSS; los cortes están a mano en el contenido |
-| Títulos de sección, línea por línea | Todo el sitio | `components/titulo-revelado.tsx` |
-| Entrada por scroll, con desenfoque | Todo el sitio | `components/revelado.tsx` |
+| Título, línea por línea | Inicio, `/diagnostico`, `/turnos` | CSS; los cortes están a mano en el contenido |
+| Mapa de procesos | Inicio | CSS, sin JavaScript. Ver abajo |
 | Progreso de lectura | La barra fija | CSS dirigido por scroll, cero JavaScript |
-| Deriva de las capturas | Páginas de proyecto | CSS dirigido por scroll, cero JavaScript |
-| Cinta que acelera y se da vuelta | Inicio | `components/cinta-reactiva.tsx` |
-| Cambio de página | Al navegar | `app/template.tsx` |
-| Resplandor que sigue al cursor | Todo el sitio | `components/resplandor.tsx` |
-| Botones magnéticos | Uno por página | `hooks/use-magnetico.ts` |
-| Borde iluminado de las tarjetas | Tarjetas con acento | `components/luz-en-tarjeta.tsx` |
-| Panel que persigue al cursor | `/servicios` | `components/servicios.tsx` |
+| Cambio de página | Al navegar | `app/template.tsx`, sólo opacidad |
 | Desplazamiento horizontal | `/proyectos`, con 3+ casos | GSAP, en un trozo aparte |
 
-### Los títulos que entran línea por línea
+### El mapa de procesos
 
-Es el que más cambia la percepción del sitio y el que más cuidado tiene.
-`TituloRevelado` **mide** dónde cortó los renglones el navegador —con un
-`Range` de un carácter que se corre por el nodo de texto— y envuelve cada uno
-en su propia máscara.
+Es el elemento propio del sitio. Lo primero que entrega el estudio es un mapa
+de cómo trabaja la empresa, y la portada lo muestra en vez de contarlo: un
+pedido que llega por WhatsApp, en cuatro pasos. Una línea de bronce los
+recorre y, al llegar a cada paso manual, lo ordena: lo de antes queda tachado
+arriba y aparece cómo pasa ahora.
 
-Se podría partir por palabras, que es lo que se ve en todos lados, y se nota:
-las palabras de un mismo renglón entran en momentos distintos y el texto se
-lee como una ola de letras sueltas. Partiendo por líneas reales lo que sube es
-el renglón entero.
-
-El servidor manda el título como texto plano y visible. La medición corre
-después, en el cliente, y sólo sobre títulos que todavía no se ven. Si el
-JavaScript no corre, si la medición falla o si hay movimiento reducido, queda
-el texto tal cual. **El contenido de la etiqueta nunca cambia**, así que para
-Google y para un lector de pantalla el título es el mismo antes y después.
-
-Para armar un encabezado de sección está `EncabezadoSeccion`, que hace
-etiqueta + título + bajada con el escalonado correcto:
-
-```tsx
-<EncabezadoSeccion
-  nivel="h2"
-  etiqueta={textos.etiqueta}
-  titulo={textos.titulo}
-  bajada={textos.bajada}
-  claseTitulo="max-w-[16ch]"
-/>
-```
-
-Las tarjetas con borde de acento **no** lo usan a propósito: ahí lo que tiene
-que entrar junto es la tarjeta entera, y partirle el título se lee como un
-error.
-
-### Dos animaciones no tienen una línea de JavaScript
-
-El progreso de lectura y la deriva de las capturas usan animaciones dirigidas
-por scroll de CSS (`animation-timeline`). No hay escucha, no hay cálculo por
-cuadro y el navegador las corre fuera del hilo principal. En los navegadores
-que todavía no las soportan simplemente no pasan, que para las dos es
-exactamente lo correcto.
-
-### Por qué la cinta usa `updatePlaybackRate`
-
-Lo intuitivo sería escribirle `animation-duration` desde JavaScript. No sirve:
-una animación CSS calcula su progreso como tiempo sobre duración, así que al
-cambiar la duración el progreso salta y la cinta pega un tirón en cada ajuste.
-`updatePlaybackRate` cambia la velocidad conservando la posición, admite
-valores negativos para ir al revés, y deja la animación corriendo en el
-compositor.
+Los estilos de base son el **estado final**, y la animación arranca desde el
+inicial sólo con `prefers-reduced-motion: no-preference`. Así, sin movimiento
+o si algo falla, se ve el mapa terminado y nunca uno a medio camino. Los
+textos están en `content/textos.ts`, en `hero.mapa`; los tiempos, en
+`app/globals.css`, bajo MAPA DE PROCESOS.
 
 ### Por qué el cambio de página es sólo opacidad
 
 Es una restricción técnica y no una preferencia. `transform`, `filter` y
 `clip-path` sobre el contenedor de `template.tsx` crearían un bloque contenedor
-nuevo, y entonces todo lo que adentro es `position: fixed` —el panel que sigue
-al cursor en Servicios, el pin de GSAP del portfolio— se posicionaría contra
-ese div en lugar de contra la ventana. Se rompería sin avisar.
-
----
-
-## La marca
-
-`components/marca.tsx`. Dos piezas, las dos SVG en línea y no `<img>`: no hay
-una petición de red más, no hay un frame en blanco donde debería estar el
-logotipo, y los trazos toman el color del contexto.
-
-| | Dónde |
-| --- | --- |
-| `<Marca />` | La barra. Lockup entero desde 640px, monograma solo abajo de eso |
-| `<Lockup />` | El pie, a cualquier ancho |
-| `<Monograma />` | Suelto, si hace falta |
-| `app/icon.svg` | El favicon: el monograma con su fondo redondeado |
-
-La palabra "VISINTIN STUDIO" está **dibujada con trazos**, no compuesta con
-una tipografía, así que no depende de que cargue ninguna fuente y se ve igual
-desde el primer frame. Es la razón por la que conviene en la barra, que es lo
-primero que aparece.
-
-Respecto de los archivos originales se sacó el rectángulo de fondo —taparía el
-resplandor—, los trazos pasaron a `currentColor` y el `viewBox` se recortó a
-los límites reales del dibujo, porque el aire que traían desalineaba el
-logotipo con el margen del contenedor.
+nuevo, y entonces todo lo que adentro es `position: fixed` —la barra de Turnos
+en el celular, el pin de GSAP del portfolio— se posicionaría contra ese div en
+lugar de contra la ventana. Se rompería sin avisar.
 
 ---
 
@@ -564,55 +520,45 @@ node herramientas/servir-build.mjs
   una página arma sus metadatos a mano: sin canonical, Google la toma como
   copia del inicio; sin la imagen, el enlace compartido por WhatsApp sale sin
   miniatura. Ninguna de las dos se ve en el navegador.
-- **La navegación, el preloader y el botón flotante viven en el layout.** Se
-  montan una vez y no al pasar de una página a otra: el telón de entrada
-  aparece al llegar al sitio, no cada vez que se vuelve al inicio.
+- **La navegación y el botón flotante viven en el layout.** Se montan una vez
+  y no al pasar de una página a otra.
 - **Estático, con dos excepciones del tamaño justo.** `output: "export"`: las
   diez páginas son archivos HTML servidos desde el CDN, sin nada corriendo
   del otro lado. Las únicas dos cosas que corren son las funciones del
   formulario, y viven aparte en `netlify/functions/`. El sitio que ve el
   visitante no depende de ellas: si las dos se cayeran, todo se sigue leyendo y
   WhatsApp sigue funcionando.
-- **Las animaciones no tapan el contenido.** Todo sale del servidor visible.
-  El estado oculto de las entradas por scroll lo pone el cliente, y sólo sobre
-  lo que todavía no se ve. Si el JavaScript no corre, el sitio se lee igual.
-- **`prefers-reduced-motion` se respeta de verdad.** Con eso activado no hay
-  preloader, no hay entradas por scroll, no hay cursor y el portfolio se
-  recorre en vertical: ni siquiera se descarga GSAP.
+- **Las animaciones no tapan el contenido.** Todo sale del servidor visible, y
+  el mapa de procesos tiene como estilo de base su estado final. Si el
+  JavaScript no corre, el sitio se lee igual.
+- **`prefers-reduced-motion` se respeta de verdad.** Con eso activado la
+  portada aparece quieta, el mapa ya ordenado, y el portfolio se recorre en
+  vertical: ni siquiera se descarga GSAP.
 - **Las imágenes van con `<picture>` y no con `next/image`.** En un export
   estático no hay quién optimice al vuelo, así que los formatos se generan una
   vez con las herramientas de arriba. Todas llevan dimensiones explícitas.
 - **Hay un solo color, y se usa de dos maneras.** Bronce `#C08A4E`. Como
-  *punto*, marcando estado: el subrayado del enlace activo, el número del
-  servicio abierto, el borde del plan recomendado, la línea del preloader, el
-  anillo del cursor. Y como *superficie*, dando temperatura: el resplandor del
-  fondo. Lo que no hace nunca es decorar un elemento porque sí.
+  *punto*, marcando estado: el subrayado del enlace activo, el nombre del
+  servicio abierto, el borde del plan recomendado, la línea y los nodos del
+  mapa de procesos, los precios de Instagram. Y como *superficie*, dando
+  temperatura: el resplandor quieto detrás del título. Lo que no hace nunca es
+  decorar un elemento porque sí.
 
   No hay un segundo tono a propósito. Cuando el sitio se siente gris, el
   problema no es que falte un color: es que el que hay está apareciendo en
   lugares del tamaño de un alfiler. La respuesta fue darle superficie, no
   sumarle un vecino.
 
-- **Todo lo que se toca reacciona al cursor.** No son efectos sueltos, es una
-  sola idea: la página sabe dónde estás.
+- **Lo que se toca responde, y nada más.** Pasar el mouse por un enlace o una
+  fila la pinta de bronce; abrir una pregunta dibuja una línea bajo la fila.
+  No hay efectos que sigan al puntero: se sacaron con el resto del movimiento
+  repartido.
 
-  | Dónde | Qué hace |
-  | --- | --- |
-  | Fondo | Una luz cálida grande sigue al puntero, muy despacio |
-  | Botón principal del inicio y de contacto | Se corren hacia el cursor cuando se acerca |
-  | Tarjetas de plan, de contacto y cierre del inicio | El borde se ilumina donde está el mouse |
-  | Índice del inicio | El número y el nombre pasan a bronce y la flecha se corre |
-  | Filas de servicio | Se abren y muestran una captura que persigue al cursor |
-  | Entregables | La celda se aclara y el nombre pasa a bronce |
-  | Preguntas | Se dibuja una línea de bronce bajo la fila |
-  | Números del estudio | La celda se aclara y el número pasa a bronce |
-  | Cinta de rubros | Se frena, para poder leerla |
-  | Capturas del portfolio | Escalan un 3% |
-
-  Nada de esto existe en una pantalla táctil ni con movimiento reducido: no se
-  monta el componente, no se descarga el trabajo y no queda ningún escucha
-  colgado. La única excepción es el resplandor, que en ese caso se queda quieto
-  sobre el hero — así el color llega igual al celular.
+- **Las etiquetas y los datos usan la letra del cuerpo.** Había una tercera
+  familia, JetBrains Mono, en mayúsculas espaciadas arriba de cada título y en
+  todos los números chicos. Se sacó: era el rasgo más de plantilla del sitio.
+  Las cifras alineadas las da Satoshi con `tabular-nums`, y las etiquetas que
+  quedaron dicen algo que el título no dice.
 
 ---
 

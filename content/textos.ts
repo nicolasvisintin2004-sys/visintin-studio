@@ -42,6 +42,28 @@ export const hero = {
     "Dos líneas con el mismo peso: los sitios y sistemas que usan tus clientes, y las automatizaciones que le sacan horas repetidas a la semana. Las dos empiezan en el mismo lugar, que es entender cómo trabaja el negocio y por dónde entra el dinero.",
   accionPrincipal: "Ver el diagnóstico",
   accionSecundaria: "Consultar por WhatsApp",
+  /**
+   * El mapa de procesos de la portada: lo que hace el estudio, mostrado en
+   * vez de contado.
+   *
+   * Es un proceso que tiene casi cualquier pyme que vende por WhatsApp, en
+   * cuatro pasos. Tres son manuales y cada uno muestra cómo era y cómo queda
+   * ordenado. El último paso no se automatiza a propósito: lo sigue haciendo
+   * el dueño, que revisa y manda. El título promete que la empresa trabaje
+   * más y vos menos, no que trabaje sola, y el mapa tiene que decir lo mismo.
+   *
+   * Los textos son cortos porque van en cuatro columnas; ninguno lleva un
+   * tiempo ni un número, porque no hay un caso medido que los respalde.
+   */
+  mapa: {
+    titulo: "Un pedido, antes y después de ordenarlo",
+    pasos: [
+      { despues: "Llega un pedido por WhatsApp" },
+      { antes: "Alguien lo copia a una planilla", despues: "Se carga solo en la planilla" },
+      { antes: "El presupuesto se arma a mano", despues: "El presupuesto se arma solo" },
+      { antes: "Se manda, si alguien se acuerda", despues: "Lo revisás y lo mandás vos" },
+    ] as readonly { antes?: string; despues: string }[],
+  },
 };
 
 export const servicios = {
