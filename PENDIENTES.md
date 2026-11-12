@@ -15,7 +15,7 @@ compilado y revisado en local; **no está publicado**. Lo que queda de tu lado:
 | **Revisarlo y decidir si se sube** | `npm run build` y abrir `out/` | Pendiente |
 | Encender `/turnos` | `content/turnos-acciones.ts` → `TURNOS_PUBLICADA` | `false`. Mientras tanto, la puerta de turnos abre WhatsApp para pedir la demo |
 | Sumar Andy Campers como caso | `content/proyectos-en-curso.ts` → `content/proyectos.ts` | Esperando dirección pública. Hoy el sitio está en modo demo, con carteles de datos faltantes |
-| La bio de Instagram | En la app | Que diga las mismas tres cosas que el inicio, y el enlace a `visintinstudio.com.ar` |
+| La bio de Instagram | En la app, **el mismo día que se sube** | Nombre, bio y enlace en `instagram-visintin-studio.md`, sección 1. El enlace es `visintinstudio.com.ar/ig`, que no funciona hasta que se sube. Sacar el destacado Diagnóstico |
 | Pedir la indexación de las páginas nuevas | Search Console | `/sitios-web` y `/redes`, después de subir |
 
 Visintin Turnos no entra como caso del portfolio a propósito: no tiene
@@ -128,7 +128,8 @@ propiedad se desverifica.
   `/sitios-web`, `/redes`, `/proyectos` y los dos casos. `/servicios` y
   `/planes` redirigen a `/sitios-web`.
 - Crear el Perfil de empresa de Google, con el sitio bien escrito.
-- Poner `visintinstudio.com.ar` en la bio de Instagram.
+- Poner `visintinstudio.com.ar/ig` en la bio de Instagram (ver la tabla de
+  la reestructura, arriba).
 
 También hace falta un dominio verificado en Resend para que el aviso salga
 desde `visintinstudio@gmail.com` y no desde `onboarding@resend.dev`.

@@ -85,6 +85,11 @@ Son tres partes y las inventás vos:
 Sin espacios, sin mayúsculas y sin tildes. Usá siempre las mismas palabras, o
 `Instagram` e `instagram` van a aparecer como dos fuentes distintas.
 
+El enlace de la bio de Instagram ya viene etiquetado: `visintinstudio.com.ar/ig`
+redirige al inicio con `utm_source=instagram&utm_medium=bio` (está en
+`netlify.toml`). En el perfil se ve corto, y en la lista de consultas aparece
+como `instagram` / `bio`.
+
 Las etiquetas se guardan apenas la persona entra y **sobreviven a que navegue
 por el sitio**: si entra al diagnóstico por una historia, después mira
 Proyectos y vuelve a completar el formulario, la consulta igual queda marcada

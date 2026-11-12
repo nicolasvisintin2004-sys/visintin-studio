@@ -130,6 +130,22 @@
   to = "/sitios-web"
   status = 301
 
+# ─────────────────────────────────────────────────────────────
+# EL ENLACE DE LA BIO DE INSTAGRAM
+#
+# En el perfil se lee "visintinstudio.com.ar/ig", corto y limpio, y el que
+# toca llega al inicio con la etiqueta de campaña. El sitio la guarda apenas
+# entra (lib/utm.ts) y la manda con el formulario, así que la consulta queda
+# marcada como que vino de la bio aunque la persona haya navegado antes.
+#
+# 302 y no 301: si mañana la bio tiene que llevar a otra página, se cambia
+# acá y los navegadores no se quedan con la dirección vieja guardada.
+# ─────────────────────────────────────────────────────────────
+[[redirects]]
+  from = "/ig"
+  to = "/?utm_source=instagram&utm_medium=bio"
+  status = 302
+
 # Las secciones que conservan el nombre, sin el prefijo de idioma.
 
 [[redirects]]
