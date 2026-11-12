@@ -27,10 +27,6 @@ import { ACCION_DEMO, MENSAJE_DEMO, TURNOS_PUBLICADA } from "@/content/turnos-ac
  * Es todo de servidor: no hay nada que abrir ni cerrar.
  */
 export function Puertas() {
-  // El precio más bajo de los servicios de redes, calculado y no escrito:
-  // si cambia un precio en `content/instagram.ts`, esto se actualiza solo.
-  const desde = Math.min(...instagram.servicios.map((s) => s.precio.valor));
-
   return (
     <section className="seccion" aria-labelledby="puertas-titulo">
       <div className="contenedor">
@@ -43,7 +39,7 @@ export function Puertas() {
 
           <Fila
             puerta={puertas.redes}
-            dato={`${textos.desde} USD ${desde}`}
+            extra={<PreciosRedes />}
             prueba={<PruebaRedes />}
             pie={textos.pieRedes}
           />
@@ -77,15 +73,15 @@ export function Puertas() {
 
 type PropsFila = {
   puerta: Puerta;
-  /** Un dato corto abajo del texto, como el precio. */
-  dato?: string;
+  /** Lo que va abajo del texto, como los precios. */
+  extra?: ReactNode;
   prueba: ReactNode;
   pie: string;
   /** Reemplaza al enlace a la página de la puerta. */
   enlace?: ReactNode;
 };
 
-function Fila({ puerta, dato, prueba, pie, enlace }: PropsFila) {
+function Fila({ puerta, extra, prueba, pie, enlace }: PropsFila) {
   return (
     <li className="grid gap-8 border-b border-borde py-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-16 lg:py-16">
       <div>
@@ -94,7 +90,7 @@ function Fila({ puerta, dato, prueba, pie, enlace }: PropsFila) {
         </h3>
         <p className="t-etiqueta mt-4">{puerta.para}</p>
         <p className="mt-6 max-w-[44ch] text-[1.0625rem] leading-relaxed">{puerta.texto}</p>
-        {dato && <p className="t-dato mt-4 text-acento">{dato}</p>}
+        {extra}
 
         {enlace ?? (
           <Link href={puerta.href} className={`${botonTexto} mt-8`}>
@@ -110,6 +106,34 @@ function Fila({ puerta, dato, prueba, pie, enlace }: PropsFila) {
         <figcaption className="t-dato mt-3 text-suave">{pie}</figcaption>
       </figure>
     </li>
+  );
+}
+
+/**
+ * Los tres precios de contenido para redes, en el orden de /redes.
+ *
+ * Antes decía "Desde USD 200", que era el más bajo de los tres. Era cierto,
+ * pero la página de redes empieza por creación de contenido, a USD 300 por
+ * mes, y leído de corrido parecía que los precios no coincidían. Ahora se ven
+ * los tres, con el nombre y el período, y salen del mismo archivo que la
+ * página: no pueden quedar distintos.
+ */
+function PreciosRedes() {
+  return (
+    <dl className="mt-6 max-w-[30rem] border-t border-borde text-[0.9375rem]">
+      {instagram.servicios.map((servicio) => (
+        <div
+          key={servicio.slug}
+          className="flex items-baseline justify-between gap-4 border-b border-borde py-2.5"
+        >
+          <dt className="text-suave">{servicio.nombre}</dt>
+          <dd className="shrink-0 tabular-nums">
+            <span className="text-acento">{servicio.precio.monto}</span>{" "}
+            <span className="text-suave">{servicio.precio.periodo}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

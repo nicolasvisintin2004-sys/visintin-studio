@@ -82,8 +82,6 @@ export const hero = {
 /** Lo que hace el estudio, en el inicio: las tres puertas. */
 export const puertasTextos = {
   titulo: "Lo que hago.",
-  /** Lo que se lee antes del precio más bajo de contenido para redes. */
-  desde: "Desde",
   /** Los pies de la prueba de cada puerta. */
   pieSitios: "El sitio de Taller Italia, fábrica de motorhomes.",
   pieRedes: "Publicaciones de @Bulk_Ar, cuenta que manejo.",
