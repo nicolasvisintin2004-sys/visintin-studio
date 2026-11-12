@@ -3,15 +3,13 @@ import { EnlaceWhatsApp } from "@/components/enlace-whatsapp";
 import { EncabezadoSeccion } from "@/components/encabezado-seccion";
 import { mantenimiento, planes as listaDePlanes } from "@/content/planes";
 import { mensajes } from "@/content/sitio";
-import { planes as textos } from "@/content/textos";
+import { sitiosWeb as textos } from "@/content/textos";
 
 /**
- * Los tres planes de sitio web, sin precios.
+ * Los tres planes de sitio web, sin precios, en /sitios-web.
  *
- * Dejó de ser la sección entera de la página para ser el detalle de una de
- * las tres ramas que salen del diagnóstico. Por eso encabeza en `h2` y no en
- * `h1`: el `h1` de la página es "Todos entran por el mismo lugar", y estos
- * tres alcances cuelgan de ahí.
+ * Encabeza en `h2`: el `h1` de la página es el de sitios web, y estos tres
+ * alcances cuelgan de ahí.
  *
  * El acento aparece una sola vez en todo el bloque: en el borde de la tarjeta
  * recomendada. Ese es todo el trabajo que tiene que hacer para que el ojo

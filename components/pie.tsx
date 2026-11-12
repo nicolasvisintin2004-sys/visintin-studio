@@ -5,23 +5,16 @@ import { RedesEnPie } from "@/components/redes";
 import { redesActivas } from "@/content/social";
 import { mensajes, sitio } from "@/content/sitio";
 import { navegacion, pie as textos } from "@/content/textos";
-import { TURNOS_PUBLICADA, turnos } from "@/content/turnos";
 
 export function Pie() {
   const anio = new Date().getFullYear();
 
   /**
-   * El diagnóstico encabeza la lista y no está en `navegacion.enlaces`, que
-   * es el menú del medio de la barra. Acá abajo sí tiene que figurar: el pie
-   * es la única lista completa de páginas del sitio, y es de donde sale
-   * también el mapa mental de alguien que llega por una página suelta.
+   * El pie es la única lista completa de páginas del sitio: el menú, que ya
+   * incluye turnos cuando se anuncia, y contacto al final. El diagnóstico no
+   * figura: es una página de aterrizaje y se llega por enlace directo.
    */
-  const secciones = [
-    navegacion.destacado,
-    ...navegacion.enlaces,
-    // El producto propio va último y sólo cuando la página ya se anuncia.
-    ...(TURNOS_PUBLICADA ? [{ href: "/turnos", texto: turnos.etiqueta }] : []),
-  ];
+  const secciones = [...navegacion.enlaces, navegacion.destacado];
 
   // La cuarta columna sólo existe si hay alguna red cargada.
   const columnas = redesActivas.length > 0 ? "lg:grid-cols-[1.4fr_1fr_1fr_1fr]" : "lg:grid-cols-[1.4fr_1fr_1fr]";

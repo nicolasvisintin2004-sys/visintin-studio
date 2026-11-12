@@ -52,22 +52,21 @@ export function Hero() {
           style={{ "--retardo": "680ms" } as Estilo}
         >
           {/*
-            El botón principal lleva al diagnóstico y el de WhatsApp pasa a
-            secundario. No es un cambio de estilo: el que llega al sitio por
-            primera vez casi nunca sabe qué pedir, y "Consultar por WhatsApp"
-            le pide justamente eso. El diagnóstico le ofrece algo concreto,
-            acotado y con precio, que es una decisión bastante más fácil.
+            WhatsApp es el principal: el que llega desde Instagram ya sabe qué
+            quiere preguntar. El segundo lleva a los proyectos, que es lo que
+            convence al que todavía duda. Antes el principal era el
+            diagnóstico, que nunca se vendió.
           */}
-          <Link href="/diagnostico" className={botonPrimario}>
-            {hero.accionPrincipal}
-          </Link>
           <EnlaceWhatsApp
             mensaje={mensajes.general}
             origen="hero"
-            className={botonSecundario}
+            className={botonPrimario}
           >
-            {hero.accionSecundaria}
+            {hero.accionPrincipal}
           </EnlaceWhatsApp>
+          <Link href="/proyectos" className={botonSecundario}>
+            {hero.accionSecundaria}
+          </Link>
         </div>
       </div>
 

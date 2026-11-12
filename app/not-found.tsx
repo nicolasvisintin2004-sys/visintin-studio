@@ -9,13 +9,13 @@ import { inicio, navegacion, noEncontrada } from "@/content/textos";
  * clic de irse: llegó buscando algo concreto, se encontró con un error y la
  * única salida la manda a empezar de nuevo.
  *
- * Ahora lleva la lista entera de secciones, con la misma línea de descripción
- * que el índice del inicio. Un 404 bien hecho no es una disculpa, es un mapa:
+ * Ahora lleva la lista entera de secciones, cada una con una línea que dice
+ * qué hay ahí. Un 404 bien hecho no es una disculpa, es un mapa:
  * la mayoría de las veces lo que la persona buscaba está a un renglón de
  * distancia.
  */
 export default function NoEncontrada() {
-  const secciones = [navegacion.destacado, ...navegacion.enlaces];
+  const secciones = [...navegacion.enlaces, navegacion.destacado];
 
   return (
     <main id="contenido" className="contenedor py-32 lg:py-40">
@@ -32,19 +32,12 @@ export default function NoEncontrada() {
         </Link>
       </div>
 
-      {/* Las mismas filas de línea fina del índice del inicio. */}
+      {/* Filas de línea fina, como las del resto del sitio. */}
       <p className="t-etiqueta mb-6 mt-24">{noEncontrada.secciones}</p>
       <ul className="border-t border-borde">
-        {secciones.map(({ href, texto }, i) => (
+        {secciones.map(({ href, texto }) => (
           <li key={href}>
-            <Link
-              href={href}
-              className="group grid grid-cols-[auto_1fr_auto] items-center gap-5 border-b border-borde py-6 sm:gap-8"
-            >
-              <span className="t-dato text-suave transition-colors duration-500 group-hover:text-acento">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-
+            <Link href={href} className="group block border-b border-borde py-6">
               <span className="min-w-0">
                 <span className="block font-display text-[1.25rem] font-medium leading-tight tracking-[-0.02em] transition-colors duration-500 group-hover:text-acento sm:text-[1.5rem]">
                   {texto}

@@ -136,14 +136,13 @@ export function Navegacion() {
 
           <div className="flex items-center gap-3">
             {/*
-              El botón de la barra lleva al diagnóstico y ya no a WhatsApp.
-              El que llega frío no sabe qué pedir por WhatsApp; lo que le
-              sirve es algo concreto y acotado. WhatsApp no se pierde: está en
-              el botón flotante de todas las páginas, en el hero, en el pie y
-              en contacto.
+              El botón de la barra lleva a contacto, donde están WhatsApp, el
+              formulario y el correo. WhatsApp directo está en el botón
+              flotante de todas las páginas.
 
-              En la página del diagnóstico el botón apunta al formulario de
-              esa misma página, que es el único destino que tiene.
+              En las páginas de aterrizaje cambia: en /turnos pide la demo y
+              en /diagnostico apunta al formulario de esa misma página, que
+              es el único destino que tiene.
             */}
             {ruta.startsWith("/turnos") ? (
               <EnlaceWhatsApp
@@ -204,23 +203,12 @@ export function Navegacion() {
       >
         <nav aria-label="Principal" className="contenedor flex flex-col gap-2 py-10">
           {/*
-            El diagnostico encabeza el menu de movil.
-            En escritorio es el boton de la derecha de la barra, pero ese
-            boton esta oculto abajo de 640px, y como la ruta no esta en
-            `navegacion.enlaces` quedaba fuera de los dos menus: desde un
-            telefono no habia forma de llegar al producto de entrada mas que
-            por el pie. En movil entra la mayoria del trafico.
+            Contacto va al final del menú de móvil. En escritorio es el botón
+            de la derecha de la barra, pero ese botón está oculto abajo de
+            640px, y como la ruta no está en `navegacion.enlaces` quedaba
+            fuera de los dos menús.
           */}
-          <Link
-            href={navegacion.destacado.href}
-            aria-current={esActivo(navegacion.destacado.href) ? "page" : undefined}
-            onClick={() => setAbierto(false)}
-            className="t-subtitulo border-b border-borde py-5 text-acento"
-          >
-            {navegacion.destacado.texto}
-          </Link>
-
-          {navegacion.enlaces.map(({ href, texto }) => {
+          {[...navegacion.enlaces, navegacion.destacado].map(({ href, texto }) => {
             const activo = esActivo(href);
             return (
               <Link

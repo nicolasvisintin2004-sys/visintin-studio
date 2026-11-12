@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { BloqueDiagnostico } from "@/components/bloque-diagnostico";
 import { CierreInicio } from "@/components/cierre-inicio";
-import { Cinta } from "@/components/cinta";
 import { DatosEstructurados } from "@/components/datos-estructurados";
 import { Hero } from "@/components/hero";
-import { Indice } from "@/components/indice";
-import { RedesEnInicio } from "@/components/redes";
-import { PRECIO_DIAGNOSTICO, diagnostico } from "@/content/diagnostico";
-import { instagram } from "@/content/instagram";
-import { pedidos } from "@/content/pedidos";
+import { Puertas } from "@/components/puertas";
+import { planes } from "@/content/planes";
+import { puertas } from "@/content/servicios";
 import { perfilesSociales } from "@/content/social";
-import { lineas, servicios } from "@/content/servicios";
 import { sitio } from "@/content/sitio";
 import { meta } from "@/content/textos";
+import { TURNOS_PUBLICADA } from "@/content/turnos-acciones";
 import { metadatosDePagina } from "@/lib/metadatos";
 
 // En el inicio el título va entero, sin la plantilla " · Visintin Studio":
@@ -27,11 +23,12 @@ export const metadata: Metadata = metadatosDePagina({
 /**
  * Qué es este negocio, dónde está y qué ofrece, para Google.
  *
- * Va en el inicio porque describe al estudio entero. El catálogo lleva, además
- * de los servicios de Instagram, tres listas: las dos líneas de trabajo, las cuatro categorías de servicio y los
- * nueve entregables concretos, que son los que están escritos con las
- * palabras que la gente busca —"tienda online", "turnos y reservas",
- * "cotizador"—. El diagnóstico va primero porque es por donde entran todos.
+ * Va en el inicio porque describe al estudio entero. El catálogo son las tres
+ * puertas y los tres alcances de sitio web. Los precios de contenido para
+ * redes no van acá sino en /redes, que es donde se leen: Google pide que el
+ * marcado describa lo que está en la misma página. Cada servicio lleva la
+ * dirección de su página, salvo el de turnos mientras su página no se
+ * anuncia.
  */
 const negocio = {
   "@context": "https://schema.org",
@@ -62,48 +59,25 @@ const negocio = {
     "@type": "OfferCatalog",
     name: "Servicios",
     itemListElement: [
-      {
+      ...Object.values(puertas).map((puerta) => ({
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Diagnóstico de procesos",
-          description: diagnostico.bajada,
-          url: `${sitio.url}/diagnostico`,
+          name: puerta.nombre,
+          description: puerta.texto,
+          ...((puerta.slug !== "turnos" || TURNOS_PUBLICADA) && {
+            url: `${sitio.url}${puerta.href}`,
+          }),
         },
-        // El único precio del sitio, y sólo si está definido.
-        ...(PRECIO_DIAGNOSTICO.trim() !== "" && { price: PRECIO_DIAGNOSTICO }),
-      },
-      ...lineas.map((linea) => ({
+      })),
+      ...planes.map((plan) => ({
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: linea.nombre,
-          description: linea.promesa,
+          name: `Sitio web, plan ${plan.nombre}`,
+          description: plan.promesa,
+          url: `${sitio.url}/sitios-web`,
         },
-      })),
-      ...servicios.map((s) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: s.nombre, description: s.promesa },
-      })),
-      // Los de Instagram son los únicos con precio fijo además del
-      // diagnóstico. Los mensuales lo dicen con la unidad "MON" (mes).
-      ...instagram.servicios.map((s) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: s.nombre, description: s.promesa },
-        price: s.precio.valor,
-        priceCurrency: "USD",
-        ...(s.precio.periodo === "por mes" && {
-          priceSpecification: {
-            "@type": "UnitPriceSpecification",
-            price: s.precio.valor,
-            priceCurrency: "USD",
-            referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" },
-          },
-        }),
-      })),
-      ...pedidos.map((p) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: p.nombre, description: p.descripcion },
       })),
     ],
   },
@@ -112,25 +86,22 @@ const negocio = {
 /**
  * El inicio.
  *
- * Presenta el estudio y reparte: el hero dice qué se hace, el bloque del
- * diagnóstico ofrece el único camino de entrada con precio, la cinta dice con
- * quién se trabaja y el índice lleva a cada página. No repite el contenido de
- * las secciones —cada una tiene su dirección propia— y cierra con la
- * invitación a escribir.
+ * Tres partes: el hero dice qué se hace y para quién, las tres puertas
+ * muestran cada cosa con una prueba real y un enlace a su página, y el cierre
+ * invita a escribir.
  *
- * El diagnóstico va segundo, apenas debajo del hero: es el producto de
- * entrada y lo que tiene que ver primero el que llega sin saber qué pedir.
+ * Hasta noviembre de 2026 tenía además el bloque del diagnóstico, la cinta de
+ * rubros, un índice de seis páginas y la franja de redes. Se sacaron porque
+ * entre todos tapaban lo que se vende: el diagnóstico no se vendió nunca, los
+ * rubros quedaron dichos en cada puerta, el índice es el menú y las redes
+ * están en el pie.
  */
 export default function Inicio() {
   return (
     <>
       <main id="contenido">
         <Hero />
-        <BloqueDiagnostico />
-        <Cinta />
-        <Indice />
-        {/* No se renderiza si no hay ninguna red cargada. */}
-        <RedesEnInicio />
+        <Puertas />
         <CierreInicio />
       </main>
 

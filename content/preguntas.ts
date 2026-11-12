@@ -7,7 +7,8 @@ export type Pregunta = {
  * Las preguntas que aparecen siempre en la primera charla.
  *
  * Están escritas para contestarlas de verdad, no para esquivarlas: la del
- * precio explica por qué no hay un número en el sitio, y la del estudio de
+ * precio explica por qué unos trabajos tienen el número publicado y otros
+ * no, y la del estudio de
  * una sola persona se hace en voz alta porque quien la piensa y no la
  * pregunta se va sin escribir.
  *
@@ -17,7 +18,7 @@ export const preguntas: readonly Pregunta[] = [
   {
     pregunta: "¿Cuánto cuesta un proyecto?",
     respuesta:
-      "Depende del alcance, y por ese motivo el precio no se publica: un catálogo de cinco modelos y una página única no tienen el mismo costo. En la primera conversación por WhatsApp, con una descripción breve del negocio, puedo indicarte un rango. La propuesta cerrada se entrega por escrito dentro de las 48 horas.",
+      "Depende de qué sea. Los servicios de contenido para redes tienen precio fijo y publicado, porque incluyen siempre lo mismo. El de un sitio web depende del alcance, y por eso no se publica: un catálogo de cinco modelos y una página única no tienen el mismo costo. En la primera conversación por WhatsApp, con una descripción breve del negocio, puedo indicarte un rango, y la propuesta cerrada se entrega por escrito dentro de las 48 horas.",
   },
   {
     pregunta: "¿El sitio queda a mi nombre?",
@@ -32,12 +33,12 @@ export const preguntas: readonly Pregunta[] = [
   {
     pregunta: "¿Por qué trabajar con un estudio de una sola persona?",
     respuesta:
-      "Porque quien responde la consulta es la misma persona que desarrolla y mantiene el sitio, sin intermediarios. Y porque el trabajo puede evaluarse antes de contratar: el proyecto del portfolio está publicado y puede recorrerse desde este sitio, con las capturas de cómo se encontraba el negocio antes.",
+      "Porque quien responde la consulta es la misma persona que desarrolla y mantiene el sitio, sin intermediarios. Y porque el trabajo puede evaluarse antes de contratar: los proyectos del portfolio están publicados y pueden recorrerse desde este sitio.",
   },
   {
     pregunta: "¿Cuánto tiempo lleva?",
     respuesta:
-      "Entre una y tres semanas a partir de la entrega de textos e imágenes. Lo que más suele demorar un proyecto no es el desarrollo, sino la espera del contenido; por eso, en el plan Completo, la redacción está incluida.",
+      "Un sitio lleva entre una y tres semanas a partir de la entrega de textos e imágenes. Lo que más suele demorar un proyecto no es el desarrollo, sino la espera del contenido; por eso, en el plan Completo, la redacción está incluida.",
   },
   {
     pregunta: "¿Cuál es la forma de pago?",
@@ -52,6 +53,6 @@ export const preguntas: readonly Pregunta[] = [
   {
     pregunta: "¿Trabajás con clientes de otras provincias?",
     respuesta:
-      "Sí. El estudio está en Buenos Aires y trabaja a distancia con todo el país; el proyecto del portfolio es de una fábrica de Mendoza y todo el trabajo se hizo a distancia. El proceso se realiza por WhatsApp y videollamada.",
+      "Sí. El estudio está en Buenos Aires y trabaja a distancia con todo el país; Taller Italia, uno de los proyectos publicados, es una fábrica de Mendoza, y todo el trabajo se hizo a distancia. El proceso se realiza por WhatsApp y videollamada.",
   },
 ];

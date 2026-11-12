@@ -3,14 +3,13 @@ import { notasPublicadas } from "@/content/notas/registro";
 import { slugsDeProyecto } from "@/content/proyectos";
 import { sitio } from "@/content/sitio";
 import { navegacion } from "@/content/textos";
-import { TURNOS_PUBLICADA } from "@/content/turnos";
 
 /**
  * El sitemap.
  *
  * Las páginas salen de `navegacion.enlaces` y de `navegacion.destacado`, así
  * que una página nueva en el menú entra sola acá y no hay dos listas que
- * mantener de acuerdo.
+ * mantener de acuerdo. Lo mismo turnos: entra cuando entra al menú.
  *
  * Lo que está en borrador no entra: los proyectos sin terminar ya vienen
  * filtrados de `content/proyectos.ts`, y las notas se filtran acá con
@@ -32,33 +31,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
-    {
-      // El diagnóstico va con más prioridad que el resto de las secciones:
-      // es la página a la que apuntan los enlaces de prospección y la que
-      // tiene que competir por las búsquedas de problema.
-      url: `${sitio.url}${navegacion.destacado.href}`,
-      lastModified: hoy,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    ...navegacion.enlaces.map(({ href }) => ({
+    // El menú, que ya incluye turnos cuando la página se anuncia, y
+    // contacto. Mientras turnos no se anuncia está `noindex`, y declararla
+    // acá sería mandarle a Google dos señales opuestas.
+    ...[...navegacion.enlaces, navegacion.destacado].map(({ href }) => ({
       url: `${sitio.url}${href}`,
       lastModified: hoy,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    // La página del producto, cuando ya se anuncia. Antes está `noindex`, y
-    // declararla acá sería mandarle a Google dos señales opuestas.
-    ...(TURNOS_PUBLICADA
-      ? [
-          {
-            url: `${sitio.url}/turnos`,
-            lastModified: hoy,
-            changeFrequency: "monthly" as const,
-            priority: 0.9,
-          },
-        ]
-      : []),
+    {
+      // El diagnóstico ya no está en el menú, pero la página sigue
+      // existiendo como aterrizaje de prospección.
+      url: `${sitio.url}/diagnostico`,
+      lastModified: hoy,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
     ...slugsDeProyecto.map((slug) => ({
       url: `${sitio.url}/proyectos/${slug}`,
       lastModified: hoy,

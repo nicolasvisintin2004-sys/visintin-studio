@@ -1,17 +1,15 @@
 /**
- * Los servicios de Instagram.
+ * Contenido para redes: los tres servicios de Instagram, en /redes.
  *
- * Son distintos de las dos líneas de trabajo del estudio, y por eso van en un
- * bloque aparte de /servicios y no como una tercera línea. Los sitios y las
- * automatizaciones empiezan por el diagnóstico porque no se sabe qué hacer
- * hasta mirar cómo trabaja la empresa. Estos tres, no: el alcance ya está
- * definido de antemano, así que tienen precio fijo y publicado, y se pueden
- * contratar directamente.
+ * Son los únicos del sitio con precio publicado. La regla es que lleva
+ * precio sólo lo que tiene el alcance cerrado de antemano: un mismo "sitio
+ * web" puede costar cinco veces más que otro según lo que incluya, y un
+ * número ahí o espanta o miente; estos tres incluyen siempre lo mismo, y ahí
+ * el número ayuda a decidir. Se contratan directamente, sin pasos previos.
  *
- * Es la excepción a la regla de "sólo el diagnóstico tiene precio". La regla
- * existía porque un mismo "sitio web" puede costar cinco veces más que otro
- * según lo que incluya; un servicio con alcance cerrado no tiene ese
- * problema, y ahí el número ayuda a decidir.
+ * Van en el orden en que se venden: el contenido mensual primero, que es el
+ * servicio principal, y la auditoría al final, que es el trabajo de una sola
+ * vez.
  *
  * Los precios van en dólares porque así se cobran.
  */
@@ -38,20 +36,21 @@ export type ServicioInstagram = {
 };
 
 export const instagram = {
-  titulo: "Instagram, con precio fijo.",
+  titulo: "Contenido para redes, con precio fijo.",
   bajada:
-    "Tres trabajos con el alcance cerrado de antemano. No pasan por el diagnóstico: se sabe exactamente qué incluyen, así que el precio también se sabe.",
+    "Tres trabajos para Instagram con el alcance cerrado de antemano: se sabe exactamente qué incluye cada uno, así que el precio también se sabe. Se contratan por separado y sin pasos previos.",
   consultar: "Consultar por WhatsApp",
   servicios: [
     {
-      slug: "auditoria-instagram",
-      nombre: "Auditoría de Instagram",
-      precio: { monto: "USD 200", valor: 200, periodo: "pago único" },
-      promesa: "Qué funciona en tu cuenta, qué conviene cambiar y por dónde seguir.",
+      slug: "creacion-de-contenido",
+      nombre: "Creación de contenido",
+      precio: { monto: "USD 300", valor: 300, periodo: "por mes" },
+      promesa: "Las publicaciones de la cuenta, pensadas para lo que la marca necesita.",
       detalle: [
-        "Es un trabajo de una sola vez. Reviso tu cuenta completa y te entrego un informe con lo que está funcionando, lo que conviene cambiar y los próximos pasos.",
-        "Te lo entrego y queda en tus manos.",
+        "Antes de diseñar una sola pieza, vemos juntos qué quiere la marca: a quién le habla, qué tipo de contenido necesita y qué tiene que lograr cada publicación. Recién con eso definido se produce, mes a mes.",
+        "La cuenta de BULK, la tienda de suplementos que está entre los proyectos, la manejo yo. Estas son algunas de sus publicaciones.",
       ],
+      ilustracion: "contenido",
     },
     {
       slug: "mensajes-por-palabra-clave",
@@ -73,15 +72,14 @@ export const instagram = {
       ilustracion: "palabra-clave",
     },
     {
-      slug: "creacion-de-contenido",
-      nombre: "Creación de contenido",
-      precio: { monto: "USD 300", valor: 300, periodo: "por mes" },
-      promesa: "Las publicaciones de la cuenta, pensadas para lo que la marca necesita.",
+      slug: "auditoria-instagram",
+      nombre: "Auditoría de Instagram",
+      precio: { monto: "USD 200", valor: 200, periodo: "pago único" },
+      promesa: "Qué funciona en tu cuenta, qué conviene cambiar y por dónde seguir.",
       detalle: [
-        "Antes de diseñar una sola pieza, vemos juntos qué quiere la marca: a quién le habla, qué tipo de contenido necesita y qué tiene que lograr cada publicación. Recién con eso definido se produce, mes a mes.",
-        "La cuenta de BULK, la tienda de suplementos que está entre los proyectos, la manejo yo. Estas son algunas de sus publicaciones.",
+        "Es un trabajo de una sola vez. Reviso tu cuenta completa y te entrego un informe con lo que está funcionando, lo que conviene cambiar y los próximos pasos.",
+        "Te lo entrego y queda en tus manos.",
       ],
-      ilustracion: "contenido",
     },
   ] satisfies readonly ServicioInstagram[],
 

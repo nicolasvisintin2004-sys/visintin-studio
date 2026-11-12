@@ -40,7 +40,7 @@
 # La versión anterior era bilingüe y colgaba todo de un prefijo de idioma:
 # /es/planes, /en/trabajo, /es/notas, etc. Esta es sólo en español y sin
 # prefijo, así que cada dirección vieja se manda a su equivalente nuevo:
-# /es/planes a /planes, /es/trabajo a /proyectos, y así.
+# /es/trabajo a /proyectos, /es/estudio a /estudio, y así.
 #
 # 301 y no 302: la mudanza es definitiva y lo que interesa es que Google
 # traslade a la página nueva lo poco que haya alcanzado a indexar, en vez de
@@ -101,16 +101,36 @@
   to = "/proyectos/:splat"
   status = 301
 
-# Las secciones que conservan el nombre, sin el prefijo de idioma.
+# ─────────────────────────────────────────────────────────────
+# LA REESTRUCTURA DE NOVIEMBRE DE 2026
+#
+# /servicios y /planes explicaban la misma oferta dos veces. Se juntaron en
+# /sitios-web, y lo de Instagram pasó a /redes. Las dos direcciones viejas
+# llevan a la de sitios web, que es donde quedó la mayor parte de lo que
+# había en ellas. /es/planes y /en/planes van directo, sin pasar por /planes:
+# una cadena de dos redirecciones le hace perder a Google parte de la señal.
+# ─────────────────────────────────────────────────────────────
+[[redirects]]
+  from = "/servicios"
+  to = "/sitios-web"
+  status = 301
+
+[[redirects]]
+  from = "/planes"
+  to = "/sitios-web"
+  status = 301
+
 [[redirects]]
   from = "/es/planes"
-  to = "/planes"
+  to = "/sitios-web"
   status = 301
 
 [[redirects]]
   from = "/en/planes"
-  to = "/planes"
+  to = "/sitios-web"
   status = 301
+
+# Las secciones que conservan el nombre, sin el prefijo de idioma.
 
 [[redirects]]
   from = "/es/estudio"

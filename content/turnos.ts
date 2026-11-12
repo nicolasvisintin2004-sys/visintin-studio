@@ -27,16 +27,8 @@ import { ACCION_DEMO } from "./turnos-acciones";
  * inteligencia artificial: no los tiene.
  */
 
-/**
- * La página existe pero todavía no se anuncia.
- *
- * En `false` no entra al sitemap, se marca `noindex` y no se enlaza desde el
- * pie ni desde Servicios: se puede abrir escribiendo la dirección, que es lo
- * que hace falta para revisarla, y nada más. Se pasa a `true` cuando el demo
- * tenga dirección pública y los recordatorios por WhatsApp salgan de verdad;
- * antes de eso, la página vendería algo que no se puede probar.
- */
-export const TURNOS_PUBLICADA = false;
+/** El interruptor de publicación vive en `turnos-acciones.ts`; ver ahí. */
+export { TURNOS_PUBLICADA } from "./turnos-acciones";
 
 /**
  * Las direcciones de los dos demos.

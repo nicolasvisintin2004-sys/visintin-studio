@@ -14,11 +14,13 @@ export type Plan = {
 };
 
 /**
- * Los tres planes, SIN precio.
+ * Los tres planes de sitio web, SIN precio. Van en /sitios-web.
  *
  * El precio se pide por WhatsApp a propósito: el objetivo de esta sección es
  * que el visitante entienda el alcance y escriba, no que compare números con
- * otro presupuesto que incluye la mitad de las cosas.
+ * otro presupuesto que incluye la mitad de las cosas. Los servicios de redes
+ * sí tienen precio, porque su alcance está cerrado de antemano; el porqué
+ * está en `content/instagram.ts`.
  */
 export const planes: readonly Plan[] = [
   {
@@ -73,72 +75,6 @@ export const planes: readonly Plan[] = [
     ],
     revisiones: "3 rondas de revisiones",
     mantenimiento: "3 meses de mantenimiento sin cargo",
-  },
-];
-
-/**
- * Las tres ramas que salen del diagnóstico.
- *
- * Es el mapa del estudio en una pantalla: todos entran por el diagnóstico y
- * de ahí se abren tres caminos, que pueden tomarse de a uno o encadenarse.
- * Los tres planes web de arriba son el detalle de la primera rama, y por eso
- * la página los muestra como un sub-bloque y no como la sección entera.
- *
- * Sólo el diagnóstico tiene precio, y eso es una regla y no un descuido: es
- * el único trabajo acotado y cerrado. Los otros tres son variables, y un
- * número ahí o espanta o miente.
- */
-export type Rama = {
-  slug: string;
-  nombre: string;
-  /** Para quién es esta rama. Va arriba del nombre, en mono. */
-  para: string;
-  texto: string;
-  /** Ejemplos concretos. Son lo que hace que alguien se reconozca. */
-  ejemplos: readonly string[];
-  /** La primera rama no lleva botón propio: abajo están los tres planes. */
-  accion?: string;
-};
-
-export const ramas: readonly Rama[] = [
-  {
-    slug: "sitio-web",
-    nombre: "Sitio web",
-    para: "Lo que el cliente ve",
-    texto:
-      "El sitio que presenta la oferta, el catálogo que se compara y los formularios que traen la consulta con los datos necesarios para presupuestar. Es el trabajo que más se pide y el que se organiza en tres alcances.",
-    ejemplos: [
-      "Página institucional o de catálogo",
-      "Tienda online con cobro",
-      "Cotizador y panel de administración",
-    ],
-  },
-  {
-    slug: "automatizacion",
-    nombre: "Automatización puntual",
-    para: "Trabajos acotados",
-    texto:
-      "Trabajos chicos y delimitados, que se entregan funcionando. No reemplazan la forma de trabajar: le sacan a la semana la parte que se hace a mano todos los días.",
-    ejemplos: [
-      "El formulario que carga solo en la planilla",
-      "El presupuesto que se arma solo",
-      "El mensaje que se responde solo",
-      "El reporte que llega los lunes",
-    ],
-    accion: "Consultar una automatización",
-  },
-  {
-    slug: "acompanamiento",
-    nombre: "Acompañamiento mensual",
-    para: "Para el que ya arrancó",
-    texto:
-      "Para quien ya tiene el sistema funcionando y necesita que alguien lo mantenga, lo mida y lo siga mejorando. Incluye el mantenimiento del sitio y las horas mensuales de cambios.",
-    ejemplos: [
-      "Mantenimiento, respaldos y actualizaciones",
-      "Informe mensual de consultas y su origen",
-      "Horas de cambios y mejoras",
-    ],
-    accion: "Consultar el acompañamiento",
   },
 ];
 

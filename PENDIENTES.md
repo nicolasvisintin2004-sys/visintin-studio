@@ -4,6 +4,26 @@ Lo que quedó abierto, ordenado por lo que más bloquea la publicación.
 
 ---
 
+## La reestructura de noviembre de 2026 (sin subir)
+
+El sitio pasó de nueve páginas a seis, y el inicio muestra las tres cosas que
+se venden: sitios web, contenido para redes y el sistema de turnos. Está
+compilado y revisado en local; **no está publicado**. Lo que queda de tu lado:
+
+| Qué | Dónde | Estado |
+| --- | --- | --- |
+| **Revisarlo y decidir si se sube** | `npm run build` y abrir `out/` | Pendiente |
+| Encender `/turnos` | `content/turnos-acciones.ts` → `TURNOS_PUBLICADA` | `false`. Mientras tanto, la puerta de turnos abre WhatsApp para pedir la demo |
+| Sumar Andy Campers como caso | `content/proyectos-en-curso.ts` → `content/proyectos.ts` | Esperando dirección pública. Hoy el sitio está en modo demo, con carteles de datos faltantes |
+| La bio de Instagram | En la app | Que diga las mismas tres cosas que el inicio, y el enlace a `visintinstudio.com.ar` |
+| Pedir la indexación de las páginas nuevas | Search Console | `/sitios-web` y `/redes`, después de subir |
+
+Visintin Turnos no entra como caso del portfolio a propósito: no tiene
+clientes todavía, y el portfolio es sólo de clientes reales. Está como puerta
+del inicio y con su propia página.
+
+---
+
 ## Lo que tenés que completar vos, de una sentada
 
 Todo esto está marcado en el código con `[DECIDIR]` o `[COMPLETAR: Nico]`, o
@@ -12,24 +32,19 @@ los datos a mano.
 
 | Qué | Dónde | Estado |
 | --- | --- | --- |
-| **Precio del diagnóstico** | `content/diagnostico.ts` → `PRECIO_DIAGNOSTICO` | Vacío. Muestra "Consultar precio" |
+| Precio del diagnóstico | `content/diagnostico.ts` → `PRECIO_DIAGNOSTICO` | Vacío. Ya no bloquea nada: el diagnóstico salió del frente |
 | Días de trabajo del diagnóstico | `content/diagnostico.ts` → `DIAS_DE_TRABAJO` | Puesto en `10`, con margen. Ajustar con los primeros diagnósticos entregados |
 | LinkedIn y YouTube | `content/social.ts` → `url` | Vacías. Instagram ya está cargado |
 | Revisar el texto del caso de BULK | `content/proyectos.ts` | Publicado. Ver "Revisá el texto del caso de BULK" |
 | Números de resultado del proyecto | `content/proyectos.ts` → campo opcional `medicion` | Ausente. Ver abajo |
 
-### El precio es la decisión que más importa
+### El diagnóstico salió del frente
 
-Es el único número del sitio y la página entera está construida alrededor de
-él. Mientras esté vacío, `/diagnostico` funciona y se ve bien, pero dice
-"Consultar precio", que es exactamente lo que la página existe para evitar: el
-que llega sin saber qué pedir vuelve a quedar en "escribime y vemos".
-
-Dos cosas para tener en cuenta al elegirlo. Tiene que ser **barato en relación
-al proyecto que puede seguir** —si el diagnóstico sale lo mismo que una
-landing, nadie lo compra— y tiene que **cubrir tu tiempo real**: son dos horas
-de reunión más el análisis, que es lo que hoy está estimado en cinco días
-hábiles.
+Era la puerta de entrada del sitio —botón del menú, segundo bloque del inicio,
+"todos los proyectos empiezan por acá"— y nunca se vendió. Ahora no está en el
+menú, en el inicio ni en el pie. La página sigue existiendo, fuera del menú,
+para mandarla por enlace si alguna vez sirve; con el precio vacío dice
+"Consultar precio".
 
 ### Los números de los proyectos
 
@@ -110,7 +125,8 @@ propiedad se desverifica.
 **Lo que falta, del lado de Google:**
 
 - Enviar `sitemap.xml` en Search Console, y pedir la indexación del inicio,
-  `/diagnostico`, `/servicios`, `/proyectos` y los dos casos.
+  `/sitios-web`, `/redes`, `/proyectos` y los dos casos. `/servicios` y
+  `/planes` redirigen a `/sitios-web`.
 - Crear el Perfil de empresa de Google, con el sitio bien escrito.
 - Poner `visintinstudio.com.ar` en la bio de Instagram.
 
@@ -157,20 +173,12 @@ servidor— el cambio es sacar `output: "export"` de `next.config.ts`, instalar
 lo que se pierde es la garantía de que ninguna página dependa de que algo esté
 corriendo.
 
-### La sección se llama "Cómo trabajo", no "Cómo trabajamos"
+### El formulario tiene los rubros a los que se apunta
 
-El prompt pedía "Cómo trabajamos". El resto del sitio está escrito en primera
-persona del singular y la página del estudio se titula literalmente "Una
-persona, no una agencia". El plural mayestático en una sección la contradice, y
-es el tipo de detalle que un cliente registra sin poder decir por qué.
-
-### El formulario tiene los rubros del prompt
-
-Metalmecánica · Agro · Transporte y logística · Comercio y retail · Servicios
-profesionales · Otro. Reemplazan a los cinco que había, que eran todos de
-fabricación. Si en seis meses la medición dice que casi nadie elige "Agro" y
-todos caen en "Otro", ahí está el dato para cambiarlos: el rubro viaja con cada
-consulta.
+Agencia de autos · Fábrica o taller · Comercio o tienda · Consultorio o centro
+médico · Servicios profesionales · Otro. Reemplazan a los de fabricación y
+agro, que eran de la etapa anterior. El rubro viaja con cada consulta, así que
+en unos meses la medición dice cuáles sobran.
 
 ### Umami además de Google Analytics, no en lugar de
 
@@ -283,12 +291,12 @@ dirección, pero no está en el sitemap, lleva `noindex` y no hay ningún enlace
 que lleve a ella. Si se publica el sitio con esto adentro, nadie la encuentra
 salvo que le pases el link.
 
-### Para anunciarla, en `content/turnos.ts`
+### Para anunciarla
 
 | Qué | Dónde | Estado |
 | --- | --- | --- |
 | **Las direcciones de los dos demos** | `DEMOS` | Vacías. El producto no está publicado |
-| **Encender la página** | `TURNOS_PUBLICADA` | `false` |
+| **Encender la página** | `TURNOS_PUBLICADA`, en `content/turnos-acciones.ts` | `false` |
 | Precio | la pregunta "¿Cuánto cuesta?" | "Te lo digo en la demo". Sin sección de precios |
 
 Con `DEMOS` cargado aparece sola la sección **"Probalo ahora"** —pestañas, el
@@ -297,8 +305,10 @@ el segundo botón de la portada pasa de "Ver cómo funciona" a "Probalo ahora".
 Mientras esté vacío, esa sección no existe: invitar a probar algo que no se
 puede abrir es peor que no decir nada.
 
-Con `TURNOS_PUBLICADA` en `true` la página entra al sitemap, deja de ser
-`noindex` y se enlaza desde el pie y desde una franja al final de Servicios.
+Con `TURNOS_PUBLICADA` en `true` —que ahora vive en
+`content/turnos-acciones.ts`— la página entra al sitemap, deja de ser
+`noindex`, aparece en el menú y en el pie, y la puerta de turnos del inicio
+pasa de abrir WhatsApp a llevar a la página.
 
 **No la enciendas antes de que el demo tenga dirección y los recordatorios por
 WhatsApp salgan de verdad.** La página promete las dos cosas.
@@ -352,8 +362,10 @@ Tres cosas a mejorar cuando se vuelvan a sacar:
   `-oscuro` donde hay.
 - **Primera persona del singular.** El documento hablaba en plural ("te
   mostramos"); la página del estudio se titula "Una persona, no una agencia".
-- **No está en el menú principal.** El menú es para PyMEs en general; la
-  página se enlaza desde Servicios y desde el pie.
+- **Entra al menú cuando se publica.** Al principio quedaba afuera, porque el
+  menú era para PyMEs en general. Desde la reestructura de noviembre el
+  sistema de turnos es una de las tres cosas que se venden, así que se enlaza
+  desde el menú, el pie y la puerta de turnos del inicio.
 - **El chat de WhatsApp está escrito en HTML**, no es una captura: la que hay
   mide 320 px y muestra una dirección de `localhost` adentro del mensaje. Los
   textos son los que manda el sistema.
@@ -533,16 +545,6 @@ páginas: un solo `h1` por página y jerarquía sin saltos, canonical propio y
 contraste medido sobre el fondo (`#F4F4F1` 17,9:1 · `#8A9099` 6,1:1 ·
 `#C08A4E` 6,8:1, los tres pasan AA), foco visible en todo lo navegable por
 teclado, y el camino de `prefers-reduced-motion` probado entero.
-
-### Los nombres de los servicios no son encabezados
-
-En la lista de servicios, "Sitios web", "Software a medida", etc. son `<span>`
-adentro de un `<button>` y no `<h3>`. Es a propósito: HTML no permite un
-encabezado dentro de un botón.
-
-Los nombres de las dos líneas sí son `h2`, y los nueve entregables de más abajo
-son `h3` adentro de un enlace, que HTML sí permite. Esos son los que tienen
-valor de búsqueda de verdad: "tienda online", "turnos y reservas", "cotizador".
 
 ### El límite de cinco envíos por hora depende de Supabase
 

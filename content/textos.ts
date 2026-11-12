@@ -18,6 +18,8 @@
  * "agencia de IA". Se dice qué tarea deja de hacerse a mano y listo.
  */
 
+import { TURNOS_PUBLICADA } from "./turnos-acciones";
+
 export const hero = {
   /**
    * Tres líneas, cortadas a mano: cada una entra con su propia máscara, con
@@ -38,10 +40,21 @@ export const hero = {
    * que lo respalde, y un número sin fuente es lo primero que se discute.
    */
   titulo: ["Que tu empresa", "trabaje más", "y vos menos."],
+  /**
+   * Dice las tres cosas que se venden, para quién y quién las hace. Antes
+   * hablaba de "dos líneas" y de un diagnóstico, que era la manera de
+   * presentar el estudio y no lo que la gente compra.
+   */
   bajada:
-    "Dos líneas con el mismo peso: los sitios y sistemas que usan tus clientes, y las automatizaciones que le sacan horas repetidas a la semana. Las dos empiezan en el mismo lugar, que es entender cómo trabaja el negocio y por dónde entra el dinero.",
-  accionPrincipal: "Ver el diagnóstico",
-  accionSecundaria: "Consultar por WhatsApp",
+    "Hago sitios web, contenido para redes y sistemas de turnos para negocios que venden por Instagram y WhatsApp. Cada proyecto lo respondo, lo desarrollo y lo mantengo yo.",
+  /**
+   * WhatsApp es el principal y el segundo lleva a los proyectos. Antes el
+   * principal era el diagnóstico, que no se vendió nunca; el que llega desde
+   * Instagram ya sabe qué quiere preguntar, y si duda, lo que lo convence es
+   * ver trabajos terminados.
+   */
+  accionPrincipal: "Consultar por WhatsApp",
+  accionSecundaria: "Ver los proyectos",
   /**
    * El mapa de procesos de la portada: lo que hace el estudio, mostrado en
    * vez de contado.
@@ -66,23 +79,54 @@ export const hero = {
   },
 };
 
-export const servicios = {
-  etiqueta: "Servicios",
-  titulo: "Dos líneas de trabajo, una misma manera de empezar.",
+/** Lo que hace el estudio, en el inicio: las tres puertas. */
+export const puertasTextos = {
+  titulo: "Lo que hago.",
+  /** Lo que se lee antes del precio más bajo de contenido para redes. */
+  desde: "Desde",
+  /** Los pies de la prueba de cada puerta. */
+  pieSitios: "El sitio de Taller Italia, fábrica de motorhomes.",
+  pieRedes: "Publicaciones de @Bulk_Ar, cuenta que manejo.",
+  pieTurnos: "Consultorio de demostración, con datos ficticios.",
+};
+
+/**
+ * La página de sitios web.
+ *
+ * Junta lo que antes estaba repartido en cuatro lugares: el servicio "Sitios
+ * web", el de "Software a medida", los nueve entregables de /servicios y los
+ * tres planes de /planes. Quedan los proyectos publicados, los tres alcances
+ * y una lista corta de lo que se hace a medida.
+ */
+export const sitiosWeb = {
+  titulo: "Un sitio al que mandar a quien te encuentra en Instagram.",
   bajada:
-    "Un sitio resuelve lo que ve el cliente; una automatización resuelve lo que pasa puertas adentro. La mayoría de los proyectos necesita algo de las dos, y en qué orden conviene hacerlo es justamente lo que define el diagnóstico.",
+    "Diseño y desarrollo a medida, sin plantillas. Cada producto, unidad o servicio tiene su página, con la información en texto: es lo que Google indexa y lo que el cliente compara. Y las consultas llegan con los datos necesarios para presupuestar, en lugar de un «precio?» suelto.",
+  casosTitulo: "Sitios en línea, para recorrer.",
+  verCaso: "Ver el caso",
+  planesTitulo: "Tres alcances. El precio se define en la consulta.",
+  planesBajada:
+    "Los precios no se publican porque, sin conocer el alcance, no permiten una comparación útil: un mismo “sitio web” puede variar considerablemente según lo que incluya. El precio se informa en la primera conversación, una vez definido el alcance.",
+  recomendado: "El plan más elegido",
+  accion: "Solicitar precio",
+  accionMantenimiento: "Consultar el mantenimiento",
   /**
-   * La lista de entregables concretos que va abajo de los cuatro servicios.
-   * Es la misma sección: las cuatro categorías expresadas con las palabras
-   * que usa quien consulta.
+   * Lo que se hace a medida, con las palabras que se buscan en Google. Es lo
+   * que quedó de los nueve entregables: cada renglón es algo que ya se
+   * construyó en alguno de los proyectos o que se pide seguido.
    */
-  pedidosTitulo: "Los proyectos que se solicitan con más frecuencia.",
-  pedidosBajada:
-    "Al seleccionar cualquiera de ellos se abre WhatsApp con la consulta ya redactada, de modo que la conversación comienza con el alcance definido.",
-  cierre: "Si tu proyecto no figura en la lista, también puede desarrollarse.",
-  cierreAccion: "Consultar un proyecto distinto",
-  /** Ayuda para quien navega la lista con el teclado y no con el mouse. */
-  ayudaTeclado: "Presioná Enter sobre cada servicio para ver el detalle",
+  medidaTitulo: "También a medida.",
+  medidaBajada:
+    "Cuando el negocio necesita algo que un sitio común no resuelve, se desarrolla:",
+  medida: [
+    "Tienda online con cobro por Mercado Pago",
+    "Cotizador o configurador: el cliente arma lo que quiere y la consulta llega completa",
+    "Panel para cargar productos y actualizar precios sin asistencia técnica",
+    "Importador que arma el catálogo desde la lista de precios del proveedor",
+    "Sitio en español e inglés, para consultas del exterior",
+    "Rediseño de un sitio que hoy no trae consultas",
+  ],
+  cierreAccion: "Consultar por un sitio web",
 };
 
 /**
@@ -148,35 +192,6 @@ export const caso = {
   verSiguiente: "Ver el caso",
 };
 
-/**
- * La página que antes se llamaba "Planes".
- *
- * Dejó de ser una lista de tres alcances para ser el mapa del estudio: todos
- * entran por el diagnóstico y de ahí salen tres ramas, de las cuales la web
- * es una. Los tres planes siguen existiendo, pero como el detalle de esa
- * rama y no como la sección entera.
- *
- * El título de la sección dice "Cómo trabajo" y no "Cómo trabajamos": el
- * estudio es una persona y lo dice en todas las demás páginas. El plural
- * mayestático acá contradiría la página del estudio.
- */
-export const planes = {
-  etiqueta: "Cómo trabajo",
-  titulo: "Todos entran por el mismo lugar.",
-  bajada:
-    "El trabajo empieza siempre por el diagnóstico, porque es la única manera de saber qué conviene hacer primero. De ahí salen tres caminos, que pueden tomarse de a uno o encadenarse. El diagnóstico tiene precio publicado porque es un trabajo acotado y cerrado; el resto depende de lo que encuentre. Los servicios de Instagram son aparte: tienen el alcance definido de antemano y precio fijo.",
-  ramasEtiqueta: "Los tres caminos",
-  planesEtiqueta: "El detalle de la rama de sitios",
-  planesTitulo: "Tres alcances. El precio se define en la consulta.",
-  planesBajada:
-    "Los precios no se publican porque, sin conocer el alcance, no permiten una comparación útil: un mismo “sitio web” puede variar considerablemente según lo que incluya. El precio se informa en la primera conversación, una vez definido el alcance.",
-  recomendado: "El plan más elegido",
-  accion: "Solicitar precio",
-  accionMantenimiento: "Consultar el mantenimiento",
-  cierre: "Si ninguno se ajusta a tu necesidad, se prepara una propuesta a medida.",
-  cierreAccion: "Solicitar una propuesta a medida",
-};
-
 export const sobreMi = {
   etiqueta: "El estudio",
   titulo: "Una persona, no una agencia.",
@@ -194,8 +209,8 @@ export const sobreMi = {
     "Una empresa que no sabe en qué se le va el tiempo, tampoco sabe en qué se le va la plata.",
   parrafos: [
     "Visintin Studio es Nicolás Visintin. Cada consulta la respondo personalmente, y cada proyecto lo desarrollo y lo mantengo yo mismo, sin intermediarios ni equipos rotativos.",
-    "Estudio Ingeniería Industrial en la UADE, una disciplina centrada en analizar procesos y eliminar lo que no aporta valor. Es el enfoque que aplico a cada proyecto, y es literalmente lo que hace el diagnóstico: antes que el diseño o el software, me interesa entender cómo trabaja el negocio y dónde pierde tiempo.",
-    "Trabajo con PyMEs argentinas: negocios con años de oficio y clientes propios, cuya presencia en internet se reduce a un perfil de redes sociales y cuya operación se sostiene con planillas y memoria. Casi siempre venden algo que el comprador compara en detalle antes de decidir, y ahí ni el sitio ni el sistema cumplen una función decorativa: tienen que responder las preguntas antes de que se formulen.",
+    "Estudio Ingeniería Industrial en la UADE, una disciplina centrada en analizar procesos y eliminar lo que no aporta valor. Es el enfoque que aplico a cada proyecto: antes que el diseño o el software, me interesa entender cómo trabaja el negocio y dónde pierde tiempo.",
+    "Mi trabajo es para negocios argentinos con años de oficio y clientes propios, que venden por Instagram y WhatsApp: fábricas, agencias de autos, comercios y consultorios. Casi siempre venden algo que el comprador compara en detalle antes de decidir, y ahí ni el sitio ni las publicaciones cumplen una función decorativa: tienen que responder las preguntas antes de que se formulen.",
   ],
   /**
    * Números reales. Ninguno inventado y ninguno que no pueda sostener.
@@ -269,14 +284,15 @@ export const formulario = {
   /**
    * Las opciones del rubro.
    *
-   * Cubren los tipos de PyME y no los rubros de fabricación: un comercio o un
-   * consultorio tienen que encontrarse en la lista, no caer en "Otro".
+   * Son los rubros a los que apunta el estudio. La función que recibe el
+   * formulario no las valida contra esta lista, así que cambiarlas no rompe
+   * nada del otro lado.
    */
   rubros: [
-    "Metalmecánica",
-    "Agro",
-    "Transporte y logística",
-    "Comercio y retail",
+    "Agencia de autos",
+    "Fábrica o taller",
+    "Comercio o tienda",
+    "Consultorio o centro médico",
     "Servicios profesionales",
     "Otro",
   ],
@@ -302,7 +318,7 @@ export const formulario = {
 
 export const pie = {
   descripcion:
-    "Sitios y sistemas web, automatización de procesos e inteligencia artificial aplicada, para PyMEs argentinas. Atención a clientes de todo el país.",
+    "Sitios web, contenido para redes y sistemas de turnos, para negocios argentinos que venden por Instagram y WhatsApp. Atención a clientes de todo el país.",
   secciones: "Secciones",
   contacto: "Contacto",
   redes: "Dónde encontrarme",
@@ -318,24 +334,25 @@ export const navegacion = {
   /**
    * Las páginas del sitio, en el orden del menú. Ese orden también define el
    * recorrido: al pie de cada página se ofrece ir a la siguiente.
+   *
+   * Las tres primeras son las tres puertas del inicio. La de turnos aparece
+   * recién cuando la página se anuncia.
    */
   enlaces: [
-    { href: "/servicios", texto: "Servicios" },
+    { href: "/sitios-web", texto: "Sitios web" },
+    { href: "/redes", texto: "Redes" },
+    ...(TURNOS_PUBLICADA ? [{ href: "/turnos", texto: "Turnos" }] : []),
     { href: "/proyectos", texto: "Proyectos" },
-    { href: "/planes", texto: "Cómo trabajo" },
     { href: "/estudio", texto: "Estudio" },
-    { href: "/contacto", texto: "Contacto" },
   ],
   /**
-   * El botón de la derecha de la barra.
+   * El botón de la derecha de la barra, y la última parada del recorrido.
    *
-   * Antes decía "WhatsApp". Ahora lleva al diagnóstico, que es el producto de
-   * entrada: el que llega frío no sabe qué pedir por WhatsApp, y el botón que
-   * le sirve es el que le ofrece algo concreto y acotado. WhatsApp no se
-   * pierde —está en el botón flotante de todas las páginas, en el hero, en el
-   * pie y en contacto—, deja de ser el único camino.
+   * Llevó al diagnóstico mientras el diagnóstico fue la puerta de entrada.
+   * Ahora lleva a contacto, donde están WhatsApp, el formulario y el correo:
+   * WhatsApp directo ya está en el botón flotante de todas las páginas.
    */
-  destacado: { href: "/diagnostico", texto: "Diagnóstico" },
+  destacado: { href: "/contacto", texto: "Contacto" },
   /** La franja al pie de cada página que lleva a la siguiente. */
   siguienteEtiqueta: "Sección siguiente",
 };
@@ -345,31 +362,21 @@ export const navegacion = {
  *
  * No repite el contenido de las otras páginas: con eso Google vería el mismo
  * texto en dos direcciones distintas y no sabría cuál mostrar. Presenta el
- * estudio y ofrece un índice con una línea por sección.
+ * estudio, muestra las tres puertas y cierra con la invitación a escribir.
  */
 export const inicio = {
-  indiceTitulo: "Por dónde seguir.",
-  /** Una línea por página. Se leen en el índice, abajo del nombre. */
-  indice: {
-    "/servicios": "Sitios y sistemas web, automatización, IA aplicada, informes e Instagram.",
-    "/proyectos": "De Instagram a un sitio propio, con el antes documentado.",
-    "/planes": "El diagnóstico, las tres ramas que salen de ahí y los planes web.",
-    "/estudio": "Quién está detrás del trabajo y cómo se trabaja.",
-    "/contacto": "WhatsApp, formulario o correo.",
-    "/diagnostico": "Una radiografía de cómo trabaja tu empresa, por escrito.",
-  } as Record<string, string>,
-  /** La franja de redes. Cada una dice qué se publica ahí, no "seguime". */
   /**
-   * No cuenta cuántas redes hay, a propósito.
-   *
-   * Decía "Tres lugares, tres cosas distintas" cuando las tres estaban
-   * vacías y la sección no se renderizaba. En cuanto se carga una sola, el
-   * título pasa a ser falso: hay un lugar. Así sirve con una, con dos o con
-   * las tres, y el sentido —que cada una publica algo distinto— se mantiene.
+   * Una línea por página. Se lee en la franja de "sección siguiente" y en la
+   * página de error, abajo del nombre de cada sección.
    */
-  redesTitulo: "Cada lugar, una cosa distinta.",
-  /** Abre la frase de los rubros, en la franja de abajo del diagnóstico. */
-  rubrosIntro: "Trabajo con",
+  indice: {
+    "/sitios-web": "Sitios a medida, los proyectos publicados y los tres alcances.",
+    "/redes": "Contenido, mensajes automáticos y auditoría de Instagram, con precio fijo.",
+    "/turnos": "El sistema de turnos para consultorios, con recordatorio por WhatsApp.",
+    "/proyectos": "Los sitios publicados, con la situación de cada negocio antes.",
+    "/estudio": "Quién está detrás del trabajo y las preguntas frecuentes.",
+    "/contacto": "WhatsApp, formulario o correo.",
+  } as Record<string, string>,
   cierreTitulo: "¿Tenés un proyecto en mente?",
   cierreTexto:
     "La primera conversación dura alrededor de veinte minutos, se realiza por WhatsApp y no tiene costo.",
@@ -405,20 +412,20 @@ export const paginas = {
     descripcion:
       "Una radiografía por escrito de cómo trabaja tu empresa: el mapa de la operación, dónde se pierden horas cada semana, qué puede romperse y un plan para ordenar y automatizar, con costos por etapa. Para PyMEs argentinas.",
   },
-  servicios: {
-    titulo: "Servicios",
+  sitiosWeb: {
+    titulo: "Sitios web a medida",
     descripcion:
-      "Sitios y sistemas web, automatización de procesos, inteligencia artificial aplicada e informes para PyMEs argentinas. Catálogos, tiendas online, turnos y reservas, cotizadores y paneles. Y para Instagram: auditoría de la cuenta, mensajes automáticos por palabra clave y creación de contenido, con precio fijo.",
+      "Sitios web a medida para negocios argentinos que venden por Instagram y WhatsApp: una página por producto o unidad, consultas con los datos para presupuestar, tiendas online, cotizadores y paneles. Tres alcances y los proyectos publicados para recorrer.",
+  },
+  redes: {
+    titulo: "Contenido para redes",
+    descripcion:
+      "Creación de contenido para Instagram, mensajes automáticos por palabra clave y auditoría de la cuenta, con precio fijo en dólares. Con publicaciones reales de una cuenta que manejo.",
   },
   proyectos: {
     titulo: "Proyectos",
     descripcion:
       "Proyectos para PyMEs argentinas que presentaban su oferta solo en Instagram: una fábrica de motorhomes y una tienda de suplementos. La situación inicial de cada una, qué se construyó y el sitio publicado, para recorrerlo.",
-  },
-  planes: {
-    titulo: "Cómo trabajo",
-    descripcion:
-      "Todos los proyectos empiezan por el diagnóstico. De ahí salen tres caminos: sitio web —con tres alcances—, automatización puntual y acompañamiento mensual. Aparte, tres servicios de Instagram con precio fijo.",
   },
   estudio: {
     titulo: "Estudio",
@@ -455,7 +462,7 @@ export const noEncontrada = {
 
 /** Metadatos por defecto. Cada página puede pisarlos. */
 export const meta = {
-  titulo: "Visintin Studio · Sistemas web y automatización para PyMEs argentinas",
+  titulo: "Visintin Studio · Sitios web, contenido para redes y sistemas de turnos",
   descripcion:
-    "Ordeno y automatizo el trabajo de PyMEs argentinas. Sitios y sistemas web —catálogos, tiendas online, turnos, cotizadores y paneles— y automatización de procesos con inteligencia artificial aplicada. Todo empieza por un diagnóstico escrito de cómo trabaja la empresa.",
+    "Sitios web a medida, contenido para Instagram con precio fijo y un sistema de turnos con recordatorio por WhatsApp, para negocios argentinos que venden por Instagram y WhatsApp: fábricas, agencias de autos, comercios y consultorios.",
 };

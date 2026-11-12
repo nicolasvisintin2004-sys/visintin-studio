@@ -33,7 +33,7 @@ export function metadatosDePagina({
   absoluto = false,
   imagen,
 }: {
-  /** Con barra inicial: "/servicios". */
+  /** Con barra inicial: "/sitios-web". */
   ruta: string;
   /** Sin el nombre del sitio: el layout lo agrega. */
   titulo: string;

@@ -127,7 +127,7 @@ const SONDA = `(async () => {
   };
 })()`;
 
-const PAGINAS = ["/", "/servicios", "/diagnostico", "/proyectos/taller-italia", "/turnos"];
+const PAGINAS = ["/", "/sitios-web", "/redes", "/diagnostico", "/proyectos/taller-italia", "/turnos"];
 
 async function main() {
   const ws = await conectar(await puntoDeEntrada());

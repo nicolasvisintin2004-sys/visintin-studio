@@ -118,8 +118,10 @@ export const mensajes = {
   contacto: "Hola Nicolás, quisiera contarte sobre un proyecto.",
   diagnostico:
     "Hola Nicolás, vi la página del diagnóstico y quisiera solicitarlo. ¿Cómo seguimos?",
-  rama: (rama: string) =>
-    `Hola Nicolás, me interesa el servicio de ${rama}. ¿Podríamos conversarlo?`,
+  sitioWeb:
+    "Hola Nicolás, vi el sitio de Visintin Studio y quisiera consultar por un sitio web para mi negocio.",
+  redes:
+    "Hola Nicolás, vi el sitio de Visintin Studio y quisiera consultar por el contenido para redes.",
   /** Para quien ya dejó sus datos en el formulario y además quiere escribir. */
   urgente:
     "Hola Nicolás, acabo de completar el formulario del sitio y necesitaría resolverlo con urgencia.",

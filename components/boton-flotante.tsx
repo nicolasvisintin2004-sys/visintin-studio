@@ -31,8 +31,8 @@ function contextoDeRuta(ruta: string): Contexto {
 
   const porPagina: Record<string, Contexto> = {
     "/proyectos": { mensaje: mensajes.portfolio, origen: "flotante_proyectos" },
-    "/servicios": { mensaje: mensajes.general, origen: "flotante_servicios" },
-    "/planes": { mensaje: mensajes.general, origen: "flotante_planes" },
+    "/sitios-web": { mensaje: mensajes.sitioWeb, origen: "flotante_sitios_web" },
+    "/redes": { mensaje: mensajes.redes, origen: "flotante_redes" },
     "/estudio": { mensaje: mensajes.sobreMi, origen: "flotante_estudio" },
     "/contacto": { mensaje: mensajes.contacto, origen: "flotante_contacto" },
     "/turnos": { mensaje: MENSAJE_DEMO, origen: "turnos_flotante" },

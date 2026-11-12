@@ -12,12 +12,13 @@ type Props = {
  *
  * Con el sitio partido en páginas, el que termina de leer una sección se
  * queda sin el scroll que antes lo llevaba a la próxima. Esta franja devuelve
- * ese recorrido: Servicios lleva a Proyectos, Proyectos a Planes, y así en el
- * orden del menú. En Contacto no aparece: es el final del recorrido.
+ * ese recorrido: Sitios web lleva a Redes, Redes a Proyectos, y así en el
+ * orden del menú hasta Contacto, que es el final y no la lleva.
  */
 export function SiguientePagina({ actual }: Props) {
-  const indice = navegacion.enlaces.findIndex((e) => e.href === actual);
-  const siguiente = navegacion.enlaces[indice + 1];
+  const recorrido = [...navegacion.enlaces, navegacion.destacado];
+  const indice = recorrido.findIndex((e) => e.href === actual);
+  const siguiente = recorrido[indice + 1];
   if (indice === -1 || !siguiente) return null;
 
   return (

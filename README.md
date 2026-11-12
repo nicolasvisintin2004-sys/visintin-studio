@@ -3,31 +3,46 @@
 El sitio de Visintin Studio: en español, con una página por sección y una
 página propia por proyecto del portfolio.
 
-Lo que el sitio dice que hace: **ordeno y automatizo el trabajo de una PyME, y
-la web es una de las piezas.** Son dos líneas de trabajo con el mismo peso
-—sitios y sistemas web, e IA y automatización aplicada— y las dos empiezan por
-el mismo lugar, que es el diagnóstico.
+Lo que el sitio dice que hace: **sitios web, contenido para redes y sistemas
+de turnos, para negocios que venden por Instagram y WhatsApp.** Son las tres
+cosas que de verdad se venden, y el inicio las muestra como tres puertas, cada
+una con una prueba real y un enlace a su página. Esa página es también el
+enlace que se manda desde Instagram según a quién se le habla.
+
+Hasta noviembre de 2026 el sitio contaba otra historia —"ordeno y automatizo",
+dos líneas de trabajo y todo empezando por un diagnóstico— y ofrecía unas
+veinticuatro cosas con nombre propio repartidas en nueve páginas. Se
+reestructuró porque no se entendía qué vendía el estudio. El motivo de cada
+decisión está en los comentarios de `content/servicios.ts` y `app/page.tsx`.
 
 | Ruta | Qué hay |
 | --- | --- |
-| `/` | Hero, diagnóstico, cinta de rubros, índice de secciones y cierre |
-| `/diagnostico` | El producto de entrada, con página propia y barra reducida |
-| `/servicios` | Los cuatro servicios agrupados en dos líneas, y los nueve entregables |
+| `/` | Hero con el mapa de procesos, las tres puertas y el cierre |
+| `/sitios-web` | Qué es, los proyectos publicados, los tres planes y lo que se hace a medida |
+| `/redes` | Contenido para redes: los tres servicios de Instagram, con precio |
+| `/turnos` | Visintin Turnos, el sistema para consultorios. **Apagada**: ver abajo |
 | `/proyectos` | El portfolio, con desplazamiento horizontal en escritorio |
 | `/proyectos/<slug>` | Cada proyecto: resultado, situación inicial con capturas del "antes", qué se desarrolló |
-| `/planes` | Cómo trabajo: el diagnóstico, las tres ramas y los tres planes web |
 | `/estudio` | Sobre mí y las preguntas frecuentes |
 | `/contacto` | WhatsApp, formulario y correo |
+| `/diagnostico` | Página de aterrizaje para prospectar. Fuera del menú y del pie |
 | `/notas` | El blog en MDX. **Todavía no está en el menú** |
 | `/notas/<slug>` | Cada nota |
 | `/api/leads` | Recibe el formulario. Es una función de Netlify |
 | `/api/leads/export` | Baja las consultas en CSV, con token |
 
+`/servicios` y `/planes` ya no existen: redirigen a `/sitios-web` desde
+`netlify.toml`.
+
 El inicio no repite el contenido de las otras páginas: presenta el estudio y
-lleva a cada sección. Al pie de cada página hay una franja que lleva a la
-siguiente, en el orden del menú. `/diagnostico` es la excepción a todo: es una
-página de aterrizaje, así que no tiene menú completo ni franja al pie, porque
-el único camino hacia adelante es el formulario.
+lleva a cada puerta. Al pie de cada página hay una franja que lleva a la
+siguiente, en el orden del menú, hasta contacto. `/diagnostico` y `/turnos` son
+la excepción: son páginas de aterrizaje, sin menú completo ni franja al pie.
+
+**Turnos apagada.** Mientras `TURNOS_PUBLICADA` sea `false`
+(`content/turnos-acciones.ts`), `/turnos` no está en el menú, el pie ni el
+sitemap y se marca `noindex`; la puerta de turnos del inicio abre WhatsApp para
+pedir la demo. En `true`, la página entra sola en los cuatro lugares.
 
 Next.js 16 (App Router) + TypeScript + Tailwind CSS 4, compilado como estático
 puro y servido desde el CDN de Netlify. GSAP se usa sólo para el desplazamiento
@@ -69,11 +84,12 @@ abrir ningún componente.
 | --- | --- |
 | `content/sitio.ts` | WhatsApp, correo, dirección del sitio, medición y los mensajes precargados |
 | `content/textos.ts` | Los textos de cada sección: títulos, bajadas, botones |
-| `content/diagnostico.ts` | **El precio**, los cuatro entregables, el proceso y las preguntas del diagnóstico |
-| `content/servicios.ts` | Las dos líneas, los cuatro servicios y los rubros de la cinta |
-| `content/pedidos.ts` | Los entregables concretos que van al pie de Servicios |
+| `content/servicios.ts` | Las tres puertas del inicio: nombre, para quién, texto y enlace |
+| `content/instagram.ts` | Los tres servicios de `/redes`, con precio, y las publicaciones de ejemplo |
+| `content/planes.ts` | Los tres planes de sitio web y el mantenimiento |
 | `content/proyectos.ts` | Los proyectos del portfolio, con su resultado y sus capturas |
-| `content/planes.ts` | Las tres ramas, los tres planes y el mantenimiento |
+| `content/turnos.ts` | La página de Visintin Turnos. El interruptor está en `turnos-acciones.ts` |
+| `content/diagnostico.ts` | El precio, los entregables, el proceso y las preguntas del diagnóstico |
 | `content/preguntas.ts` | Las preguntas frecuentes (también alimentan el JSON-LD) |
 | `content/social.ts` | LinkedIn, Instagram y YouTube. Vacías no se renderizan |
 | `content/notas/registro.ts` | Las notas del blog |
@@ -93,6 +109,10 @@ botón una vez y confirmar que WhatsApp reconoce el número.
 
 ### Poner el precio del diagnóstico
 
+El diagnóstico ya no es la puerta de entrada: no está en el menú, en el inicio
+ni en el pie, y nunca se vendió. La página sigue existiendo para mandarla por
+enlace a quien la necesite.
+
 Está en una sola línea de `content/diagnostico.ts`:
 
 ```ts
@@ -106,9 +126,9 @@ estructurado de Google omite el precio en vez de declarar uno inválido.
 En el mismo archivo está `DIAS_DE_TRABAJO`, que es el plazo que aparece en el
 paso del medio del proceso.
 
-**Sólo lo que tiene alcance cerrado muestra precio.** El diagnóstico y los
-tres servicios de Instagram sí; los tres planes, la automatización puntual y
-el acompañamiento no, y es una regla y no un olvido. Donde el alcance está
+**Sólo lo que tiene alcance cerrado muestra precio.** Los tres servicios de
+`/redes` y el diagnóstico sí; los tres planes de sitio web no, y es una regla
+y no un olvido. Donde el alcance está
 definido de antemano, el número ayuda a decidir. Donde depende de lo que se
 encuentre, un número suelto o espanta o miente.
 
@@ -132,15 +152,15 @@ la lista `piezas` de esa herramienta y la de `content/instagram.ts`.
 
 ### Cambiar un texto de una sección
 
-`content/textos.ts`. Está partido por sección (`hero`, `inicio`, `servicios`,
-`portfolio`, `caso`, `planes`, `sobreMi`, `preguntas`, `contacto`, `pie`).
-`inicio` es el índice y el cierre de la portada; `caso`, los textos fijos de la
-página de cada proyecto.
+`content/textos.ts`. Está partido por sección (`hero`, `puertasTextos`,
+`sitiosWeb`, `portfolio`, `caso`, `sobreMi`, `preguntas`, `contacto`, `pie`,
+`inicio`). `inicio` tiene la línea que describe cada página y el cierre de la
+portada; `caso`, los textos fijos de la página de cada proyecto.
 
 El título y la descripción que ve Google en cada página están en `paginas`,
 en el mismo archivo. El menú, y con él el orden de las páginas, sale de
 `navegacion.enlaces`: una página que se agregue ahí aparece sola en el menú,
-en el pie, en el índice del inicio y en el sitemap.
+en el pie, en la franja de "sección siguiente" y en el sitemap.
 
 **El registro es formal, con voseo.** Se trata al visitante de "vos", pero sin
 coloquialismos: nada de "charlamos", "contame" o "sin vueltas". Los botones van
@@ -245,34 +265,18 @@ el sitio no tiene un "antes" que capturar, y en ese caso el campo va ausente y
 la sección no se renderiza. Inventarle un problema anterior a un negocio que no
 lo tuvo es la misma mentira que un porcentaje falso.
 
-### Sumar o sacar un entregable de la lista
+### Cambiar los planes de sitio web
 
-`content/pedidos.ts`. Es la grilla de nueve que va al pie de la sección de
-Servicios: los nombres concretos con los que la gente pide las cosas.
-
-Cada entrada necesita cuatro campos: un `slug` (que identifica el clic en la
-medición, como `pedido_tienda`), un nombre corto, una línea de descripción y el
-`mensaje` que se abre escrito en WhatsApp cuando alguien toca esa celda. Ese
-último es el que más importa: es la diferencia entre recibir un "hola" y
-recibir "necesito una tienda online con cobro por Mercado Pago".
-
-Van nueve porque la grilla es de tres columnas y queda pareja. Si sumás uno,
-conviene sumar tres o sacar uno, para que la última fila no quede coja.
-
-Esos nombres también entran solos en los datos estructurados del inicio, que es
-donde más trabajo hacen para Google: "tienda online" y "turnos y reservas" son
-palabras que se buscan, y "software a medida" no.
-
-### Cambiar los planes o las ramas
-
-`content/planes.ts` tiene las dos cosas: `ramas` son los tres caminos que salen
-del diagnóstico —sitio web, automatización puntual, acompañamiento mensual— y
-`planes` son los tres alcances de la primera rama.
+`content/planes.ts`. Son los tres alcances que se muestran en `/sitios-web`, y
+el mantenimiento, que va con cualquiera de los tres.
 
 No hay precios ahí a propósito: el visitante mira el alcance y pide el número.
-`recomendado: true` es lo que pinta el borde de bronce, y va en uno solo. Una
-rama sin `accion` no lleva botón; la primera no lo lleva porque su llamado son
-los tres planes que están justo abajo.
+`recomendado: true` es lo que pinta el borde de bronce, y va en uno solo.
+
+Lo que se hace a medida —tienda, cotizador, panel, importador de listas— es una
+lista corta en `sitiosWeb.medida`, en `content/textos.ts`. Reemplaza a la
+grilla de nueve entregables que había en `/servicios`: esas palabras siguen
+escritas en la página, que es lo que importa para Google.
 
 ### Escribir una nota
 
@@ -494,8 +498,8 @@ La de capturar acepta cuatro variables de entorno:
 | `EJECUTAR=<js>` | Corre una expresión antes de la foto |
 
 ```bash
-SCROLL=1500 node herramientas/capturar-pagina.mjs http://localhost:3100/servicios revision.png 1440 900
-HOVER='#servicios ul:last-of-type li:nth-child(5) a' node herramientas/capturar-pagina.mjs http://localhost:3100/servicios hover.png
+SCROLL=1500 node herramientas/capturar-pagina.mjs http://localhost:3100/sitios-web revision.png 1440 900
+HOVER='#casos-titulo ~ ul li:first-child a' node herramientas/capturar-pagina.mjs http://localhost:3100/sitios-web hover.png
 ```
 
 `MOVIMIENTO` hace falta más de lo que parece: si la máquina tiene el movimiento

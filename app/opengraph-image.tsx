@@ -10,13 +10,13 @@ import { TAMANO, TIPO, imagenOg } from "@/lib/imagen-og";
  */
 export const dynamic = "force-static";
 
-export const alt = "Visintin Studio · Sistemas web y automatización para PyMEs argentinas";
+export const alt = "Visintin Studio · Sitios web, contenido para redes y sistemas de turnos";
 export const size = TAMANO;
 export const contentType = TIPO;
 
 export default async function Imagen() {
   return imagenOg({
     titulo: "Que tu empresa trabaje más y vos menos.",
-    pie: "Sitios y sistemas web, automatización de procesos e IA aplicada, para PyMEs argentinas.",
+    pie: "Sitios web, contenido para redes y sistemas de turnos, para negocios que venden por Instagram y WhatsApp.",
   });
 }

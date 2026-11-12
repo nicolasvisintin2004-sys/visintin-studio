@@ -5,33 +5,32 @@ import { instagram as textos, type ServicioInstagram } from "@/content/instagram
 import { mensajes } from "@/content/sitio";
 
 /**
- * Los servicios de Instagram, en /servicios.
- *
- * Van debajo de las dos líneas y con otro tratamiento: acá el precio está a la
- * vista, grande, porque es lo que distingue a estos tres del resto. El por qué
- * de que tengan precio y el resto no está en `content/instagram.ts`.
+ * Contenido para redes: la página entera de /redes.
  *
  * Una fila por servicio: a la izquierda el nombre y el precio, que es lo que
  * se compara de un vistazo; a la derecha qué es y, cuando hay algo real para
- * mostrar, cómo se ve. Todo es de servidor: no hay nada que abrir ni cerrar.
+ * mostrar, cómo se ve. El precio va grande y en bronce porque es lo que
+ * distingue a estos tres del resto del sitio; el porqué de que lo tengan
+ * está en `content/instagram.ts`. Todo es de servidor: no hay nada que abrir
+ * ni cerrar.
  */
 export function ServiciosInstagram() {
   return (
-    <section className="contenedor mt-24 lg:mt-32">
-      <div className="border-t border-acento pt-12 lg:pt-16">
+    <section className="seccion">
+      <div className="contenedor">
         <EncabezadoSeccion
-          nivel="h2"
+          nivel="h1"
           titulo={textos.titulo}
           bajada={textos.bajada}
           claseTitulo="max-w-[16ch]"
         />
-      </div>
 
-      <ul className="mt-14 border-t border-borde lg:mt-20">
-        {textos.servicios.map((servicio) => (
-          <Fila key={servicio.slug} servicio={servicio} />
-        ))}
-      </ul>
+        <ul className="mt-14 border-t border-borde lg:mt-20">
+          {textos.servicios.map((servicio) => (
+            <Fila key={servicio.slug} servicio={servicio} />
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
@@ -40,7 +39,7 @@ function Fila({ servicio }: { servicio: ServicioInstagram }) {
   return (
     <li className="grid gap-8 border-b border-borde py-12 lg:grid-cols-[20rem_1fr] lg:gap-16 lg:py-16">
       <div>
-        <h3 className="t-subtitulo">{servicio.nombre}</h3>
+        <h2 className="t-subtitulo">{servicio.nombre}</h2>
         <p className="mt-6 flex items-baseline gap-3">
           <span className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-none tracking-[-0.03em] text-acento tabular-nums">
             {servicio.precio.monto}
@@ -59,7 +58,7 @@ function Fila({ servicio }: { servicio: ServicioInstagram }) {
 
         {servicio.lista && (
           <div className="mt-8 max-w-[52ch]">
-            <h4 className="t-etiqueta text-texto">{servicio.lista.titulo}</h4>
+            <h3 className="t-etiqueta text-texto">{servicio.lista.titulo}</h3>
             <ul className="mt-4 flex flex-col gap-3">
               {servicio.lista.items.map((item) => (
                 <li key={item} className="grid grid-cols-[auto_1fr] gap-4 text-[0.9375rem] leading-relaxed text-suave">
@@ -79,7 +78,7 @@ function Fila({ servicio }: { servicio: ServicioInstagram }) {
             // Sólo la inicial: "Instagram" sigue con mayúscula.
             servicio.nombre.charAt(0).toLowerCase() + servicio.nombre.slice(1),
           )}
-          origen={`servicios_${servicio.slug}`}
+          origen={`redes_${servicio.slug}`}
           className={`${botonTexto} mt-10`}
         >
           {textos.consultar}
